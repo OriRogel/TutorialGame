@@ -1,0 +1,63 @@
+{
+  "branches": [
+    {
+      "condition": {
+        "flag": "event_father_arguedWithPlayer",
+        "equals": true
+      },
+      "lines": [
+        "> Oh... hello Capu, I didn't notice you.",
+        "> I guess you heard it. I don't know what to do.",
+        "I heard the fight. Your father won't listen. If you want to look for ???, I'm with you. But we'll have to sneak in at night.",
+        "Meet me at the exit gate when the sun goes down.",
+        "> I'm in!"
+      ]
+    },
+    {
+      "condition": {
+        "flag": "event_player_talkedToFriend2",
+        "equals": true
+      },
+      "lines": [
+        "What have you found?",
+        "> Working on it."
+      ]
+    },
+    {
+      "condition": {
+        "flag": "event_player_receivedWeapon",
+        "equals": true
+      },
+      "lines": [
+        "> Oh Capu, you are still here. Any news?",
+        "Yes, but they are not good...",
+        "Krage - is missing. They tell he vanished from the village and nobody knows when or how.",
+        "> That has never happened. He has to be somewhere. I will look for clues.",
+        "Maybe your father can help? After all he is-",
+        "> Stop. We are not asking for my father help."
+      ]
+    },
+    {
+      "condition": {
+        "flag": "event_player_talkedToFriend",
+        "equals": true
+      },
+      "lines": [
+        "> Have you found out something?",
+        "Not yet, but I will!"
+      ]
+    },
+    {
+      "condition": {
+        "flag": "event_player_talkedToFriend",
+        "equals": false
+      },
+      "lines": [
+        "Hello Korato! I'm glad I caught you. You're on your way to the Blacksmith?",
+        "> Yeah... Is there something wrong?",
+        "I heard some rumors that something bad has happened, so stay alert. I'll go check the village a bit and update you.",
+        "> Fine, but I need to see the Blacksmith before."
+      ]
+    }
+  ]
+}

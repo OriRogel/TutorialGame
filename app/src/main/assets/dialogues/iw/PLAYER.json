@@ -1,0 +1,11 @@
+{
+  "branches": [
+    {
+      "condition": { "flag": "event_enter_maze", "equals": true },
+      "lines": [
+        "מה-",
+        "מה זה המקום הזה..?"
+      ]
+    }
+  ]
+}

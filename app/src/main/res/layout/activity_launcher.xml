@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr"
+    tools:context=".ui.activities.LauncherActivity">
+
+    <FrameLayout
+        android:id="@+id/root_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/profile_button_container"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_profile_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no" />
+
+                <ImageView
+                    android:id="@+id/iv_profile_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stateListAnimator="@animator/rotate90_view_animator"
+                    android:contentDescription="Profile Frame" />
+
+                <ImageView
+                    android:id="@+id/iv_pic"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="3dp"
+                    android:importantForAccessibility="no" />
+            </FrameLayout>
+
+
+            <android.widget.Button
+                android:id="@+id/btnPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_image_selector"
+                android:backgroundTint="@null"
+                android:fontFamily="@font/pixel_font"
+                android:text="@string/play_Cap"
+                android:textColor="@color/button_text_color"
+                android:textSize="40sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/menu_image_selector"
+                android:backgroundTint="@null"
+                android:contentDescription="@string/menu_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2. רקע מושחר (Dim Background) שיופיע מעל התוכן הראשי -->
+        <View
+            android:id="@+id/dim_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone" /> <!-- מתחיל במצב מוסתר -->
+
+        <!-- 3. ה-Container שיחזיק את ה-ProfileFragment (עכשיו צף מעל הכל) -->
+        <FrameLayout
+            android:id="@+id/profile_container"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="80dp"
+            android:layout_marginVertical="20dp"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+    <!-- Drawer (המגירה ל-Settings, נשארת כפי שהייתה) -->
+    <FrameLayout
+        android:id="@+id/settings_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

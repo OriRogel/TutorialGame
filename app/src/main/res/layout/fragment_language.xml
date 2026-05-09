@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/settings_background"
+    android:layoutDirection="ltr"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_language_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/language_cap"
+            style="@style/fragment_title"/>
+
+        <ImageButton
+            android:id="@+id/imgBtnClose"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/close_button"
+            android:stateListAnimator="@animator/rotate45_view_animator" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:overScrollMode="always">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="3dp">
+
+            <android.widget.Button
+                android:id="@+id/btnEnglishLang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/choicebox_selector"
+                android:text="@string/english"
+                android:paddingHorizontal="15dp"
+                android:textAllCaps="false"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/pixel_font"
+                android:textColor="@color/black"/>
+
+            <android.widget.Button
+                android:id="@+id/btnHebrewLang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/choicebox_selector"
+                android:text="@string/hebrew"
+                android:layout_marginTop="3dp"
+                android:textAllCaps="false"
+                android:paddingHorizontal="15dp"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/pixel_font"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

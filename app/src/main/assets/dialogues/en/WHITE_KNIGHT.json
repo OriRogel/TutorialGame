@@ -1,0 +1,26 @@
+{
+  "branches": [
+    {
+      "condition": { "flag": "event_player_talkedToFriend2", "equals": true },
+      "lines": [
+        "Your footsteps lead once more to the threshold of the Gate, young lord. What does your soul seek this time?",
+        "> A friend from the village is missing. Krage... do you know anything about this?",
+        "The expanse beyond this threshold holds no mercy for the living. Know this: nothing has slipped past us. None have departed, and none have entered.",
+        "> I am not blaming you, but perhaps for a single moment you weren't looking...",
+        "Mind your tongue. Our eyes do not close, and our vigil knows no weariness. We are the 'Ancients' – we are the rock upon which time itself breaks.",
+        "> Perhaps you could just let me out for a moment, just to check if he's there—",
+        "Ignorance is a perilous shield, young lord. You do not comprehend the nature of this brink. Since the first sun rose, none have crossed here and remained to tell.",
+        "Do not dare to think that you shall be the first to break the silence of eternity."
+      ]
+    },
+    {
+      "lines": [
+        "Halt, mortal. Your steps echo where only silence is permitted to dwell.",
+        "I am Caro, the White Blade of the Eternal Watch.",
+        "> Oh, nice to meet you. I am—",
+        "Spare us your name. We knew of your lineage long before blood first flowed through your veins.",
+        "> Oh... I see."
+      ]
+    }
+  ]
+}

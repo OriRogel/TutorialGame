@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/interior_background"/>
+
+    <item>
+        <selector>
+            <item android:state_pressed="true">
+                <clip
+                    android:clipOrientation="horizontal"
+                    android:gravity="left"
+                    android:drawable="@drawable/slider_progress_pressed"/>
+            </item>
+
+            <item>
+                <clip
+                    android:clipOrientation="horizontal"
+                    android:gravity="left"
+                    android:drawable="@drawable/slider_progress_normal"/>
+            </item>
+        </selector>
+
+    </item>
+</layer-list>

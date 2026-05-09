@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="14" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="10">
+ <tileset firstgid="1" source="../tilesets/inside.tsx"/>
+ <tileset firstgid="375" source="../tilesets/walls.tsx"/>
+ <tileset firstgid="695" source="../tilesets/surfaces.tsx"/>
+ <layer id="1" name="Ground" width="14" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,12,13,13,13,13,13,13,13,13,13,13,14,0,
+0,34,35,35,35,35,35,35,35,35,35,35,36,0,
+0,34,35,35,35,35,35,35,35,35,35,35,36,0,
+0,34,35,35,35,35,35,35,35,35,35,35,36,0,
+0,34,35,35,35,35,35,35,35,35,35,35,36,0,
+0,56,57,57,57,57,57,57,57,57,57,57,58,0,
+0,0,374,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="2" name="Walls" width="14" height="8">
+  <data encoding="csv">
+536,540,540,540,540,540,540,540,540,540,540,540,540,541,
+584,0,0,0,0,0,0,0,0,0,0,0,0,589,
+584,0,0,0,0,0,0,0,0,0,0,0,0,589,
+584,0,0,0,0,0,0,0,0,0,0,0,0,589,
+584,0,0,0,0,0,0,0,0,0,0,0,0,589,
+584,0,0,0,0,0,0,0,0,0,0,0,0,589,
+584,0,0,0,0,0,0,0,0,0,0,0,0,589,
+680,682,0,683,684,684,684,684,684,684,684,684,684,685
+</data>
+ </layer>
+ <layer id="4" name="Surface" width="14" height="8" opacity="0.26">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,699,699,699,699,699,699,699,699,699,699,699,699,0,
+0,699,699,699,699,699,699,699,699,699,699,699,699,0,
+0,699,699,699,699,699,699,699,699,699,699,699,699,0,
+0,699,699,699,699,699,699,699,699,699,699,699,699,0,
+0,699,699,699,699,699,699,699,699,699,699,699,699,0,
+0,699,699,699,699,699,699,699,699,699,699,699,699,0,
+0,0,699,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="5" name="Doors">
+  <object id="1" name="home1_to_village" x="40.1724" y="121.497">
+   <properties>
+    <property name="connectsTo" value="village.tmx"/>
+    <property name="targetDoor" value="village_to_home1"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="Characters">
+  <object id="7" x="136.275" y="76.4706">
+   <properties>
+    <property name="type" value="SKELETON"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="9" x="58.3333" y="54.902">
+   <properties>
+    <property name="type" value="EYE_MONSTER"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

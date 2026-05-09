@@ -1,0 +1,119 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr"
+    android:background="@drawable/settings_background">
+
+    <TextView
+        android:id="@+id/tv_settings_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:layout_marginTop="20dp"
+        style="@style/fragment_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="25dp"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pixel_font"
+                android:text="@string/music_amp_sounds"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="10sp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivMusic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_music"
+                    android:contentDescription="@string/music_image"/>
+
+                <SeekBar
+                    android:id="@+id/sbMusic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/seekbar_thumb"
+                    android:progressDrawable="@drawable/seekbar_progress"
+                    android:layout_gravity="center"
+                    android:layout_alignStart="@id/ivMusic"
+                    android:layout_marginStart="20dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivSound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_sound_2"
+                    android:contentDescription="@string/sound_effects_image"/>
+
+                <SeekBar
+                    android:id="@+id/sbSound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/seekbar_thumb"
+                    android:progressDrawable="@drawable/seekbar_progress"
+                    android:layout_gravity="center"
+                    android:layout_alignStart="@id/ivSound"
+                    android:layout_marginStart="20dp"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="20dp">
+
+            <android.widget.Button
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_image_selector"
+                android:layout_marginTop="10dp"
+                android:text="@string/logout"
+                android:textColor="@color/button_text_color"
+                android:fontFamily="@font/pixel_font"/>
+
+            <android.widget.Button
+                android:id="@+id/btnLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_image_selector"
+                android:layout_marginTop="10dp"
+                android:text="@string/language"
+                android:textColor="@color/button_text_color"
+                android:fontFamily="@font/pixel_font"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

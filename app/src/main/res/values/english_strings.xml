@@ -1,0 +1,192 @@
+<resources>
+    <string name="app_name" translatable="false">TutorialGame</string>
+    <string name="play_Cap">PLAY</string>
+    <string name="settings">SETTINGS</string>
+    <string name="email">email</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="password">password</string>
+    <string name="forgot_password">forgot password?</string>
+    <string name="click_to_register"><![CDATA[Don\'t  have  an  account? \nClick  to  register]]></string>
+    <string name="register">Register</string>
+    <string name="click_to_login"><![CDATA[Already  have  an  account?\nClick  to  login]]></string>
+    <string name="music_amp_sounds"><![CDATA[MUSIC & SOUNDS]]></string>
+
+    <string name="enter_email">Please enter an email address</string>
+    <string name="login_successful">Login successful</string>
+
+    <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_nickname">Nickname must be > 2</string>
+
+    //ToastMessages
+    <string name="verification_email_sent">Verification email sent. Check your inbox!</string>
+    <string name="reset_password_email_sent">Reset password email has been sent. Check your inbox!</string>
+    <string name="verify_email">Please verify your email before logging in</string>
+    <string name="email_not_found">No account found with this email</string>
+    <string name="email_exists">Email is already registered</string>
+    <string name="loading_data">Loading data…</string>
+    <string name="new_char_met">You met a new character! By meeting</string>
+    <string name="you_gained">you gained</string>
+    <string name="not_strong">It looks like I\'m not strong enough…</string>
+    <string name="delete_save_succeed">Delete save succeed</string>
+    <string name="delete_save_failed">Delete save failed</string>
+
+    <string name="error"><![CDATA[Error: ]]></string>
+    <string name="language">Language</string>
+    <string name="language_cap">LANGUAGE</string>
+
+    <string name="english" translatable="false">English</string>
+    <string name="hebrew" translatable="false">עברית</string>
+
+    //Content Description
+    <string name="close_button">close button</string>
+    <string name="music_image">music image</string>
+    <string name="menu_button">open settings menu button</string>
+    <string name="sound_effects_image">sound effects image</string>
+
+    //Death Screen
+    <string name="you_died">You Died!</string>
+    <string name="replay">Replay</string>
+    <string name="back_launcher">Back To Launcher</string>
+
+    //Menu
+    <string name="game_menu">Game Menu</string>
+    <string name="back">Back To Game</string>
+    <string name="save_quit">Save and Quit</string>
+    <string name="options">Options</string>
+
+    //Options (Menu sub)
+    <string name="done">Done</string>
+    <string name="music_sounds"><![CDATA[Music & Sounds]]></string>
+    <string name="video_settings">Video Settings</string>
+    <string name="credits">Credits</string>
+
+    //SeekBar names
+    <string name="music_cap">MUSIC</string>
+    <string name="sounds_cap">SOUNDS</string>
+    <string name="zoom_cap">ZOOM</string>
+    <string name="camera_flow_cap">CAMERA FLOW</string>
+
+    //Switch names
+    <string name="haptics">HAPTICS</string>
+    <string name="fps">FPS</string>
+    <string name="cam_shake">CAMERA SHAKE</string>
+    <string name="hitbox">HITBOX</string>
+    <string name="ui">UI</string>
+
+    //Upgrade
+    <string name="health">Health</string>
+    <string name="health_desc">Increases your maximum health points.</string>
+    <string name="strength">Strength</string>
+    <string name="strength_desc">Increases the damage you deal to enemies.</string>
+    <string name="stamina">Stamina</string>
+    <string name="crit_hit_chance">Critical Hit Chance</string>
+    <string name="stamina_desc">Increases your maximum stamina for actions.</string>
+    <string name="crit_hit_desc">Increases your chance to get a critical hit.</string>
+    <string name="attack_speed">Attack Speed</string>
+    <string name="attack_speed_desc">Reduces the delay between your attacks.</string>
+    <string name="points_left">"Points left: "</string>
+    <string name="return_">Return</string>
+    <string name="points_to_upgrade">Points to upgrade</string>
+
+    //DialogThings
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="wanna_logout">Are you sure you want to\nlogout?</string>
+    <string name="email_title">Change Your Email</string>
+    <string name="nickname_title">Change Your Nickname</string>
+    <string name="change_slot_title">Change Adventure</string>
+    <string name="create_slot_title">Start a New Adventure</string>
+    <string name="delete_slot_title">Delete Saved Progress</string>
+    <string name="email_message"><![CDATA[You  can  change  your  email  only  once  in  six\n
+    months  so  make  it  count!]]></string>
+    <string name="nickname_message"><![CDATA[Your  nickname  will  be  shown  in  the  game\'s  \n
+    dialogue  scenes  and  more]]></string>
+    <string name="change_slot_message">Do you want to switch adventure?</string>
+    <string name="create_slot_message">Do you want to start a new adventure?</string>
+    <string name="delete_slot_message_positive">Do you sure you want to delete this adventure?\n
+    after deleting it will be lost forever.</string>
+    <string name="delete_slot_message_negative">You can not delete your active save"</string>
+    <string name="cancel">cancel</string>
+    <string name="continue_">continue</string>
+    <string name="ok">OK</string>
+
+    //AlertDialog
+    <string name="error_loading">Error loading</string>
+    <string name="unable_load_message">Unable to load data from the server. Please try again later.</string>
+    <string name="try_again">try again</string>
+
+
+    <string name="nickname">nickname</string>
+    <string name="nickname_updated">Nickname updated successfully</string>
+
+    //TapEffects
+    <string name="tap_effect">Tap Effect</string>
+    <string name="white_circle">white circle</string>
+    <string name="orange_circle">orange circle</string>
+    <string name="spark">spark</string>
+    <string name="spark2">spark2</string>
+
+    <string name="press_to_exit"><![CDATA[Press  again  to  exit]]></string>
+
+    //ProfileFragment
+    <string name="player_profile_Cap"><![CDATA[PLAYER  PROFILE]]></string>
+    <string name="stats">STATS</string>
+    <string name="save_slots">SAVE SLOTS</string>
+    <string name="enemies_defeated">enemies defeated</string>
+    <string name="days_logged_in">days logged in</string>
+    <string name="quests_completed">quests completed</string>
+    <string name="frames_collected">frames collected</string>
+
+    //CharacterNames
+    <string name="best_friend">Capu</string>
+    <string name="black_knight">Kann</string>
+    <string name="blacksmith">Blacksmith</string>
+    <string name="white_knight">Caro</string>
+    <string name="skeleton">Skeleton</string>
+    <string name="eye">Eye</string>
+    <string name="father">King</string>
+    <string name="master">Master Fu</string>
+    <string name="fighter_red">Fighter in Red</string>
+    <string name="fighter_white">Fighter in White</string>
+
+
+
+    //Quest
+    <string name="quest">Quest</string>
+    <string name="talk_to_father">Talk to Father</string>
+    <string name="find_blacksmith">Find the Blacksmith</string>
+    <string name="what_he_wants">What does he want…</string>
+    <string name="find_clues">Find clues</string>
+    <string name="maybe_strong_enough">Maybe now I\'m strong enough…</string>
+    <string name="reach_center">Reach the Center</string>
+    <string name="run">Run!</string>
+
+    //Circle Frames
+    <string name="series_a_new_start">A New Start</string>
+    <string name="series_king_pink">King Pink</string>
+    <string name="series_monster_slayer">Monster Slayer</string>
+    <string name="series_time_keeper">Time Keeper</string>
+    <string name="series_dragon_fist">Dragon Fist</string>
+    <string name="series_frost_demon">Frost Demon</string>
+    <string name="series_forest_guardian">Forest Guardian</string>
+    <string name="series_legendary_rainbow">Legendary Rainbow</string>
+
+    <string name="grade">Grade</string>
+    <string name="locked">Locked</string>
+    <string name="frame">Frame</string>
+    <string name="frames">FRAMES</string>
+    <string name="next">Next</string>
+    <string name="purchase">Purchase</string>
+    <string name="available">Available</string>
+    <string name="unlock_prev_message">To unlock selected frame, first you need to unlock previous grade.</string>
+
+    //Unlock Conditions
+    <string name="unlock">unlock</string>
+    <string name="con_purchase">Coins to Purchase</string>
+    <string name="con_days">Days to Login</string>
+    <string name="con_level">Level to Get</string>
+    <string name="con_enemies">Enemies to Defeat</string>
+    <string name="con_boss">Bosses to Defeat</string>
+</resources>

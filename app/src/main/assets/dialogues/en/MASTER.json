@@ -1,0 +1,16 @@
+{
+  "branches": [
+    {
+      "condition": {"flag": "event_player_receivedWeapon", "equals": true
+      },
+      "lines": [
+        "To experiment and fight with your new sword, challenge a warrior."
+      ]
+    },
+    {
+      "lines": [
+        "To experiment and fight with your new sword, you must have a weapon first."
+      ]
+    }
+  ]
+}

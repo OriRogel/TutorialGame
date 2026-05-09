@@ -1,0 +1,186 @@
+<resources>
+    <string name="play_Cap">משחק</string>
+    <string name="settings">הגדרות</string>
+    <string name="email">אימייל</string>
+    <string name="login">התחברות</string>
+    <string name="logout">התנתקות</string>
+    <string name="password">סיסמה</string>
+    <string name="forgot_password">שכחת סיסמה?</string>
+    <string name="click_to_register">לחץ להרשמות</string>
+    <string name="register">הרשמות</string>
+    <string name="click_to_login">לחץ להתחברות</string>
+    <string name="music_amp_sounds">מוזיקה וצלילים</string>
+
+    <string name="enter_email">אנא הזן כתובת אימייל</string>
+    <string name="login_successful">ההתחברות הצליחה</string>
+
+    <string name="invalid_email">אימייל לא תקין</string>
+    <string name="invalid_password">הסיסמה חייבת להכיל לפחות 5 תווים</string>
+    <string name="invalid_nickname">הכינוי חייב להכיל לפחות 2 תווים</string>
+
+    //Toast Messages
+    <string name="verification_email_sent">אימייל אימות נשלח. בדוק את תיבת הדואר הנכנס שלך!</string>
+    <string name="reset_password_email_sent">אימייל איפוס סיסמה נשלח. בדוק את תיבת הדואר הנכנס שלך!</string>
+    <string name="verify_email">אנא אמת את האימייל שלך לפני ההתחברות</string>
+    <string name="email_not_found">לא נמצא חשבון עם האימייל</string>
+    <string name="email_exists">האימייל המוזן כבר רשום למערכת</string>
+    <string name="loading_data">טוען נתונים…</string>
+    <string name="new_char_met">You met a new character! By meeting</string>
+    <string name="you_gained">you gained</string>
+    <string name="not_strong">זה נראה כאילו אני לא חזק מספיק…</string>
+    <string name="delete_save_succeed">מחיקת השמירה הצליחה</string>
+    <string name="delete_save_failed">מחיקת השמירה נכשלה</string>
+
+    <string name="error"><![CDATA[שגיאה: ]]></string>
+    <string name="language">שפה</string>
+    <string name="language_cap">שפה</string>
+
+    //Button Description
+    <string name="close_button">כפתור סגירה</string>
+    <string name="music_image">תמונת מוזיקה</string>
+    <string name="menu_button">כפתור לפתיחת תפריט הגדרות</string>
+    <string name="sound_effects_image">תמונת אפקטים קוליים</string>
+
+    //Death Screen
+    <string name="you_died">מתת!</string>
+    <string name="replay"><![CDATA[משחק  חוזר]]></string>
+    <string name="back_launcher"><![CDATA[חזרה  למסך  הבית]]></string>
+
+    //Menu
+    <string name="game_menu"><![CDATA[תפריט  המשחק]]></string>
+    <string name="back">חזרה למשחק</string>
+    <string name="save_quit">שמור וצא</string>
+    <string name="options">אפשרויות</string>
+
+    //Options (Menu sub)
+    <string name="done">סיום</string>
+    <string name="music_sounds"><![CDATA[מוזיקה  וצלילים]]></string>
+    <string name="video_settings"><![CDATA[הגדרות  וידאו]]></string>
+    <string name="credits">קרדיטים</string>
+
+    //SeekBar
+    <string name="music_cap">מוזיקה</string>
+    <string name="sounds_cap">צלילים</string>
+    <string name="zoom_cap">זום</string>
+    <string name="camera_flow_cap">מהירות מצלמה</string>
+
+    //Switch names
+    <string name="haptics">מחוות</string>
+    <string name="fps">פריימים לשנייה</string>
+    <string name="cam_shake">רעידת מצלמה</string>
+    <string name="hitbox">היטבוקס</string>
+    <string name="ui">ממשק משתמש</string>
+
+    //Upgrade
+    <string name="health">חיים</string>
+    <string name="health_desc">מגדיל את כמות החיים המקסימלית שלך.</string>
+    <string name="strength">עוצמה</string>
+    <string name="strength_desc">מגדיל את הנזק שאתה גורם לאויבים.</string>
+    <string name="stamina">כוח גברא</string>
+    <string name="crit_hit_chance">סיכוי למכה קריטית</string>
+    <string name="stamina_desc">מגדיל את כמות הסיבולת המקסימלית שלך לפעולות.</string>
+    <string name="crit_hit_desc">מגדיל את הסיכוי לבצע מכה קריטית.</string>
+    <string name="attack_speed">מהירות התקפה</string>
+    <string name="attack_speed_desc">מפחית את ההשהיה בין ההתקפות שלך.</string>
+    <string name="points_left">נקודות נותרו:</string>
+    <string name="return_">חזור</string>
+    <string name="points_to_upgrade">נקודות לשדרוג</string>
+
+    //DialogThings
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="wanna_logout"><![CDATA[האם  אתה  בטוח  שברצונך\nלהתנתק?]]></string>
+    <string name="email_title"><![CDATA[עריכת  האימייל]]></string>
+    <string name="nickname_title"><![CDATA[עריכת  הכינוי]]></string>
+    <string name="change_slot_title">החלפת הרפתקה</string>
+    <string name="create_slot_title">התחל הרפתקה חדשה</string>
+    <string name="delete_slot_title">מחיקת התקדמות שמורה</string>
+    <string name="email_message"><![CDATA[לתשומת  ליבך!  \n
+    ניתן  שנות  את  האימייל  רק  כל  שישה  חודשים]]></string>
+    <string name="nickname_message"><![CDATA[הכינוי  שלך  \n
+    יוצג  בסצנות  הדיאלוג  של  המשחק  ועוד]]></string>
+    <string name="change_slot_message">האם אתה רוצה להחליף הרפתקה?</string>
+    <string name="create_slot_message">האם אתה רוצה להתחיל הרפתקה חדשה?</string>
+    <string name="delete_slot_message_positive">האם רצונך למחוק את ההרפתקה מוחלט?\n
+    לאחר המחיקה אין דרך חזרה.</string>
+    <string name="delete_slot_message_negative">אין באפשרותך למחוק את ההתקדמות הפעילה"</string>
+    <string name="cancel">בטל</string>
+    <string name="continue_">המשך</string>
+    <string name="ok">אישור</string>
+
+    //AlertDialog
+    <string name="error_loading">שגיאה בטעינת הנתונים</string>
+    <string name="unable_load_message">לא ניתן לטעון נתונים מהשרת. אנא נסה שנית מאוחר יותר.</string>
+    <string name="try_again">נסה שוב</string>
+
+
+    <string name="nickname">כינוי</string>
+    <string name="nickname_updated">הכינוי שונה בהצלחה</string>
+
+    //TapEffects
+    <string name="tap_effect">Tap Effect</string>
+    <string name="white_circle">עיגול לבן</string>
+    <string name="orange_circle">עיגול כתום</string>
+    <string name="spark">ניצוץ</string>
+    <string name="spark2">ניצוץ2</string>
+
+    <string name="press_to_exit"><![CDATA[לחץ  שוב  ליציאה]]></string>
+
+    //ProfileFragment
+    <string name="player_profile_Cap"><![CDATA[פרופיל  שחקן]]></string>
+    <string name="stats">מדדים</string>
+    <string name="save_slots">שמורים</string>
+    <string name="enemies_defeated">אויבים שהובסו</string>
+    <string name="days_logged_in">ימים מחוברים</string>
+    <string name="quests_completed">משימות שהושלמו</string>
+    <string name="frames_collected">מסגרות שהושגו</string>
+
+    //CharacterNames
+    <string name="best_friend">קאפו</string>
+    <string name="black_knight">קארו</string>
+    <string name="blacksmith">נפח</string>
+    <string name="white_knight">קאן</string>
+    <string name="skeleton">שלד</string>
+    <string name="eye">עין</string>
+    <string name="father">קינג</string>
+    <string name="master">מאסטר פו</string>
+    <string name="fighter_red">הלוחם באדום</string>
+    <string name="fighter_white">הלוחם בלבן</string>
+
+    //Quest
+    <string name="quest">משימה</string>
+    <string name="talk_to_father">דבר עם אבא</string>
+    <string name="find_blacksmith">מצא את הנפח</string>
+    <string name="what_he_wants">מה הוא רוצה…</string>
+    <string name="find_clues">מצא רמזים</string>
+    <string name="maybe_strong_enough">אולי עכשיו אני חזק מספיק…</string>
+    <string name="reach_center">הגע למרכז</string>
+    <string name="run">ברח!</string>
+
+    //Circle Frames
+    <string name="series_a_new_start">התחלה חדשה</string>
+    <string name="series_king_pink">ורוד המלך</string>
+    <string name="series_monster_slayer">צייד המפלצות</string>
+    <string name="series_time_keeper">שומר הזמן</string>
+    <string name="series_dragon_fist">אגרוף הדרקון</string>
+    <string name="series_frost_demon">שדוני הכפור</string>
+    <string name="series_forest_guardian">שומר היער</string>
+    <string name="series_legendary_rainbow">הקשת האגדית</string>
+
+    <string name="grade">דרגה</string>
+    <string name="locked">נעולה</string>
+    <string name="frame">מסגרת</string>
+    <string name="frames">מסגרות</string>
+    <string name="next">Next</string>
+    <string name="purchase">רכישה</string>
+    <string name="available">זמין</string>
+    <string name="unlock_prev_message">כדי לפתוח את המסגרת הנבחרת, ראשית יש להשיג את הדרגה הקודמת.</string>
+
+    //Unlock Conditions
+    <string name="unlock">פתח</string>
+    <string name="con_purchase">מטבעות לרכישה</string>
+    <string name="con_days">ימים לכניסה</string>
+    <string name="con_level">רמה נדרשת</string>
+    <string name="con_enemies">אויבים להביס</string>
+    <string name="con_boss">בוסים להביס</string>
+</resources>

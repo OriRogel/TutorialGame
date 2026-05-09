@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="21" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="43">
+ <tileset firstgid="1" source="../tilesets/inside.tsx"/>
+ <tileset firstgid="375" source="../tilesets/surfaces.tsx"/>
+ <tileset firstgid="380" source="../tilesets/walls.tsx"/>
+ <layer id="1" name="Ground" width="21" height="13">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,79,79,79,19,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,37,16,79,19,37,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,37,37,102,37,37,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,37,37,78,85,37,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,37,82,79,79,85,0,
+0,16,17,79,18,17,79,18,19,0,0,0,0,0,0,37,100,35,125,35,0,
+0,38,83,79,84,83,79,84,41,0,0,0,0,0,0,37,35,35,125,0,0,
+0,37,35,35,12,14,100,35,37,35,0,0,0,0,100,37,35,100,0,0,0,
+0,37,35,100,56,58,35,35,104,79,79,79,79,79,79,85,35,0,0,0,0,
+0,60,17,79,18,17,79,18,63,35,0,0,0,0,0,0,0,0,0,0,0,
+0,82,83,79,84,83,79,84,85,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,374,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="Walls" width="21" height="13">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,389,393,393,393,393,393,394,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,437,0,0,0,0,0,442,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,437,0,0,0,0,0,442,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,437,0,0,0,0,0,442,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,437,0,0,0,0,0,442,
+389,393,393,393,393,393,393,393,393,394,0,0,0,0,437,0,0,0,0,0,442,
+437,0,0,0,0,0,0,0,0,442,0,0,0,0,437,0,0,0,0,522,523,
+437,0,0,0,0,0,0,0,0,442,0,0,0,0,437,0,0,0,522,523,0,
+437,0,0,0,0,0,0,0,0,410,393,393,393,393,405,0,0,522,538,0,0,
+437,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,522,523,0,0,0,
+437,0,0,0,0,0,0,0,0,522,537,537,537,537,537,537,538,0,0,0,0,
+437,0,0,0,0,0,0,0,0,442,0,0,0,0,0,0,0,0,0,0,0,
+533,535,0,536,537,537,537,537,537,427,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="Surface" width="21" height="13" opacity="0">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,379,379,379,379,379,379,379,379,0,0,0,0,0,0,0,0,0,0,0,0,
+0,379,379,379,379,379,379,379,379,0,0,0,0,0,0,0,0,0,0,0,0,
+0,379,379,379,379,379,379,379,379,0,0,0,0,0,0,0,0,0,0,0,0,
+0,379,379,379,379,379,379,379,379,0,0,0,0,0,0,0,0,0,0,0,0,
+0,379,379,379,379,379,379,379,379,0,0,0,0,0,0,0,0,0,0,0,0,
+0,379,379,379,379,379,379,379,379,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,379,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="Doors">
+  <object id="2" name="chief_home_to_village" x="40.6174" y="200.498">
+   <properties>
+    <property name="connectsTo" value="village.tmx"/>
+    <property name="requiredCheckPoint" value="event_player_talkedToFather"/>
+    <property name="targetDoor" value="village_to_chief_home"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="3" name="chief_home_to_maze" x="280.187" y="56.1158">
+   <properties>
+    <property name="connectsTo" value="maze.tmx"/>
+    <property name="targetDoor" value="maze_to_chief_home"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="Breakables">
+  <object id="4" x="160.499" y="145.98">
+   <properties>
+    <property name="type" value="BUSH_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="5" x="175.019" y="147.157">
+   <properties>
+    <property name="type" value="BUSH_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="6" x="191.108" y="145.98">
+   <properties>
+    <property name="type" value="BUSH_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="7" x="207.589" y="146.372">
+   <properties>
+    <property name="type" value="BUSH_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="8" x="223.679" y="147.157">
+   <properties>
+    <property name="type" value="BUSH_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="9" x="241.73" y="145.98">
+   <properties>
+    <property name="type" value="BUSH_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="10" x="247.616" y="123.612">
+   <properties>
+    <property name="type" value="BUSH_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="11" x="255.857" y="136.954">
+   <properties>
+    <property name="type" value="BUSH_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" x="267.237" y="126.358">
+   <properties>
+    <property name="type" value="BUSH_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" x="280.579" y="113.016">
+   <properties>
+    <property name="type" value="BUSH_3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" x="260.173" y="112.232">
+   <properties>
+    <property name="type" value="BUSH_3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" x="247.224" y="105.168">
+   <properties>
+    <property name="type" value="BUSH_3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" x="273.516" y="104.383">
+   <properties>
+    <property name="type" value="BUSH_3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" x="265.275" y="96.5349">
+   <properties>
+    <property name="type" value="BUSH_3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" x="272.339" y="81.6231">
+   <properties>
+    <property name="type" value="TREE_TRUNK"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="19" x="288.82" y="86.3321">
+   <properties>
+    <property name="type" value="TREE_TRUNK"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="20" x="289.997" y="98.8894">
+   <properties>
+    <property name="type" value="TREE_TRUNK"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="21" x="247.224" y="86.3321">
+   <properties>
+    <property name="type" value="TREE_TRUNK"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="22" x="258.996" y="75.3443">
+   <properties>
+    <property name="type" value="ROCK_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="23" x="241.337" y="52.5841">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="24" x="241.337" y="18.4437">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="25" x="260.174" y="19.6209">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="26" x="303.732" y="16.0892">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="27" x="306.871" y="38.0646">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" x="302.555" y="51.4068">
+   <properties>
+    <property name="type" value="ROCK_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="29" x="306.871" y="66.7111">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="30" x="302.947" y="82.8003">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="31" x="291.175" y="64.749">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="32" x="266.844" y="36.4949">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="33" x="279.794" y="31.3935">
+   <properties>
+    <property name="type" value="ROCK_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="34" x="291.567" y="34.9252">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="35" x="261.35" y="54.1537">
+   <properties>
+    <property name="type" value="ROCK_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="36" x="282.934" y="71.8126">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="37" x="253.895" y="31.3935">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="38" x="244.477" y="40.0267">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="39" x="249.971" y="61.6097">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="40" x="240.945" y="68.6732">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="41" x="269.984" y="12.5574">
+   <properties>
+    <property name="type" value="ROCK_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="42" x="286.465" y="10.9877">
+   <properties>
+    <property name="type" value="ROCK_2"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="2" name="Characters">
+  <object id="1" x="79.7061" y="142.083">
+   <properties>
+    <property name="type" value="FATHER"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

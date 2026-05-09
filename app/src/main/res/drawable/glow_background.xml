@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    במקום Layer-list, נשתמש ב-shape יחיד.
+    הצורה הזו היא עיגול עם מילוי שקוף וקו מתאר (stroke) לבן.
+    זהו הזוהר שלנו.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"> <!-- הגדר את הצורה כעיגול -->
+
+    <!-- צבע מילוי: שקוף לחלוטין.
+         זהו החלק החשוב - זה מבטיח שנראה את התוכן שמאחורי הזוהר. -->
+    <solid android:color="@android:color/transparent" />
+    <!-- קו מתאר (Stroke): זהו הזוהר עצמו. -->
+    <stroke
+        android:width="3dp"
+        android:color="@color/floral_white" /> <!-- צבע הזוהר, לבן במקרה זה -->
+
+</shape>

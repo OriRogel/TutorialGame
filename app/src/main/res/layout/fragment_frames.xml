@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr"
+    android:background="@drawable/settings_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/fragment_title"
+            android:text="@string/frames"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/tv_frames_collected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/frames_collected"
+            android:layout_marginTop="20dp"
+            style="@style/statistics_count"
+            android:layout_alignParentStart="true" />
+
+        <ImageButton
+            android:id="@+id/imgBtnClose"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:contentDescription="@string/close_button"
+            android:stateListAnimator="@animator/rotate45_view_animator"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_main"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:paddingBottom="10dp"
+            android:layout_below="@id/title"/>
+    </RelativeLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

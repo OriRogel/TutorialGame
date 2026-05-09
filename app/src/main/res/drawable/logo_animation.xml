@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false"> <!-- Set to "false" for infinite loop -->
+    <item android:drawable="@drawable/korato_run1" android:duration="110" />
+    <item android:drawable="@drawable/korato_run2" android:duration="110" />
+    <item android:drawable="@drawable/korato_run3" android:duration="110" />
+    <item android:drawable="@drawable/korato_run4" android:duration="110" />
+    <item android:drawable="@drawable/korato_run5" android:duration="110" />
+    <item android:drawable="@drawable/korato_run6" android:duration="110" />
+    <item android:drawable="@drawable/korato_run7" android:duration="110" />
+    <item android:drawable="@drawable/korato_run8" android:duration="110" />
+</animation-list>

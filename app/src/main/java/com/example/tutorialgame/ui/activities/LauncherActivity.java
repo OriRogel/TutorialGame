@@ -1,0 +1,175 @@
+package com.example.tutorialgame.ui.activities;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.R;
+import com.example.tutorialgame.engine.audio.MusicManager;
+import com.example.tutorialgame.engine.ui.PlayerFaceset;
+import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
+import com.example.tutorialgame.managers.MapManager;
+import com.example.tutorialgame.ui.base.BaseActivity;
+import com.example.tutorialgame.ui.fragments.ProfileFragment;
+import com.example.tutorialgame.ui.fragments.SettingsFragment;
+
+public class LauncherActivity extends BaseActivity implements View.OnClickListener {
+    private static final String TAG = "LauncherActivity";
+    private DrawerLayout drawerLayout;
+    private View settingsContainer;
+    private Button btnPlay;
+    private ImageButton imgBtnMenu;
+    private ImageView ivPic, ivFrame, ivBackground;
+
+    // רפרנסים חדשים לרכיבים שהוספנו
+    private FrameLayout profileContainer;
+    private View dimBackground;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_launcher);
+
+        initViews();
+        initListeners();
+        setFragmentDrawer();
+
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.settings_container, new SettingsFragment());
+            ft.commit();
+        }
+
+        MusicManager.getInstance(this).play(R.raw.music_launcher);
+    }
+
+    private void initViews() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        settingsContainer = findViewById(R.id.settings_container);
+        btnPlay = findViewById(R.id.btnPlay);
+        imgBtnMenu = findViewById(R.id.btnMenu);
+        ivPic = findViewById(R.id.iv_pic);
+        ivFrame = findViewById(R.id.iv_profile_frame);
+        ivBackground = findViewById(R.id.iv_profile_background);
+
+        // אתחול הרכיבים החדשים
+        profileContainer = findViewById(R.id.profile_container);
+        dimBackground = findViewById(R.id.dim_background);
+
+        // קריאה למתודה שמציבה את תמונת הפרופיל
+        setProfileBackground();
+    }
+
+    private void initListeners() {
+        btnPlay.setOnClickListener(this);
+        imgBtnMenu.setOnClickListener(this);
+        ivFrame.setOnClickListener(this);
+
+        // הוסף Listener לרקע המושחר כדי לסגור את הפרופיל בלחיצה עליו
+        dimBackground.setOnClickListener(v -> closeProfileFragment());
+    }
+
+    private void setProfileBackground() {
+        Bitmap frameBitmap = CircleFrames.valueOf(MyApp.getCosmetic().getCurrentFrame()).getCircleFrame();
+        Bitmap faceBitmap = PlayerFaceset.IDLE.getFace();
+        Bitmap bg = CircleFrames.BACKGROUND.getCircleFrame();
+
+        ivBackground.setImageBitmap(bg);
+        ivFrame.setImageBitmap(frameBitmap);
+        ivPic.setImageBitmap(faceBitmap);
+
+    }
+
+    private void setFragmentDrawer() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int screenWidth = dm.widthPixels;
+        int drawerWidth = (int) (screenWidth * 0.40);
+        DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) settingsContainer.getLayoutParams();
+        lp.width = drawerWidth;
+        settingsContainer.setLayoutParams(lp);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == btnPlay) {
+            // בדיקה שהמפה עדיין בזיכרון
+            if (MapManager.getCurrentMap() == null) {
+                Log.w(TAG, "Map was lost from memory, reloading...");
+                MapManager.initStartingWorld();
+            }
+            startActivity(new Intent(this, GameActivity.class));
+            finish();
+        }
+        else if (v == imgBtnMenu) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.settings_container, new SettingsFragment());
+            ft.commit();
+            drawerLayout.openDrawer(GravityCompat.END);
+        }
+        else if (v == ivFrame) {
+            openProfileFragment(); // קריאה למתודה חדשה שמטפלת בהצגת הפרופיל
+        }
+    }
+
+    private void openProfileFragment() {
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.profile_container, new ProfileFragment())
+                .commit();
+
+        profileContainer.setVisibility(VISIBLE);
+        dimBackground.setAlpha(0f);
+        dimBackground.setVisibility(VISIBLE);
+        dimBackground.animate().alpha(1f).setDuration(300).start();
+    }
+
+    private void closeProfileFragment() {
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        setProfileBackground();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.profile_container, new ProfileFragment())
+                .commit();
+
+        profileContainer.setVisibility(GONE);
+        dimBackground.animate().alpha(0f).setDuration(300).withEndAction(() -> dimBackground.setVisibility(GONE)).start();
+    }
+
+    @Override
+    protected void setupBackPressHandler() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // עדיפות 1: סגור את ה-ProfileFragment אם הוא פתוח
+                if (profileContainer.getVisibility() == View.VISIBLE) {
+                    closeProfileFragment();
+                    return;
+                }
+
+                // עדיפות 2: סגור את ה-Drawer אם הוא פתוח
+                if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    drawerLayout.closeDrawer(GravityCompat.END);
+                    return;
+                }
+
+                handleExitWithDoubleClick();
+            }
+        });
+    }
+}

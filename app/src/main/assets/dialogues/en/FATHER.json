@@ -1,0 +1,19 @@
+{
+  "branches": [
+    {
+      "condition": { "flag": "event_player_talkedToFather", "equals": true },
+      "lines": [
+        "Have you spoken to the blacksmith yet? Stop wasting time."
+      ]
+    },
+    {
+      "lines": [
+        "> Good morning, father.",
+        "Korato. I'm heading to a meeting with the village elders.",
+        "I expect you to make yourself useful today. Go to the blacksmith, he asked for some help.",
+        "> But I wanted to-",
+        "No arguments. Just do as you're told."
+      ]
+    }
+  ]
+}

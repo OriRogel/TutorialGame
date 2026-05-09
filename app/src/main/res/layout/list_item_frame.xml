@@ -1,0 +1,34 @@
+<!-- res/layout/list_item_frame.xml -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/interior_background"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="1dp"
+    android:layout_marginStart="1dp">
+
+    <ImageView
+        android:id="@+id/iv_glow_effect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/glow_background"
+        android:stateListAnimator="@animator/shrink_view_animator"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_frame_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:padding="1dp"
+        android:stateListAnimator="@animator/shrink_view_animator"/>
+
+    <ImageView
+        android:id="@+id/iv_lock_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+</FrameLayout>

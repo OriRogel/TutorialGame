@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="14" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="4">
+ <tileset firstgid="1" source="../tilesets/inside.tsx"/>
+ <tileset firstgid="485" source="../tilesets/surfaces.tsx"/>
+ <tileset firstgid="649" source="walls.tsx"/>
+ <layer id="1" name="Ground" width="14" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,202,133,134,134,134,134,134,134,134,135,202,136,0,
+0,133,183,156,156,156,156,156,156,156,182,135,158,0,
+0,155,156,156,156,156,156,156,156,156,156,157,158,0,
+0,155,156,156,156,156,156,156,156,156,156,157,158,0,
+0,177,161,156,156,156,156,156,156,156,160,179,158,0,
+0,202,177,178,178,178,178,178,178,178,179,202,180,0,
+0,0,374,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="Surface" width="14" height="8" opacity="0.2">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,489,489,489,489,489,489,489,489,489,489,489,489,0,
+0,489,489,489,489,489,489,489,489,489,489,489,489,0,
+0,489,489,489,489,489,489,489,489,489,489,489,489,0,
+0,489,489,489,489,489,489,489,489,489,489,489,489,0,
+0,489,489,489,489,489,489,489,489,489,489,489,489,0,
+0,489,489,489,489,489,489,489,489,489,489,489,489,0,
+0,0,489,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="Walls" width="14" height="8">
+  <data encoding="csv">
+658,662,662,662,662,662,662,662,662,662,662,662,662,663,
+706,0,0,0,0,0,0,0,0,0,0,0,0,711,
+706,0,0,0,0,0,0,0,0,0,0,0,0,711,
+706,0,0,0,0,0,0,0,0,0,0,0,0,711,
+706,0,0,0,0,0,0,0,0,0,0,0,0,711,
+706,0,0,0,0,0,0,0,0,0,0,0,0,711,
+706,0,0,0,0,0,0,0,0,0,0,0,0,711,
+689,804,0,805,806,806,806,806,806,806,806,806,806,807
+</data>
+ </layer>
+ <objectgroup id="2" name="Doors">
+  <object id="1" name="dojo_to_village" x="40.0865" y="121.141">
+   <properties>
+    <property name="connectsTo" value="village.tmx"/>
+    <property name="targetDoor" value="village_to_dojo"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Characters">
+  <object id="3" x="68.9345" y="93.2114">
+   <properties>
+    <property name="type" value="MASTER"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

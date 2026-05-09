@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_slot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp">
+
+        <!-- מצב א': סלוט ריק / לא נבחר (הכפתור המקורי שלך) -->
+        <LinearLayout
+            android:id="@+id/layout_unselected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <android.widget.Button
+                android:id="@+id/btn_new_adventure"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_image_selector"
+                android:backgroundTint="@null"
+                android:fontFamily="@font/pixel_font"
+                android:text="A New Adventure"
+                android:textColor="@color/button_text_color"
+                android:textSize="40sp" />
+        </LinearLayout>
+
+        <!-- מצב ב': סלוט נבחר (מציג נתוני משחק) -->
+        <LinearLayout
+            android:id="@+id/layout_selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_pressed"
+            android:visibility="gone"> <!-- מוסתר כברירת מחדל -->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/btnResetSlot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@android:drawable/ic_menu_delete"/>
+
+                <ImageView
+                    android:id="@+id/ivBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_launcher_background"
+                    android:alpha="0.7"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvSlotName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pixel_font"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_slot_stats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvSlotName"
+                        android:fontFamily="@font/pixel_font"
+                        android:text="LVL: 10 | FRAMES: 3"
+                        android:textColor="@color/floral_white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

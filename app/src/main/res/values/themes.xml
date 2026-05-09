@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TutorialGame" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="errorIconDrawable">@drawable/king</item>
+    </style>
+
+    <style name="Theme.TutorialGame" parent="Base.Theme.TutorialGame" >
+    </style>
+
+    <style name="fragment_title" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="fontFamily">@font/pixel_font</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:shadowColor">@color/black</item>
+        <item name="android:shadowDy">5</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="statistics_count" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/pixel_font</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/magnolia_white</item>
+        <item name="android:background">@drawable/interior_background</item>
+    </style>
+</resources>

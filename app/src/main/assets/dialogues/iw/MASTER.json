@@ -1,0 +1,16 @@
+{
+  "branches": [
+    {
+      "condition": {"flag": "event_player_receivedWeapon", "equals": true
+      },
+      "lines": [
+        "כדי להתנסות ולהילחם עם חרבך החדשה, אתגר לוחם."
+      ]
+    },
+    {
+      "lines": [
+        "כדי להתנסות בלחימה, עליך קודם להשיג נשק."
+      ]
+    }
+  ]
+}

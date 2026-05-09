@@ -1,0 +1,25 @@
+<!-- res/layout/list_item_frame_series.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_series_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:text="Series Name"
+        android:textStyle="bold"
+        android:fontFamily="@font/pixel_font"
+        android:paddingStart="6dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_frames"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/inventory_cell"/>
+</LinearLayout>

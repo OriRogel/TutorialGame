@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="14" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="26">
+ <properties>
+  <property name="ambientDarkness" value="60"/>
+ </properties>
+ <tileset firstgid="1" source="../tilesets/inside.tsx"/>
+ <tileset firstgid="375" source="../tilesets/surfaces.tsx"/>
+ <tileset firstgid="380" source="../tilesets/walls.tsx"/>
+ <layer id="1" name="Ground" width="14" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,276,277,0,0,0,0,0,
+0,0,0,0,0,0,299,299,299,299,0,0,0,0,
+0,276,277,277,277,277,326,299,299,299,277,277,278,0,
+0,298,299,299,299,299,299,299,299,299,299,299,300,0,
+0,298,299,299,299,299,299,299,299,299,299,299,300,0,
+0,298,299,299,299,299,299,299,299,299,299,299,300,0,
+0,298,299,299,299,299,299,299,299,299,299,299,300,0,
+0,320,321,321,321,321,321,321,321,321,321,321,322,0,
+0,0,374,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="7" name="Surface" width="14" height="10" opacity="0">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,379,379,0,0,0,0,0,
+0,0,0,0,0,0,379,379,379,379,0,0,0,0,
+0,379,379,379,379,379,379,379,379,379,379,379,379,0,
+0,379,379,379,379,379,379,379,379,379,379,379,379,0,
+0,379,379,379,379,379,379,379,379,379,379,379,379,0,
+0,379,379,379,379,379,379,379,379,379,379,379,379,0,
+0,379,379,379,379,379,379,379,379,379,379,379,379,0,
+0,379,379,379,379,379,379,379,379,379,379,379,379,0,
+0,0,379,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="8" name="Walls" width="14" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,564,553,553,554,0,0,0,0,
+0,0,0,0,0,0,597,0,0,602,0,0,0,0,
+564,553,569,569,553,553,565,0,0,570,553,569,553,554,
+597,0,0,0,0,0,0,0,0,0,0,0,0,602,
+597,0,0,0,0,0,0,0,0,0,0,0,0,602,
+597,0,0,0,0,0,0,0,0,0,0,0,0,602,
+597,0,0,0,0,0,0,0,0,0,0,0,0,602,
+597,0,0,0,0,0,0,0,0,0,0,0,0,602,
+597,0,0,0,0,0,0,0,0,0,0,0,0,602,
+693,695,0,696,697,697,697,697,697,697,697,697,697,698
+</data>
+ </layer>
+ <objectgroup id="9" name="Lights">
+  <object id="12" x="119.734" y="32.9834" width="16.2654" height="7.06649" rotation="0.576985">
+   <properties>
+    <property name="color" value="#FA0000"/>
+    <property name="lightType" value="PULSE"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="14" x="168.861" y="39.2405" width="31.5823" height="11.3924"/>
+  <object id="16" x="54.1772" y="49.1139" width="0.253165"/>
+  <object id="17" x="27.5949" y="38.7342" width="39.7468" height="13.4177"/>
+  <object id="19" x="80.7595" y="32.6582" width="12" height="10">
+   <properties>
+    <property name="color" value="#FFAC1C"/>
+    <property name="lightType" value="FLICKER"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="25" x="206.43" y="87" width="12" height="10">
+   <properties>
+    <property name="color" value="#FFAC1C"/>
+    <property name="lightType" value="FLICKER"/>
+   </properties>
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="Characters">
+  <object id="2" x="54.2485" y="55.0781">
+   <properties>
+    <property name="type" value="BLACKSMITH"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Objects">
+  <object id="3" x="14" y="83">
+   <properties>
+    <property name="type" value="ANVIL"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" x="16" y="69">
+   <properties>
+    <property name="type" value="BENCH_FRONT"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="5" x="64" y="69">
+   <properties>
+    <property name="type" value="BENCH_FRONT"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="6" x="127.878" y="118">
+   <properties>
+    <property name="type" value="WEAPON_BENCH_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="7" x="163" y="118">
+   <properties>
+    <property name="type" value="WEAPON_BENCH_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="9" x="184.619" y="46.6804">
+   <properties>
+    <property name="type" value="WEAPONS_BASKET"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="10" x="190.812" y="59.9715">
+   <properties>
+    <property name="type" value="WEAPONS_BASKET"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="11" x="113" y="16">
+   <properties>
+    <property name="type" value="OVEN_GREEN"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="10" name="AnimatedObjects">
+  <object id="18" x="82.038" y="33.962">
+   <properties>
+    <property name="type" value="TORCH_FRONT"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="24" x="208.114" y="88">
+   <properties>
+    <property name="type" value="TORCH_SIDE_RIGHT"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="2" name="Doors">
+  <object id="1" name="weapon_store_to_village" x="39.2627" y="151.586">
+   <properties>
+    <property name="connectsTo" value="village.tmx"/>
+    <property name="targetDoor" value="village_to_weapon_store"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

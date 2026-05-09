@@ -1,0 +1,41 @@
+{
+  "branches": [
+    {
+      "condition": {
+        "flag": "event_player_receivedWeapon",
+        "equals": true
+      },
+      "lines": [
+        "Take good care of that sword, son. It's a fine blade."
+      ]
+    },
+    {
+      "condition": {
+        "flag": "seen_cutscene_gettingSword",
+        "equals": true
+      },
+      "lines": [
+        "> Wow... it feels perfect.",
+        "It's yours, then. A young monkey like you shouldn't be walking around without a proper blade. Call it a gift.",
+        "> Thank you! Thank you so much!"
+      ]
+    },
+    {
+      "condition": {
+        "flag": "event_blacksmith_finishedFirstTalk",
+        "equals": false
+      },
+      "lines": [
+        "> My father sent me. He said you needed help?",
+        "Ah, Korato! Yes. I've been working on this new sword, but my old bones are aching.",
+        "I need someone to test its balance. Take it, give it a few swings."
+      ]
+    },
+    {
+      "lines": [
+        "Hard at work, always. What can I do for you?"
+      ]
+    }
+  ]
+}
+
