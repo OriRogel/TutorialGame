@@ -11,10 +11,14 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // --- 1. שנה את הירושה מ-Paint ל-TextPaint ---
 public class TextRenderer extends TextPaint {
     private final TextRenderer shadowRenderer;
     private float x, y, xOffset, yOffset;
+    private final List<String> cachedPages = new ArrayList<>();
 
     /**
      * בנאי ציבורי ראשי.
@@ -73,24 +77,59 @@ public class TextRenderer extends TextPaint {
     }
 
     /**
-     * מצייר טקסט עם גלישת שורות אוטומטית בתוך רוחב נתון.
-     * @param c הקנבס לציור.
-     * @param text הטקסט המלא לציור.
-     * @param x קואורדינטת ה-X ההתחלתית.
-     * @param y קואורדינטת ה-Y ההתחלתית של השורה הראשונה.
-     * @param maxWidth הרוחב המקסימלי של תיבת הטקסט.
+     * מפצל טקסט ארוך לרשימה של דפים שמתאימים לרוחב ולגובה נתון.
+     * אופטימיזציה: משתמש ברשימה קבועה כדי למנוע הקצאות זיכרון חוזרות.
      */
-    public void drawWrappedText(Canvas c, String text, float x, float y, int maxWidth) {
-        StaticLayout staticLayout = StaticLayout.Builder.obtain(text, 0, text.length(), this, maxWidth)
+    public List<String> splitTextIntoPages(String text, int maxWidth, int maxHeight) {
+        // 1. ניקוי הרשימה הקיימת במקום הקצאה של חדשה
+        cachedPages.clear();
+
+        StaticLayout layout = StaticLayout.Builder.obtain(text, 0, text.length(), this, maxWidth)
                 .setAlignment(Layout.Alignment.ALIGN_NORMAL)
                 .setLineSpacing(0f, 1.0f)
                 .setIncludePad(false)
                 .build();
 
-        c.save();
-        c.translate(x, y);
-        staticLayout.draw(c);
-        c.restore();
+        int lineCount = layout.getLineCount();
+        int startLine = 0;
+
+        while (startLine < lineCount) {
+            int endLine = startLine;
+
+            // מציאת גבול גובה מקסימלי
+            while (endLine < lineCount) {
+                float currentHeight = layout.getLineBottom(endLine) - layout.getLineTop(startLine);
+                if (currentHeight > maxHeight) break;
+                endLine++;
+            }
+
+            if (endLine == startLine) endLine++;
+
+            int startOffset = layout.getLineStart(startLine);
+            int endOffset = layout.getLineEnd(endLine - 1);
+
+            // לוגיקת חיתוך חכם לפי פיסוק
+            String pageCandidate = text.substring(startOffset, endOffset);
+            int lastPunctuation = -1;
+            String punctuations = ".!?";
+
+            for (char p : punctuations.toCharArray()) {
+                lastPunctuation = Math.max(lastPunctuation, pageCandidate.lastIndexOf(p + " "));
+            }
+
+            if (lastPunctuation > pageCandidate.length() * 0.75) {
+                endOffset = startOffset + lastPunctuation + 1;
+                while (endLine > startLine && layout.getLineStart(endLine - 1) > endOffset) {
+                    endLine--;
+                }
+            }
+
+            // הוספה לרשימה הקבועה
+            cachedPages.add(text.substring(startOffset, endOffset).trim());
+            startLine = endLine;
+        }
+
+        return cachedPages;
     }
 
     private void updateShadowPosition() {

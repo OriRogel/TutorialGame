@@ -8,11 +8,12 @@ import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_WID
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.text.Layout;
+import android.text.StaticLayout;
 import android.view.MotionEvent;
 
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.audio.SoundManager;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleImages;
@@ -23,32 +24,40 @@ import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.managers.QuestManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Manages the visual dialogue interface using a state machine and optimized rendering.
  */
-public class DialoguePanel implements BitmapMethods {
-    
+public class DialoguePanel {
+
     private enum PanelState { HIDDEN, ENTERING, TYPING, WAITING, EXITING }
     private PanelState currentState = PanelState.HIDDEN;
 
+    private List<String> currentPages = new ArrayList<>();
+    private int pageIndex = 0;
+    private final int dialogueTextHeight;
+
     private Character currentSpeaker;
     private Bitmap faceSet;
-    private final Bitmap dialogBox;
+    private final Bitmap dialogBox; // Changed from static
     private String speakerName;
     private final TextRenderer namePaint, textRenderer;
-    
+
     private final float targetY, dialogBoxX, faceSetX, faceSetY;
     private static final float SLIDE_SPEED = TILE_SIZE * 12;
+    private static final float EXIT_SPEED_MULTIPLIER = 1.5f;
     private float offsetY;
-    
-    private final CircleButton btnNext;
-    private final DialogState dialogState;
 
-    // Typewriter optimization
+    private final CircleButton btnNext; // Changed from static
+    private final DialogState dialogState;
+    private final SoundManager soundManager;
+
+    // Typewriter & Layout optimization
     private char[] fullLineChars;
-    private String visibleText = "";
+    private android.text.StaticLayout cachedLayout;
     private int charIndex;
     private float timeSinceLastChar;
 
@@ -62,11 +71,15 @@ public class DialoguePanel implements BitmapMethods {
 
     public DialoguePanel(DialogState dialogState) {
         this.dialogState = dialogState;
-        
-        // Resource optimization
+        this.soundManager = SoundManager.getInstance(BaseActivity.getContext().getApplicationContext());
+
+        // Initialize resources here instead of static block
         this.dialogBox = BitmapManager.getBitmap(R.drawable.dialogbox_faceset, 1.0, false);
-        
-        btnNext = new CircleButton(new PointF(SCREEN_WIDTH - 2.1f * TILE_SIZE, 2.7f * TILE_SIZE), CircleImages.NEXT, true);
+        this.btnNext = new CircleButton(
+                new PointF(SCREEN_WIDTH - 2.1f * TILE_SIZE, 2.7f * TILE_SIZE),
+                CircleImages.NEXT,
+                true
+        );
 
         this.targetY = SCREEN_HEIGHT - Objects.requireNonNull(dialogBox).getHeight();
         this.offsetY = SCREEN_HEIGHT;
@@ -80,7 +93,9 @@ public class DialoguePanel implements BitmapMethods {
         textRenderer = new TextRenderer(8 * SCALE_MULTIPLIER, R.color.black);
         dialogueTextX = 62 * SCALE_MULTIPLIER;
         dialogueTextY = 19 * SCALE_MULTIPLIER;
+
         dialogueTextWidth = (int) (dialogBox.getWidth() - dialogueTextX - (12 * SCALE_MULTIPLIER));
+        dialogueTextHeight = (int) (dialogBox.getHeight() - dialogueTextY);
     }
 
     public void update(double delta) {
@@ -98,7 +113,7 @@ public class DialoguePanel implements BitmapMethods {
                 break;
 
             case EXITING:
-                offsetY += (float) (SLIDE_SPEED * delta * 1.5f);
+                offsetY += (float) (SLIDE_SPEED * delta * EXIT_SPEED_MULTIPLIER);
                 if (offsetY >= SCREEN_HEIGHT) {
                     offsetY = SCREEN_HEIGHT;
                     currentState = PanelState.HIDDEN;
@@ -119,20 +134,35 @@ public class DialoguePanel implements BitmapMethods {
         if (timeSinceLastChar >= requiredDelay) {
             timeSinceLastChar -= requiredDelay;
             charIndex++;
-            // String creation only happens when a new character is added, not every frame
-            visibleText = new String(fullLineChars, 0, charIndex);
+
+            // Rebuild layout only when text changes
+            updateCachedLayout();
 
             char current = fullLineChars[charIndex - 1];
             if (current != ' ' && !isPunctuation(current)) {
-                SoundManager.getInstance(BaseActivity.getContext()).playSfx(voiceRes);
+                soundManager.playSfx(voiceRes);
             }
         }
     }
 
+    private void updateCachedLayout() {
+        if (fullLineChars == null) return;
+        // Use StaticLayout.Builder to avoid creating intermediate strings
+        cachedLayout = StaticLayout.Builder.obtain(
+                        new String(fullLineChars, 0, charIndex),
+                        0, charIndex, textRenderer, dialogueTextWidth)
+                .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+                .setLineSpacing(0f, 1.0f)
+                .setIncludePad(false)
+                .build();
+    }
+
     private float getDelayForChar(char c) {
-        if (c == '.' || c == '?' || c == '!') return LONG_BREAK;
-        if (c == ',') return SHORT_BREAK;
-        return TIME_PER_CHAR;
+        switch (c) {
+            case '.': case '?': case '!': return LONG_BREAK;
+            case ',': return SHORT_BREAK;
+            default: return TIME_PER_CHAR;
+        }
     }
 
     private boolean isPunctuation(char c) {
@@ -148,43 +178,76 @@ public class DialoguePanel implements BitmapMethods {
         c.drawBitmap(dialogBox, dialogBoxX, 0, null);
         if (faceSet != null) c.drawBitmap(faceSet, faceSetX, faceSetY, null);
         if (speakerName != null) namePaint.drawText(speakerName, c);
-        
-        if (!visibleText.isEmpty()) {
-            textRenderer.drawWrappedText(c, visibleText,
-                    dialogueTextX - 6 * SCALE_MULTIPLIER, dialogueTextY - 3 * SCALE_MULTIPLIER,
-                    dialogueTextWidth);
+
+        if (cachedLayout != null) {
+            c.save();
+            // Using the cached layout directly for performance
+            c.translate(dialogueTextX - 6 * SCALE_MULTIPLIER, dialogueTextY - 3 * SCALE_MULTIPLIER);
+            cachedLayout.draw(c);
+            c.restore();
         }
-        
+
         btnNext.draw(c);
         c.restore();
     }
 
     public boolean eventHandler(MotionEvent event) {
         if (currentState == PanelState.HIDDEN || currentState == PanelState.EXITING) return false;
-        event.offsetLocation(0, -offsetY); // שים לב: בדרך כלל זה מינוס offsetY כדי לתרגם למרחב המקומי של הפאנל
+
+        // Translate touch coordinates to local panel space
+        event.offsetLocation(0, -offsetY);
 
         try {
             if (btnNext.eventHandler(event)) {
-                if (currentState == PanelState.TYPING)
-                    finishTyping();
-                else if (currentState == PanelState.WAITING)
-                    advanceDialogue();
-                return true; // נבלע - הצלחנו ללחוץ על הכפתור
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (currentState == PanelState.TYPING) finishTyping();
+                    else if (currentState == PanelState.WAITING) advanceDialogue();
+                }
+                return true;
             }
-            return true;
+            return true; // Consume all other touches to prevent interacting with background
         } finally {
             event.offsetLocation(0, offsetY);
         }
     }
 
-    private void advanceDialogue() {
-        String nextLine = dialogState.getNextDialogueLine();
-        if (nextLine != null) {
-            startNewLine(nextLine);
+    private void startNewLine(String text) {
+        if (text.startsWith("> ")) {
+            setSpeakerData(dialogState.getPlayingManager().getOverWorld().getPlayer());
+            text = text.substring(2);
         } else {
-            QuestManager.onDialogueFinished(currentSpeaker.getGameCharType().name());
-            DialogState.endDialogue(currentSpeaker.getGameCharType().name());
-            currentState = PanelState.EXITING;
+            setSpeakerData(currentSpeaker);
+        }
+
+        this.currentPages = textRenderer.splitTextIntoPages(text, dialogueTextWidth, dialogueTextHeight);
+        this.pageIndex = 0;
+        displayCurrentPage();
+    }
+
+    private void displayCurrentPage() {
+        if (pageIndex < currentPages.size()) {
+            this.fullLineChars = currentPages.get(pageIndex).toCharArray();
+            this.charIndex = 0;
+            this.timeSinceLastChar = 0;
+            this.cachedLayout = null;
+            this.currentState = (currentState == PanelState.ENTERING) ? PanelState.ENTERING : PanelState.TYPING;
+        }
+    }
+
+    private void advanceDialogue() {
+        if (pageIndex < currentPages.size() - 1) {
+            pageIndex++;
+            displayCurrentPage();
+        } else {
+            String nextLine = dialogState.getNextDialogueLine();
+            if (nextLine != null) {
+                startNewLine(nextLine);
+            } else {
+                String speakerId = currentSpeaker.getGameCharType().name();
+                QuestManager.onDialogueFinished(speakerId);
+                DialogState.endDialogue(speakerId);
+                currentState = PanelState.EXITING;
+            }
         }
     }
 
@@ -192,23 +255,10 @@ public class DialoguePanel implements BitmapMethods {
         this.currentSpeaker = speaker;
         this.offsetY = SCREEN_HEIGHT;
         this.currentState = PanelState.ENTERING;
-        
+
         String firstLine = dialogState.getNextDialogueLine();
         if (firstLine != null) startNewLine(firstLine);
         else currentState = PanelState.EXITING;
-    }
-
-    private void startNewLine(String text) {
-        if (text.startsWith("> ")) {
-            setSpeakerData(dialogState.getPlayingManager().getOverWorld().getPlayer());
-            text = text.substring(2);
-        } else setSpeakerData(currentSpeaker);
-
-        this.fullLineChars = text.toCharArray();
-        this.charIndex = 0;
-        this.visibleText = "";
-        this.timeSinceLastChar = 0;
-        this.currentState = (currentState == PanelState.ENTERING) ? PanelState.ENTERING : PanelState.TYPING;
     }
 
     private void setSpeakerData(Character speaker) {
@@ -221,7 +271,7 @@ public class DialoguePanel implements BitmapMethods {
     private void finishTyping() {
         if (fullLineChars != null) {
             charIndex = fullLineChars.length;
-            visibleText = new String(fullLineChars);
+            updateCachedLayout();
             currentState = PanelState.WAITING;
         }
     }
