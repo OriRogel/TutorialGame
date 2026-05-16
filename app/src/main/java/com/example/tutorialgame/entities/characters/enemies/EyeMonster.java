@@ -29,13 +29,15 @@ public class EyeMonster extends Enemy {
     private long lastSoundTime;
     private long lastDirChange;
     private boolean maxRageSoundPlayed = false;
+    private boolean lookingAround; // האם כרגע המפלצת עוצרת ומסתכלת מסביב
+    private int lookSteps; // כמה פעמים היא החליפה כיוון בשלב הבהייה
 
     // הגדרות חרוט ראייה של השחקן
     private static final float FOV_ANGLE = 35f; // חצי זווית (סה"כ 70 מעלות)
     private static final float PLAYER_VISION_RANGE = TILE_SIZE * 8f;
     private static final float PLAYER_VISION_RANGE_SQ = PLAYER_VISION_RANGE * PLAYER_VISION_RANGE; // לטובת חישוב מהיר
 
-    private boolean moving;
+    // הסרנו את השדה moving המקומי שהסתיר את זה של מחלקת הבסיס
 
     public EyeMonster(PointF pos) {
         super(pos, GameCharacters.EYE_MONSTER, 60, 150, 1.2f);
@@ -170,14 +172,47 @@ public class EyeMonster extends Enemy {
 
     @Override
     protected void onIdeal(double delta, GameMap gameMap) {
-        // ב-Npc קראנו ל-moving = false בהתחלה, אז נעדכן בהתאם ללוגיקה הפנימית
-        super.onIdeal(delta, gameMap);
+        // אנחנו לא קוראים ל-super.onIdeal() כי הוא מאפס את ה-moving כל פריים.
+        // במקום זאת, אנחנו מבצעים את החיפוש אחר מטרה באופן ידני.
+        findTargetClap(gameMap);
+        setAttacking(false);
+        preparingAttack = false;
 
-        if (now - lastDirChange >= MyApp.RND.nextInt(2500) + 2500) {
-            faceDir = MyApp.RND.nextInt(4);
-            lastDirChange = now;
-            // קוד נקי יותר לקביעת תנועה רנדומלית
-            moving = (MyApp.RND.nextFloat() <= 0.8f);
+        if (currentTarget != null) {
+            currentBehavior = AiBehavior.AGGRESSIVE;
+            return;
+        }
+
+        // לוגיקה ייחודית לעין: שילוב של תנועה והסתכלות מסביב (בלתי צפוי)
+        if (lookingAround) {
+            // שלב הבהייה: מחליפים כיוון כל כמה מאות מילי-שניות
+            if (now - lastDirChange > MyApp.RND.nextInt(500) + 500) {
+                faceDir = MyApp.RND.nextInt(4);
+                lastDirChange = now;
+                lookSteps++;
+
+                // אחרי כמה החלפות כיוון, מחליטים האם להתחיל ללכת
+                if (lookSteps > MyApp.RND.nextInt(3) + 2) {
+                    lookingAround = false;
+                    moving = MyApp.RND.nextFloat() < 0.75f; // 75% סיכוי ללכת
+                    lookSteps = 0;
+                }
+            }
+        } else {
+            // שלב התנועה (או המתנה סטטית)
+            if (now - lastDirChange > MyApp.RND.nextInt(2700) + 2000) {
+                lastDirChange = now;
+                if (moving) {
+                    // אם הלכנו, עכשיו עוצרים לעשות "סיבוב מבטים"
+                    moving = false;
+                    lookingAround = true;
+                    lookSteps = 0;
+                } else {
+                    // אם עמדנו, פשוט מתחילים ללכת לכיוון רנדומלי
+                    moving = true;
+                    faceDir = MyApp.RND.nextInt(4);
+                }
+            }
         }
 
         if (moving) {
