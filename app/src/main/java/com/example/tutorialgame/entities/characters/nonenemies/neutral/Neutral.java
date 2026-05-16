@@ -26,24 +26,21 @@ public abstract class Neutral extends NonEnemy {
 
     @Override
     protected void findTargetClap(GameMap gameMap) {
-        // דריסה חכמה: הניטרלי מחפש מטרות רק מתוך ה-BadBoyList במקום מהמפה הכללית!
-        Character potentialTarget = findClosestTarget();
+        if (now - lastTargetCheckTime > 200) {
+            // דריסה חכמה: הניטרלי מחפש מטרות רק מתוך ה-BadBoyList במקום מהמפה הכללית!
+            Character potentialTarget = findClosestTarget();
 
-        // מוודא שהמטרה קיימת וגם שהוא רואה אותה
-        if (Other.IsCharacterSeesTarget(this, potentialTarget)) {
-            this.currentTarget = potentialTarget;
-        } else {
-            this.currentTarget = null;
+            // מוודא שהמטרה קיימת וגם שהוא רואה אותה
+            if (Other.IsCharacterSeesTarget(this, potentialTarget)) {
+                this.currentTarget = potentialTarget;
+            } else {
+                this.currentTarget = null;
+            }
+            // ברגע שהגדרנו currentTarget, ה-Npc יעביר אוטומטית ל-AiBehavior.AGGRESSIVE
+            lastTargetCheckTime = now;
         }
-        // ברגע שהגדרנו currentTarget, ה-Npc יעביר אוטומטית ל-AiBehavior.AGGRESSIVE
     }
 
-    @Override
-    protected void onAggressive(double delta, GameMap gameMap) {
-        super.onAggressive(delta, gameMap);
-        // מעדכן את הטיימר כל עוד הוא רודף ותוקף (לשימוש במחלקות היורשות)
-        lastTimeAggressive = now;
-    }
 
     // --- התיקון הקריטי: מתעצבן כשחוטף נזק, לא כשמת! ---
     @Override

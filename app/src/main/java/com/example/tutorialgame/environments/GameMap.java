@@ -205,7 +205,7 @@ public class GameMap {
             }
         }
 
-
+        if (player.isDead()) return;
         synchronized (characterArrayList) {
             for (int i = characterArrayList.size() - 1; i >= 0; i--) {
                 Character c = characterArrayList.get(i);
@@ -472,6 +472,7 @@ public class GameMap {
             animatedEntities.clear();
             collectibleItems.clear();
             breakableEntities.clear();
+
             loadAllEntities(mapLoadData);
             initWalkableMap();
             initSurfaceMap();

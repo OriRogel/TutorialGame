@@ -99,8 +99,8 @@ public class OverWorld extends BaseState {
         setCameraRelativeToPlayer(delta);
         mapManager.updateViewRect();
         checkForDoorway();
-        updateEffects(delta);
 
+        updateEffects(delta);
         Collections.sort(listOfDrawables);
     }
 

@@ -39,7 +39,7 @@ public abstract class Npc extends Character {
     protected Character currentTarget;
     protected final float baseSpeed;
 
-    private long lastTargetCheckTime;
+    protected long lastTargetCheckTime;
     private static final long TARGET_CHECK_INTERVAL = 200;
 
     private final float camShakeMagnitude;
@@ -141,6 +141,7 @@ public abstract class Npc extends Character {
         this.moving = false; // כשאין מה לעשות, עוצרים את הגוף הפיזי (יחזור ל-IDLE)
         findTargetClap(gameMap);
         setAttacking(false);
+        preparingAttack = false;
         if (currentTarget != null) currentBehavior = AiBehavior.AGGRESSIVE;
     }
 

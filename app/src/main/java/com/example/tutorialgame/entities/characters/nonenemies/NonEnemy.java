@@ -35,12 +35,23 @@ public abstract class NonEnemy extends Npc {
     }
 
     @Override
+    protected void onAggressive(double delta, GameMap gameMap) {
+        super.onAggressive(delta, gameMap);
+        lastTimeAggressive = now;
+    }
+
+    @Override
     protected void onIdeal(double delta, GameMap gameMap) {
         if (now - lastTimeAggressive <= 2000) {
             setAttacking(false);
+            preparingAttack = false;
             resetAnimation();
             return;
         }
+
+        // Fix: Allow NPC AI to find targets and switch to AGGRESSIVE
+        super.onIdeal(delta, gameMap);
+        if (currentBehavior == AiBehavior.AGGRESSIVE) return;
 
         goHome(delta, gameMap);
         reverseDamage(delta);

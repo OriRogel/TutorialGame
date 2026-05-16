@@ -99,7 +99,7 @@ public class Skeleton extends Enemy {
     }
     @Override
     public DropEntry getDropEntry() {
-        return new DropEntry(0, 1, 10, 15, 0.8, Items.FISH);
+        return new DropEntry(0, 1, 10, 15, 0.8, Items.MEDIPACK);
     }
     @Override
     public float getTimeToApexSec() {

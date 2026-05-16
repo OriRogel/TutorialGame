@@ -19,6 +19,7 @@ public class TextRenderer extends TextPaint {
     private final TextRenderer shadowRenderer;
     private float x, y, xOffset, yOffset;
     private final List<String> cachedPages = new ArrayList<>();
+    private final static char[] punctuations = {'.', '!', '?'};
 
     /**
      * בנאי ציבורי ראשי.
@@ -56,9 +57,9 @@ public class TextRenderer extends TextPaint {
     /**
      * בנאי פרטי, שנועד ליצירת אובייקט "צל" בלבד.
      * הוא לא יוצר צל משל עצמו, ובכך עוצר את הרקורסיה.
-     * @param isShadow דגל שמסמן שזהו אובייקט צל.
+     * @param ignoredIsShadow דגל שמסמן שזהו אובייקט צל.
      */
-    private TextRenderer(float size, int color, boolean isShadow) {
+    private TextRenderer(float size, int color, boolean ignoredIsShadow) {
         super();
         this.setTextSize(size);
         this.setColor(color);
@@ -111,9 +112,8 @@ public class TextRenderer extends TextPaint {
             // לוגיקת חיתוך חכם לפי פיסוק
             String pageCandidate = text.substring(startOffset, endOffset);
             int lastPunctuation = -1;
-            String punctuations = ".!?";
 
-            for (char p : punctuations.toCharArray()) {
+            for (char p : punctuations) {
                 lastPunctuation = Math.max(lastPunctuation, pageCandidate.lastIndexOf(p + " "));
             }
 

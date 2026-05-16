@@ -34,6 +34,7 @@ public class CloudManager {
     }
 
     public void selectSlot(int slotId, UserDataManager.OnDataLoadedListener listener) {
+        com.example.tutorialgame.managers.MapManager.clearCache(); // איפוס המפות לפני טעינת סלוט חדש
         this.activeSlotId = slotId;
         DocumentReference slotRef = userDoc.collection("slots").document("slot_" + slotId);
         activeSlot = new UserDataManager(slotRef);
@@ -41,6 +42,7 @@ public class CloudManager {
     }
 
     public void createNewSlot(int slotId, UserDataManager.OnDataLoadedListener listener) {
+        com.example.tutorialgame.managers.MapManager.clearCache(); // איפוס המפות לפני יצירת סלוט חדש
         this.activeSlotId = slotId;
         DocumentReference slotRef = userDoc.collection("slots").document("slot_" + slotId);
         activeSlot = new UserDataManager(slotRef);

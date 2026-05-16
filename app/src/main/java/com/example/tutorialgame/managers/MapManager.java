@@ -207,7 +207,8 @@ public class MapManager {
     public static void clearCache() {
         loadedMaps.clear();
         currentMap = null;
-        Log.d(TAG, "Map cache cleared");
+        ObjectPoolManager.clearAllPools();
+        Log.d(TAG, "Map cache and object pools cleared");
     }
 
     public static void reloadAllLoadedMaps() {

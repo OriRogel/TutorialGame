@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -30,7 +29,6 @@ import com.example.tutorialgame.ui.fragments.ProfileFragment;
 import com.example.tutorialgame.ui.fragments.SettingsFragment;
 
 public class LauncherActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG = "LauncherActivity";
     private DrawerLayout drawerLayout;
     private View settingsContainer;
     private Button btnPlay;
@@ -108,11 +106,10 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v == btnPlay) {
-            // בדיקה שהמפה עדיין בזיכרון
-            if (MapManager.getCurrentMap() == null) {
-                Log.w(TAG, "Map was lost from memory, reloading...");
-                MapManager.initStartingWorld();
-            }
+            // Ensure fresh map loading for the current slot
+            MapManager.clearCache();
+            MapManager.initStartingWorld();
+
             startActivity(new Intent(this, GameActivity.class));
             finish();
         }

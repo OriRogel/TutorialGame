@@ -11,6 +11,7 @@ import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.entities.Weapons;
 import com.example.tutorialgame.entities.characters.GameCharacters;
 import com.example.tutorialgame.entities.characters.Player;
+import com.example.tutorialgame.entities.foregrounds.statics.Items;
 import com.example.tutorialgame.environments.GameMap;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.utils.CollisionUtils;
@@ -33,6 +34,8 @@ public class EyeMonster extends Enemy {
     private static final float FOV_ANGLE = 35f; // חצי זווית (סה"כ 70 מעלות)
     private static final float PLAYER_VISION_RANGE = TILE_SIZE * 8f;
     private static final float PLAYER_VISION_RANGE_SQ = PLAYER_VISION_RANGE * PLAYER_VISION_RANGE; // לטובת חישוב מהיר
+
+    private boolean moving;
 
     public EyeMonster(PointF pos) {
         super(pos, GameCharacters.EYE_MONSTER, 60, 150, 1.2f);
@@ -60,7 +63,8 @@ public class EyeMonster extends Enemy {
         float distSq = CollisionUtils.getDistance(hitBox.centerX(), hitBox.centerY(), p.getHitBox().centerX(), p.getHitBox().centerY());
 
         // התאמה למערכת המצבים החדשה
-        if (distSq < TILE_SIZE * 0.6f && currentBehavior != AiBehavior.AGGRESSIVE) {
+        if (distSq < TILE_SIZE) {
+            ragePercentage = 1;
             currentBehavior = AiBehavior.AGGRESSIVE;
             currentTarget = p;
         }
@@ -169,16 +173,16 @@ public class EyeMonster extends Enemy {
         // ב-Npc קראנו ל-moving = false בהתחלה, אז נעדכן בהתאם ללוגיקה הפנימית
         super.onIdeal(delta, gameMap);
 
-        if (now - lastDirChange >= MyApp.RND.nextInt(2000) + 2000) {
+        if (now - lastDirChange >= MyApp.RND.nextInt(2500) + 2500) {
             faceDir = MyApp.RND.nextInt(4);
             lastDirChange = now;
             // קוד נקי יותר לקביעת תנועה רנדומלית
-            this.moving = MyApp.RND.nextFloat() <= 0.3f;
+            moving = (MyApp.RND.nextFloat() <= 0.8f);
         }
 
-        if (this.moving) {
+        if (moving) {
             animation.update();
-            float moveStep = (float) (baseSpeed * delta * 0.5f);
+            float moveStep = (float) (baseSpeed * delta);
             movementComponent.moveInDir(moveStep, gameMap);
         }
     }
@@ -196,7 +200,7 @@ public class EyeMonster extends Enemy {
     @Override
     public int getImpactSfx() { return R.raw.sfx_impact_enemy1; }
     @Override
-    public DropEntry getDropEntry() { return new DropEntry(1, 2, 20, 30, 0.5); }
+    public DropEntry getDropEntry() { return new DropEntry(1, 2, 20, 30, 0.5, Items.FISH); }
     @Override
     public float getTimeToApexSec() { return 0.3f; }
     @Override
