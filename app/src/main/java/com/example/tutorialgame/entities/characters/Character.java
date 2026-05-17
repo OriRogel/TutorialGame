@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -140,6 +139,7 @@ public abstract class Character extends Entity {
 
         health.reset();
         stamina.reset();
+        movementComponent.cancelKnockback(); // Add this
         animation.resetAnimation();
         badBoyList.clear();
     }

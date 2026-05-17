@@ -52,6 +52,36 @@ public class SoundManager {
     private float soundVolume;
     private final Runnable saveRunnable = () -> sp.edit().putFloat("sound_volume", soundVolume).apply();
 
+    // --- Sound Throttling System ---
+    private final Map<Integer, Long> throttledSounds = new ConcurrentHashMap<>();
+    private final Map<String, SoundThrottleGroup> soundGroups = new ConcurrentHashMap<>();
+
+    private static class SoundThrottleGroup {
+        int count;
+        long lastReset;
+        final int limit;
+        final long interval;
+
+        SoundThrottleGroup(int limit, long interval) {
+            this.limit = limit;
+            this.interval = interval;
+            this.lastReset = System.currentTimeMillis();
+        }
+
+        boolean canPlay() {
+            long now = System.currentTimeMillis();
+            if (now - lastReset > interval) {
+                count = 0;
+                lastReset = now;
+            }
+            if (count < limit) {
+                count++;
+                return true;
+            }
+            return false;
+        }
+    }
+
     private SoundManager(Context context) {
         this.appContext = context.getApplicationContext();
 
@@ -111,6 +141,34 @@ public class SoundManager {
         if (!isLoaded(resId)) return;
         float rate = minRate + MyApp.RND.nextFloat() * (maxRate - minRate);
         soundPool.play(Objects.requireNonNull(resIdToSoundId.get(resId)), soundVolume, soundVolume, 1, 0, rate);
+    }
+
+    /**
+     * Plays a sound effect with spatial characteristics, with optional throttling.
+     *
+     * @param resId     The raw resource ID.
+     * @param sourceX   The world X coordinate.
+     * @param groupName Optional group name for shared throttling.
+     * @param limit     Max sounds per interval.
+     * @param interval  The interval in MS.
+     */
+    public void playSpatialSfxThrottled(int resId, float sourceX, String groupName, int limit, long interval) {
+        SoundThrottleGroup group = soundGroups.computeIfAbsent(groupName, k -> new SoundThrottleGroup(limit, interval));
+        if (group.canPlay()) {
+            playSpatialSfx(resId, sourceX);
+        }
+    }
+
+    /**
+     * Plays a spatial sound effect with a per-resource throttle.
+     */
+    public void playSpatialSfxThrottled(int resId, float sourceX, long minInterval) {
+        long now = System.currentTimeMillis();
+        Long lastTime = throttledSounds.get(resId);
+        if (lastTime == null || now - lastTime > minInterval) {
+            throttledSounds.put(resId, now);
+            playSpatialSfx(resId, sourceX);
+        }
     }
 
     /**

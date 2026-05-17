@@ -168,18 +168,33 @@ public abstract class Npc extends Character {
 
     private Character findTarget(GameMap gameMap) {
         Player player = gameMap.getPlayer();
-        if (player != null && canDamage(player) && Other.IsCharacterSeesTarget(this, player)) return player;
+        if (player != null && !player.isDead() && canDamage(player) && Other.IsCharacterSeesTarget(this, player)) return player;
         else {
             List<Character> chars = gameMap.getCharacterArrayList();
             if (chars == null || chars.isEmpty()) return null;
 
+            Character bestTarget = null;
+            float minDistanceSq = Float.MAX_VALUE;
+
             for (Character target : chars) {
                 if (target == this || target == player) continue;
                 if (!target.isActive() || target.isDead() || !canDamage(target)) continue;
-                if (Other.IsCharacterSeesTarget(this, target)) return target;
+                
+                if (Other.IsCharacterSeesTarget(this, target)) {
+                    float distSq = CollisionUtils.getDistance(hitBox.centerX(), hitBox.centerY(), 
+                                                           target.getHitBox().centerX(), target.getHitBox().centerY());
+                    
+                    // Priority: stick to current target if it's still visible and within a reasonable extra distance
+                    if (target == currentTarget) distSq *= 0.8f; 
+
+                    if (distSq < minDistanceSq) {
+                        minDistanceSq = distSq;
+                        bestTarget = target;
+                    }
+                }
             }
+            return bestTarget;
         }
-        return null;
     }
 
     protected void forgetOldTargets(long timeoutMillis) {

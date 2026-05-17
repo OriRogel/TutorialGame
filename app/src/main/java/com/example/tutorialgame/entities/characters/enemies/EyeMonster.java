@@ -21,11 +21,6 @@ import com.example.tutorialgame.utils.CollisionUtils;
  * משתמשת במנגנון ויסות צלילים גלובלי ובחרוט ראייה עבור השחקן.
  */
 public class EyeMonster extends Enemy {
-    // מנגנון ויסות צלילים סטטי - מונע רעש מוגזם כשיש הרבה מפלצות
-    private static int globalSoundCount = 0;
-    private static long lastGlobalResetTime = 0;
-    private static final int MAX_GLOBAL_SOUNDS_PER_SEC = 2;
-
     private long lastSoundTime;
     private long lastDirChange;
     private boolean maxRageSoundPlayed = false;
@@ -73,24 +68,13 @@ public class EyeMonster extends Enemy {
     }
 
     private void handleScarySounds() {
-        // איפוס המונה הגלובלי בכל שנייה
-        if (now - lastGlobalResetTime > 1050) {
-            globalSoundCount = 0;
-            lastGlobalResetTime = now;
-        }
-
         if (ragePercentage > 0.1f && ragePercentage < 0.9f && now - lastSoundTime > 3000) {
-            // רק אם לא עברנו את המכסה הגלובלית לשנייה זו
-            if (globalSoundCount < MAX_GLOBAL_SOUNDS_PER_SEC) {
-                SoundManager.getInstance(BaseActivity.getContext()).playSpatialSfx(R.raw.sfx_scarry2, hitBox.centerX());
-                lastSoundTime = now;
-                globalSoundCount++;
-            }
+            SoundManager.getInstance(BaseActivity.getContext()).playSpatialSfxThrottled(R.raw.sfx_scarry2, hitBox.centerX(), "scary_ambient", 2, 1000);
+            lastSoundTime = now;
         }
         else if (ragePercentage >= 1.0f && !maxRageSoundPlayed) {
-            SoundManager.getInstance(BaseActivity.getContext()).playSpatialSfx(R.raw.sfx_scarry1, hitBox.centerX());
+            SoundManager.getInstance(BaseActivity.getContext()).playSpatialSfxThrottled(R.raw.sfx_scarry1, hitBox.centerX(), "scary_ambient", 2, 1000);
             maxRageSoundPlayed = true;
-            globalSoundCount++; // צליל זעם מקסימלי נספר גם הוא
         }
     }
 
@@ -135,7 +119,7 @@ public class EyeMonster extends Enemy {
     protected void onAggressive(double delta, GameMap gameMap) {
         if (currentTarget == null) {
             currentBehavior = AiBehavior.IDEAL;
-            this.moving = false; // עדכון הגוף
+            this.moving = false;
             return;
         }
 
@@ -143,26 +127,28 @@ public class EyeMonster extends Enemy {
         updateAttackTimer();
 
         float dist = CollisionUtils.getDistance(hitBox.centerX(), hitBox.centerY(), currentTarget.getHitBox().centerX(), currentTarget.getHitBox().centerY());
-        boolean isEnragedEnough = ragePercentage > 0.5f || dist < TILE_SIZE * 0.8f;
+        
+        // EyeMonster logic: move if enraged enough OR if player is relatively close
+        boolean shouldMove = ragePercentage > 0.4f || dist < TILE_SIZE * 3f;
 
-        if (isEnragedEnough && !isPreparingAttack() && !isAttacking()) {
-            this.moving = true; // המוח אומר לגוף לזוז
+        if (shouldMove && !isPreparingAttack() && !isAttacking()) {
+            this.moving = true;
             animation.update();
             turnTowardsTarget(currentTarget);
             float currentSpeed = (float) (baseSpeed * delta * (1f + ragePercentage * 2.0f));
             movementComponent.moveInDir(currentSpeed, gameMap);
-        } else if (!isEnragedEnough) {
-            if (ragePercentage <= 0.1f) {
+        } else if (!shouldMove && !isPreparingAttack() && !isAttacking()) {
+            if (ragePercentage <= 0.05f && dist > TILE_SIZE * 5f) {
                 currentBehavior = AiBehavior.IDEAL;
                 currentTarget = null;
                 this.moving = false;
                 return;
             }
-            this.moving = false; // עוצרים במקום ובוהים
+            this.moving = false; // Stop and stare
             turnTowardsTarget(currentTarget);
         }
 
-        if (dist < hitBox.width() * 1.2f || isPreparingAttack() || isAttacking()) {
+        if (dist < hitBox.width() * 1.3f || isPreparingAttack() || isAttacking()) {
             combatComponent.update();
             processAttack();
         }
@@ -172,53 +158,65 @@ public class EyeMonster extends Enemy {
 
     @Override
     protected void onIdeal(double delta, GameMap gameMap) {
-        // אנחנו לא קוראים ל-super.onIdeal() כי הוא מאפס את ה-moving כל פריים.
-        // במקום זאת, אנחנו מבצעים את החיפוש אחר מטרה באופן ידני.
         findTargetClap(gameMap);
         setAttacking(false);
         preparingAttack = false;
 
         if (currentTarget != null) {
-            currentBehavior = AiBehavior.AGGRESSIVE;
-            return;
+            float distSq = CollisionUtils.getDistance(hitBox.centerX(), hitBox.centerY(), currentTarget.getHitBox().centerX(), currentTarget.getHitBox().centerY());
+            // Only go aggressive if enraged or player is very close
+            if (ragePercentage > 0.15f || distSq < TILE_SIZE * 2f) {
+                currentBehavior = AiBehavior.AGGRESSIVE;
+                return;
+            }
         }
 
-        // לוגיקה ייחודית לעין: שילוב של תנועה והסתכלות מסביב (בלתי צפוי)
         if (lookingAround) {
-            // שלב הבהייה: מחליפים כיוון כל כמה מאות מילי-שניות
-            if (now - lastDirChange > MyApp.RND.nextInt(500) + 500) {
+            this.moving = false;
+            if (now - lastDirChange > 400 + MyApp.RND.nextInt(300)) {
                 faceDir = MyApp.RND.nextInt(4);
                 lastDirChange = now;
                 lookSteps++;
 
-                // אחרי כמה החלפות כיוון, מחליטים האם להתחיל ללכת
-                if (lookSteps > MyApp.RND.nextInt(3) + 2) {
+                if (lookSteps > 2 + MyApp.RND.nextInt(3)) {
                     lookingAround = false;
-                    moving = MyApp.RND.nextFloat() < 0.75f; // 75% סיכוי ללכת
-                    lookSteps = 0;
+                    this.moving = true; 
+                    faceDir = MyApp.RND.nextInt(4);
+                    lastDirChange = now; 
                 }
             }
         } else {
-            // שלב התנועה (או המתנה סטטית)
-            if (now - lastDirChange > MyApp.RND.nextInt(2700) + 2000) {
+            this.moving = true; 
+            if (now - lastDirChange > 3000 + MyApp.RND.nextInt(2000)) {
+                this.moving = false; 
+                lookingAround = true;
+                lookSteps = 0;
                 lastDirChange = now;
-                if (moving) {
-                    // אם הלכנו, עכשיו עוצרים לעשות "סיבוב מבטים"
-                    moving = false;
-                    lookingAround = true;
-                    lookSteps = 0;
-                } else {
-                    // אם עמדנו, פשוט מתחילים ללכת לכיוון רנדומלי
-                    moving = true;
-                    faceDir = MyApp.RND.nextInt(4);
-                }
             }
         }
 
-        if (moving) {
+        if (this.moving) {
             animation.update();
             float moveStep = (float) (baseSpeed * delta);
-            movementComponent.moveInDir(moveStep, gameMap);
+            
+            // Check if blocked by wall or obstacle in current direction
+            float dx = 0, dy = 0;
+            switch (faceDir) {
+                case GameConstants.Face_Dir.UP:    dy = -moveStep; break;
+                case GameConstants.Face_Dir.DOWN:  dy = moveStep; break;
+                case GameConstants.Face_Dir.LEFT:  dx = -moveStep; break;
+                case GameConstants.Face_Dir.RIGHT: dx = moveStep; break;
+            }
+
+            if (movementComponent.canMoveTo(dx, dy, gameMap)) {
+                movementComponent.moveInDir(moveStep, gameMap);
+            } else {
+                // Hitting a wall: turn immediately
+                faceDir = MyApp.RND.nextInt(4);
+                lastDirChange = now; 
+            }
+        } else {
+            animation.resetAnimation();
         }
     }
 
