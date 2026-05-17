@@ -1,0 +1,183 @@
+<resources>
+    <string name="play_Cap">ΠΑΙΞΕ</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="email">email</string>
+    <string name="login">Σύνδεση</string>
+    <string name="logout">Αποσύνδεση</string>
+    <string name="password">κωδικός πρόσβασης</string>
+    <string name="forgot_password">ξεχάσατε τον κωδικό;</string>
+    <string name="click_to_register"><![CDATA[Δεν  έχετε  λογαριασμό; \nΠατήστε  για  εγγραφή]]></string>
+    <string name="register">Εγγραφή</string>
+    <string name="click_to_login"><![CDATA[Έχετε  ήδη  λογαριασμό;\nΠατήστε  για  σύνδεση]]></string>
+    <string name="music_amp_sounds"><![CDATA[ΜΟΥΣΙΚΗ & ΗΧΟΙ]]></string>
+
+    <string name="enter_email">Παρακαλώ εισάγετε διεύθυνση email</string>
+    <string name="login_successful">Η σύνδεση ήταν επιτυχής</string>
+
+    <string name="invalid_email">Μη έγκυρο email</string>
+    <string name="invalid_password">Ο κωδικός πρέπει να έχει >5 χαρακτήρες</string>
+    <string name="invalid_nickname">Το ψευδώνυμο πρέπει να έχει >2 χαρακτήρες</string>
+
+    <!-- ToastMessages -->
+    <string name="verification_email_sent">Το email επαλήθευσης στάλθηκε. Ελέγξτε τα εισερχόμενά σας!</string>
+    <string name="reset_password_email_sent">Το email επαναφοράς κωδικού στάλθηκε. Ελέγξτε τα εισερχόμενά σας!</string>
+    <string name="verify_email">Παρακαλώ επαληθεύστε το email σας πριν συνδεθείτε</string>
+    <string name="email_not_found">Δεν βρέθηκε λογαριασμός με αυτό το email</string>
+    <string name="email_exists">Το email είναι ήδη καταχωρημένο</string>
+    <string name="loading_data">Φόρτωση δεδομένων…</string>
+    <string name="new_char_met">Γνώρισες έναν νέο χαρακτήρα! Γνωρίζοντάς τον</string>
+    <string name="you_gained">κέρδισες</string>
+    <string name="not_strong">Φαίνεται πως δεν είμαι αρκετά δυνατός…</string>
+    <string name="delete_save_succeed">Η διαγραφή αποθήκευσης ολοκληρώθηκε</string>
+    <string name="delete_save_failed">Η διαγραφή αποθήκευσης απέτυχε</string>
+
+    <string name="error"><![CDATA[Σφάλμα: ]]></string>
+    <string name="language">Γλώσσα</string>
+    <string name="language_cap">ΓΛΩΣΣΑ</string>
+
+    <!-- Content Description -->
+    <string name="close_button">κουμπί κλεισίματος</string>
+    <string name="music_image">εικόνα μουσικής</string>
+    <string name="menu_button">κουμπί ανοίγματος μενού ρυθμίσεων</string>
+    <string name="sound_effects_image">εικόνα ηχητικών εφέ</string>
+
+    <!-- Death Screen -->
+    <string name="you_died">Πέθανες!</string>
+    <string name="replay">Επανάληψη</string>
+    <string name="back_launcher">Επιστροφή στην Αρχική</string>
+
+    <!-- Menu -->
+    <string name="game_menu">Μενού Παιχνιδιού</string>
+    <string name="back">Επιστροφή στο Παιχνίδι</string>
+    <string name="save_quit">Αποθήκευση και Έξοδος</string>
+    <string name="options">Επιλογές</string>
+
+    <!-- Options -->
+    <string name="done">Τέλος</string>
+    <string name="music_sounds"><![CDATA[Μουσική & Ήχοι]]></string>
+    <string name="video_settings">Ρυθμίσεις Βίντεο</string>
+    <string name="credits">Συντελεστές</string>
+
+    <!-- SeekBar names -->
+    <string name="music_cap">ΜΟΥΣΙΚΗ</string>
+    <string name="sounds_cap">ΗΧΟΙ</string>
+    <string name="zoom_cap">ΖΟΥΜ</string>
+    <string name="camera_flow_cap">ΡΟΗ ΚΑΜΕΡΑΣ</string>
+
+    <!-- Switch names -->
+    <string name="haptics">Δονήσεις</string>
+    <string name="fps">FPS</string>
+    <string name="cam_shake">ΤΡΕΜΟΥΛΟ ΚΑΜΕΡΑΣ</string>
+    <string name="hitbox">HITBOX</string>
+    <string name="ui">UI</string>
+
+    <!-- Upgrade -->
+    <string name="health">Υγεία</string>
+    <string name="health_desc">Αυξάνει τη μέγιστη υγεία σου.</string>
+    <string name="strength">Δύναμη</string>
+    <string name="strength_desc">Αυξάνει τη ζημιά που προκαλείς στους εχθρούς.</string>
+    <string name="stamina">Αντοχή</string>
+    <string name="crit_hit_chance">Πιθανότητα Κρίσιμου Χτυπήματος</string>
+    <string name="stamina_desc">Αυξάνει τη μέγιστη αντοχή σου για ενέργειες.</string>
+    <string name="crit_hit_desc">Αυξάνει την πιθανότητα κρίσιμου χτυπήματος.</string>
+    <string name="attack_speed">Ταχύτητα Επίθεσης</string>
+    <string name="attack_speed_desc">Μειώνει την καθυστέρηση μεταξύ επιθέσεων.</string>
+    <string name="points_left">Πόντοι που απομένουν:</string>
+    <string name="return_">Επιστροφή</string>
+    <string name="points_to_upgrade">Πόντοι για αναβάθμιση</string>
+
+    <!-- DialogThings -->
+    <string name="yes">Ναι</string>
+    <string name="no">Όχι</string>
+    <string name="wanna_logout">Είσαι σίγουρος ότι θέλεις\nνα αποσυνδεθείς;</string>
+    <string name="email_title">Αλλαγή Email</string>
+    <string name="nickname_title">Αλλαγή Ψευδωνύμου</string>
+    <string name="change_slot_title">Αλλαγή Περιπέτειας</string>
+    <string name="create_slot_title">Νέα Περιπέτεια</string>
+    <string name="delete_slot_title">Διαγραφή Αποθηκευμένης Προόδου</string>
+    <string name="email_message"><![CDATA[Μπορείς  να  αλλάξεις  το  email  σου  μόνο  μία  φορά  κάθε  έξι\nμήνες,  οπότε  επέλεξε  προσεκτικά!]]></string>
+    <string name="nickname_message"><![CDATA[Το  ψευδώνυμό  σου  θα  εμφανίζεται  στις  σκηνές  διαλόγου  του\nπαιχνιδιού  και  άλλα]]></string>
+    <string name="change_slot_message">Θέλεις να αλλάξεις περιπέτεια;</string>
+    <string name="create_slot_message">Θέλεις να ξεκινήσεις νέα περιπέτεια;</string>
+    <string name="delete_slot_message_positive">Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτή την περιπέτεια;\n
+    Μετά τη διαγραφή θα χαθεί για πάντα.</string>
+    <string name="delete_slot_message_negative">Δεν μπορείς να διαγράψεις την ενεργή αποθήκευση</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="continue_">Συνέχεια</string>
+    <string name="ok">OK</string>
+
+    <!-- AlertDialog -->
+    <string name="error_loading">Σφάλμα φόρτωσης</string>
+    <string name="unable_load_message">Αδυναμία φόρτωσης δεδομένων από τον διακομιστή. Προσπαθήστε ξανά αργότερα.</string>
+    <string name="try_again">Προσπάθησε ξανά</string>
+
+    <string name="nickname">ψευδώνυμο</string>
+    <string name="nickname_updated">Το ψευδώνυμο ενημερώθηκε επιτυχώς</string>
+
+    <!-- TapEffects -->
+    <string name="tap_effect">Εφέ Πατήματος</string>
+    <string name="white_circle">λευκός κύκλος</string>
+    <string name="orange_circle">πορτοκαλί κύκλος</string>
+    <string name="spark">σπίθα</string>
+    <string name="spark2">σπίθα2</string>
+
+    <string name="press_to_exit"><![CDATA[Πάτησε  ξανά  για  έξοδο]]></string>
+
+    <!-- ProfileFragment -->
+    <string name="player_profile_Cap"><![CDATA[ΠΡΟΦΙΛ  ΠΑΙΚΤΗ]]></string>
+    <string name="stats">ΣΤΑΤΙΣΤΙΚΑ</string>
+    <string name="save_slots">ΘΕΣΕΙΣ ΑΠΟΘΗΚΕΥΣΗΣ</string>
+    <string name="enemies_defeated">εχθροί που νικήθηκαν</string>
+    <string name="days_logged_in">ημέρες σύνδεσης</string>
+    <string name="quests_completed">αποστολές που ολοκληρώθηκαν</string>
+    <string name="frames_collected">πλαίσια που συλλέχθηκαν</string>
+
+    <!-- CharacterNames -->
+    <string name="best_friend">Capu</string>
+    <string name="black_knight">Kann</string>
+    <string name="blacksmith">Σιδεράς</string>
+    <string name="white_knight">Caro</string>
+    <string name="skeleton">Σκελετός</string>
+    <string name="eye">Μάτι</string>
+    <string name="father">Βασιλιάς</string>
+    <string name="master">Δάσκαλος Fu</string>
+    <string name="fighter_red">Μαχητής στα Κόκκινα</string>
+    <string name="fighter_white">Μαχητής στα Λευκά</string>
+
+    <!-- Quest -->
+    <string name="quest">Αποστολή</string>
+    <string name="talk_to_father">Μίλα στον Πατέρα</string>
+    <string name="find_blacksmith">Βρες τον Σιδερά</string>
+    <string name="what_he_wants">Τι θέλει άραγε…</string>
+    <string name="find_clues">Βρες στοιχεία</string>
+    <string name="maybe_strong_enough">Ίσως τώρα είμαι αρκετά δυνατός…</string>
+    <string name="reach_center">Φτάσε στο Κέντρο</string>
+    <string name="run">Τρέξε!</string>
+
+    <!-- Circle Frames -->
+    <string name="series_a_new_start">Μια Νέα Αρχή</string>
+    <string name="series_king_pink">Ροζ Βασιλιάς</string>
+    <string name="series_monster_slayer">Εξολοθρευτής Τεράτων</string>
+    <string name="series_time_keeper">Φύλακας του Χρόνου</string>
+    <string name="series_dragon_fist">Γροθιά του Δράκου</string>
+    <string name="series_frost_demon">Δαίμονας του Πάγου</string>
+    <string name="series_forest_guardian">Φύλακας του Δάσους</string>
+    <string name="series_legendary_rainbow">Θρυλικό Ουράνιο Τόξο</string>
+
+    <string name="grade">Βαθμίδα</string>
+    <string name="locked">Κλειδωμένο</string>
+    <string name="frame">Πλαίσιο</string>
+    <string name="frames">ΠΛΑΙΣΙΑ</string>
+    <string name="next">Επόμενο</string>
+    <string name="purchase">Αγορά</string>
+    <string name="available">Διαθέσιμο</string>
+    <string name="unlock_prev_message">Για να ξεκλειδώσεις το επιλεγμένο πλαίσιο, πρέπει πρώτα να ξεκλειδώσεις την προηγούμενη βαθμίδα.</string>
+
+    <!-- Unlock Conditions -->
+    <string name="unlock">ξεκλείδωμα</string>
+    <string name="con_purchase">Νομίσματα για Αγορά</string>
+    <string name="con_days">Ημέρες Σύνδεσης</string>
+    <string name="con_level">Απαιτούμενο Επίπεδο</string>
+    <string name="con_enemies">Εχθροί προς Νίκη</string>
+    <string name="con_boss">Αρχηγοί προς Νίκη</string>
+</resources>

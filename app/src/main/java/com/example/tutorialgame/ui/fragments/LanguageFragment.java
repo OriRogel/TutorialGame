@@ -41,13 +41,12 @@ public class LanguageFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void bindViews(View v) {
-        Button btnEnglishLang = v.findViewById(R.id.btnEnglishLang);
-        Button btnHebrewLang = v.findViewById(R.id.btnHebrewLang);
         imgBtnClose = v.findViewById(R.id.imgBtnClose);
 
         langMap = new HashMap<>();
-        langMap.put(btnEnglishLang, "en");
-        langMap.put(btnHebrewLang, "iw");
+        langMap.put(v.findViewById(R.id.btnEnglishLang), "en");
+        langMap.put(v.findViewById(R.id.btnHebrewLang), "iw");
+        langMap.put(v.findViewById(R.id.btnGreekLang), "el");
     }
 
     private void initListeners() {
@@ -85,5 +84,4 @@ public class LanguageFragment extends BaseFragment implements View.OnClickListen
         b.setGravity(Gravity.CENTER);
         requireActivity().recreate();
     }
-
 }

@@ -137,9 +137,9 @@
 
     //CharacterNames
     <string name="best_friend">קאפו</string>
-    <string name="black_knight">קארו</string>
+    <string name="black_knight">קאן</string>
     <string name="blacksmith">נפח</string>
-    <string name="white_knight">קאן</string>
+    <string name="white_knight">קארו</string>
     <string name="skeleton">שלד</string>
     <string name="eye">עין</string>
     <string name="father">קינג</string>

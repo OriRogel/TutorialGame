@@ -38,6 +38,7 @@
 
     <string name="english" translatable="false">English</string>
     <string name="hebrew" translatable="false">עברית</string>
+    <string name="greek" translatable="false">Ελληνικά</string>
 
     //Content Description
     <string name="close_button">close button</string>

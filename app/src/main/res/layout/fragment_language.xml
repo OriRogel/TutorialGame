@@ -68,6 +68,20 @@
                 android:fontFamily="@font/pixel_font"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
+
+            <android.widget.Button
+                android:id="@+id/btnGreekLang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/choicebox_selector"
+                android:text="@string/greek"
+                android:layout_marginTop="3dp"
+                android:textAllCaps="false"
+                android:paddingHorizontal="15dp"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/pixel_font"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
         </LinearLayout>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
