@@ -109,6 +109,7 @@ public class Player extends Character {
         }
 
         QuestManager.onEnterZone(null);
+        if (isDead()) health.update(delta);
     }
 
     @Override
@@ -297,5 +298,6 @@ public class Player extends Character {
     protected void onDeath(Character killer) {
         MusicManager.getInstance(BaseActivity.getContext()).play(R.raw.jingle_gameover4);
         MusicManager.getInstance(BaseActivity.getContext()).setLooping(false);
+        this.moving = false;
     }
 }

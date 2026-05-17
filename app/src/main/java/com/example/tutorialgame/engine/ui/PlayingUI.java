@@ -99,9 +99,15 @@ public class PlayingUI implements BaseButton.OnClickListener {
     }
 
     public void update(double delta) {
-        // עדכון תנועת השחקן לפי מצב הג'ויסטיק
-        if (joystick.isPushed()) overWorld.setPlayerMoveTrue(joystick.getMovementVector());
-        else overWorld.setPlayerMoveFalse();
+        // אם השחקן מת, נועלים שליטה ומאפסים ג'ויסטיק
+        if (player.isDead()) {
+            if (joystick.isPushed()) joystick.reset();
+            overWorld.setPlayerMoveFalse();
+        } else {
+            // עדכון תנועת השחקן לפי מצב הג'ויסטיק
+            if (joystick.isPushed()) overWorld.setPlayerMoveTrue(joystick.getMovementVector());
+            else overWorld.setPlayerMoveFalse();
+        }
 
         updateButtons();
 

@@ -88,6 +88,10 @@ public class OverWorld extends BaseState {
         playingUI.update(delta);
         mapManager.updateWorldEntities(player, delta);
         buildEntityList();
+
+        // חסימת תנועה בזמן מוות
+        if (player.isDead()) setPlayerMoveFalse();
+
         player.setMovementInput(movePlayer, lastTouchDiff);
         player.update(delta, MapManager.getCurrentMap());
 

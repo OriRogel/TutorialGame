@@ -344,7 +344,6 @@ public abstract class Character extends Entity {
     public void setWeapon(@NonNull Weapons weapon) { combatComponent.setWeapon(weapon); }
     public DialogueComponent getDialogueComponent() { return dialogueComponent; }
     public int getDiedBy() { return diedBy; }
-    public void setMoving(boolean flag) { moving = flag; }
 
     public int getAniIndex() {
         switch (state) {
