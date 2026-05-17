@@ -147,4 +147,15 @@ public class CustomSwitch {
         int a2 = (toColor >> 24) & 0xff, r2 = (toColor >> 16) & 0xff, g2 = (toColor >> 8) & 0xff, b2 = toColor & 0xff;
         return (Math.round(a1 + (a2 - a1) * t) & 0xff) << 24 | (Math.round(r1 + (r2 - r1) * t) & 0xff) << 16 | (Math.round(g1 + (g2 - g1) * t) & 0xff) << 8 | (Math.round(b1 + (b2 - b1) * t) & 0xff);
     }
+
+    /**
+     * Refreshes the switch's name based on the current locale.
+     */
+    public void refreshStrings() {
+        // Since TextRenderer.setPosition is already called in the constructor,
+        // and sw.getName() is called in draw(), we just need to ensure the 
+        // position is still correct if text length changes significantly.
+        float textX = hitbox.right + 3 * SCALE_MULTIPLIER;
+        paint.setPosition(textX, hitbox.centerY() + paint.getTextSize()/4);
+    }
 }

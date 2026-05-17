@@ -46,7 +46,8 @@ public class CustomSeekBar {
     private final NinePatchDrawable normal, pressed, background;
     private final TextRenderer percentRenderer, nameRenderer;
     private final float percentY, nameX, nameY;
-    private final String name;
+    private String name;
+    private final @StringRes int nameRes;
     private boolean pushed;
     private float progress;
     private String percentText;
@@ -66,6 +67,7 @@ public class CustomSeekBar {
 
         this.normal = (NinePatchDrawable) ContextCompat.getDrawable(ctx, R.drawable.slider_progress_normal);
         this.pressed = (NinePatchDrawable) ContextCompat.getDrawable(ctx, R.drawable.slider_progress_pressed);
+        this.nameRes = name;
         this.name = ctx.getString(name);
 
         // Pre-caching colors
@@ -221,5 +223,13 @@ public class CustomSeekBar {
 
     private boolean isIn(MotionEvent e) {
         return this.bgHitbox.contains(e.getX(), e.getY());
+    }
+
+    /**
+     * Refreshes the localized label of the seek bar.
+     */
+    public void refreshStrings() {
+        this.name = BaseActivity.getContext().getString(nameRes);
+        updatePercentCache(); // Recalculates text positions
     }
 }

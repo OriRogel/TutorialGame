@@ -25,46 +25,19 @@ public enum RectImages implements BitmapMethods {
     LANGUAGE(Color.WHITE, R.string.language),
     CREDITS(Color.WHITE, R.string.credits);
 
-    private final NinePatchDrawable normal, pressed;
+    private final int btnColor;
     private final @StringRes int textRes;
-    private final TextRenderer textPaint;
 
     RectImages(int btnColor, @StringRes int textRes) {
-        this.normal = (NinePatchDrawable) ContextCompat.getDrawable(BaseActivity.getContext(), R.drawable.btn_menu_base);
-        Objects.requireNonNull(this.normal).setTint(btnColor);
-        this.normal.setTintMode(PorterDuff.Mode.MULTIPLY);
-
-        this.pressed = (NinePatchDrawable) ContextCompat.getDrawable(BaseActivity.getContext(), R.drawable.btn_menu_pressed);
-        Objects.requireNonNull(this.pressed).setTint(btnColor);
-        this.pressed.setTintMode(PorterDuff.Mode.MULTIPLY);
-
-        textPaint = new TextRenderer(SCALE_MULTIPLIER * 12f, R.color.floral_white);
-        textPaint.setShadowColor(BaseActivity.getContext().getColor(R.color.dark_charcoal));
-        textPaint.setShadowOffset(0,SCALE_MULTIPLIER*1.5f);
-
+        this.btnColor = btnColor;
         this.textRes = textRes;
     }
 
-    public NinePatchDrawable getNormal() {
-        return normal;
-    }
-    public NinePatchDrawable getPressed() {
-        return pressed;
+    public int getBtnColor() {
+        return btnColor;
     }
 
     public String getText() {
         return BaseActivity.getContext().getString(textRes);
-    }
-
-    public void setTextPos(boolean isPushed) {
-        float xOffset = getTextPaint().measureText(getText()) / 2;
-        if (isPushed)
-            textPaint.setPosition(pressed.getBounds().centerX() - xOffset, pressed.getBounds().centerY() + SCALE_MULTIPLIER * 4f);
-        else
-            textPaint.setPosition(pressed.getBounds().centerX() - xOffset, pressed.getBounds().centerY() + SCALE_MULTIPLIER * 2f);
-    }
-
-    public TextRenderer getTextPaint() {
-        return textPaint;
     }
 }

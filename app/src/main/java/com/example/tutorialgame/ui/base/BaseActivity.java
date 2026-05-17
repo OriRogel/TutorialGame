@@ -31,7 +31,9 @@ import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.managers.DialogueManager;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected static SharedPreferences spSettings;
@@ -41,6 +43,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private long lastBackPress;
     private int backPressCount;
     private static boolean DOES_VIBE;
+
+    private static final Map<String, Locale> localeCache = new HashMap<>();
 
     // משתנה זמני השומר את ה-Activity הפעילה כדי לספק Context עם השפה הנכונה
     private static Context currentActivityContext;
@@ -215,5 +219,37 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public static String getLang() {
         return lang;
+    }
+
+    /**
+     * Updates the application's locale on-the-fly without recreating the activity.
+     * This is useful for in-game language switching.
+     */
+    public void updateLanguageOnTheFly(String langCode) {
+        // 1. Update SharedPreferences
+        getSharedPreferences("app_language", Context.MODE_PRIVATE).edit()
+                .putString("app_language", langCode).apply();
+
+        // 2. Update Configuration of the current activity
+        Resources res = getResources();
+        Configuration config = res.getConfiguration();
+        
+        Locale locale = localeCache.get(langCode);
+        if (locale == null) {
+            locale = new Locale(langCode);
+            localeCache.put(langCode, locale);
+        }
+
+        Locale.setDefault(locale);
+        config.setLocale(locale);
+
+        // Update the configuration
+        res.updateConfiguration(config, res.getDisplayMetrics());
+
+        // 3. Update the static lang variable
+        lang = langCode;
+
+        // 4. Synchronize dialogues
+        DialogueManager.checkLanguageSync();
     }
 }

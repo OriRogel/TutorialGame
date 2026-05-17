@@ -13,6 +13,7 @@ import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
 import com.example.tutorialgame.gamestates.menu.BaseMenu;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
+import com.example.tutorialgame.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +82,17 @@ public class OptionsMenu extends BaseMenu implements BaseButton.OnClickListener 
         } else if (button == btnVideoSettings) {
             menuManager.setCurrentMenuState(MenuManager.MenuState.VideoSettings);
         } else if (button == btnLanguage) {
-            // TODO: Logic for switching language will go here
+            menuManager.setCurrentMenuState(MenuManager.MenuState.Language);
         } else if (button == btnCredits) {
             // TODO: Logic for showing credits will go here
         }
+    }
+
+    @Override
+    public void refreshStrings() {
+        super.refreshStrings();
+        // RectButton uses RectImages which handles getText() dynamically using BaseActivity.getContext()
+        // No extra work needed for RectButtons unless we need to re-center text, 
+        // but draw() calls rectImages.setTextPos(pushed) which re-measures every frame.
     }
 }

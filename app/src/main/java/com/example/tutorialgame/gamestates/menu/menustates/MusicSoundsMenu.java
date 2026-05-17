@@ -93,4 +93,12 @@ public class MusicSoundsMenu extends BaseMenu implements CustomSeekBar.OnProgres
         else if (seekBar == sbSound)
             SoundManager.getInstance(context).setVolume(progress);
     }
+
+    @Override
+    public void refreshStrings() {
+        super.refreshStrings();
+        sbMusic.refreshStrings();
+        sbSound.refreshStrings();
+        swHaptics.refreshStrings();
+    }
 }

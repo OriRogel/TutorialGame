@@ -119,4 +119,16 @@ public class VideoSettingsMenu extends BaseMenu implements CustomRadioGroup.OnSe
         sbZoom.eventHandler(event);
         sbCameraSpeed.eventHandler(event);
     }
+
+    @Override
+    public void refreshStrings() {
+        super.refreshStrings();
+        radioTapEffects.refreshStrings();
+        swFPS.refreshStrings();
+        swHitbox.refreshStrings();
+        swUI.refreshStrings();
+        swCamShake.refreshStrings();
+        sbZoom.refreshStrings();
+        sbCameraSpeed.refreshStrings();
+    }
 }

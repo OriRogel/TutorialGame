@@ -226,6 +226,15 @@ public class Game {
     public Context getContext() { return context; }
     public PlayingManager getPlayingManager() { return playingManager; }
 
+    /**
+     * Refreshes the UI components of the game to reflect language changes.
+     */
+    public void refreshUI() {
+        if (menuManager != null) {
+            menuManager.refreshMenus();
+        }
+    }
+
     public void onDestroy() {
         backgroundExecutor.shutdownNow();
     }

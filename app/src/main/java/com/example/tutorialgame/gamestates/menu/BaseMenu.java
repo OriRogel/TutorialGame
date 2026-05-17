@@ -27,7 +27,7 @@ public abstract class BaseMenu extends BaseState {
     protected final NinePatchDrawable background, frame;
     protected final TextRenderer titlePaint;
     protected final MenuManager menuManager;
-    private int lastRes;
+    private int lastRes = -1;
 
     public BaseMenu(Game game, MenuManager menuManager) {
         super(game);
@@ -58,11 +58,25 @@ public abstract class BaseMenu extends BaseState {
 
         if (lastRes != stringResId) {
             lastRes = stringResId;
-            float titleWidth = titlePaint.measureText(context.getString(stringResId));
-            titlePaint.setPosition(SCREEN_WIDTH / 2f - titleWidth / 2f, SCREEN_HEIGHT / 5f);
+            updateTitlePosition(stringResId);
         }
         // Single call handles both text and its shadow using the custom TextRenderer
         titlePaint.drawWithShadow(context.getString(stringResId), c);
+    }
+
+    private void updateTitlePosition(@StringRes int stringResId) {
+        float titleWidth = titlePaint.measureText(context.getString(stringResId));
+        titlePaint.setPosition(SCREEN_WIDTH / 2f - titleWidth / 2f, SCREEN_HEIGHT / 5f);
+    }
+
+    /**
+     * Resets the cached title resource to force a re-measure and re-draw 
+     * in the current language.
+     */
+    public void refreshStrings() {
+        if (lastRes != -1) {
+            updateTitlePosition(lastRes);
+        }
     }
 
 

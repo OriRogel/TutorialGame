@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.gamestates.BaseState;
+import com.example.tutorialgame.gamestates.menu.menustates.LanguageMenu;
 import com.example.tutorialgame.gamestates.menu.menustates.MainMenu;
 import com.example.tutorialgame.gamestates.menu.menustates.OptionsMenu;
 import com.example.tutorialgame.gamestates.menu.menustates.MusicSoundsMenu;
@@ -19,8 +20,9 @@ public class MenuManager extends BaseState {
     private OptionsMenu optionsMenu;
     private MusicSoundsMenu musicSoundsMenu;
     private VideoSettingsMenu videoSettingsMenu;
+    private LanguageMenu languageMenu;
     
-    public enum MenuState { Main, Options, MusicSounds, VideoSettings }
+    public enum MenuState { Main, Options, MusicSounds, VideoSettings, Language }
     private MenuState currentMenuState = MenuState.Main;
 
     public MenuManager(Game game) {
@@ -28,11 +30,20 @@ public class MenuManager extends BaseState {
         initMenuStates();
     }
 
-    private void initMenuStates() {
+    public void initMenuStates() {
         mainMenu = new MainMenu(game, this);
         optionsMenu = new OptionsMenu(game, this);
         musicSoundsMenu = new MusicSoundsMenu(game, this);
         videoSettingsMenu = new VideoSettingsMenu(game, this);
+        languageMenu = new LanguageMenu(game, this);
+    }
+
+    public void refreshMenus() {
+        mainMenu.refreshStrings();
+        optionsMenu.refreshStrings();
+        musicSoundsMenu.refreshStrings();
+        videoSettingsMenu.refreshStrings();
+        languageMenu.refreshStrings();
     }
 
     public void setCurrentMenuState(MenuState newState) {
@@ -51,6 +62,7 @@ public class MenuManager extends BaseState {
             case Options: return optionsMenu;
             case MusicSounds: return musicSoundsMenu;
             case VideoSettings: return videoSettingsMenu;
+            case Language: return languageMenu;
             default: return null;
         }
     }

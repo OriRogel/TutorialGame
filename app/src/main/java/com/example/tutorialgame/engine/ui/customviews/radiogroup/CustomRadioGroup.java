@@ -159,4 +159,12 @@ public class CustomRadioGroup {
     public Rect getHitbox() {
         return background.getBounds();
     }
+
+    /**
+     * Refreshes the localized title of the radio group.
+     */
+    public void refreshStrings() {
+        float titleX = Objects.requireNonNull(background).getBounds().left + (background.getBounds().width() - titleRenderer.measureText(radioGroupEnum.getTitle())) / 2;
+        titleRenderer.setX(titleX);
+    }
 }
