@@ -29,23 +29,52 @@ public final class DialogueManager {
     // Thread-safe cache to avoid repeated disk reads
     private static final Map<String, JsonElement> dialogueCache = new ConcurrentHashMap<>();
     private static volatile String loadedLanguage = "";
+    private static volatile String lastCheckedLang = "";
 
     private DialogueManager() {}
 
     /**
      * Synchronizes the dialogue cache with the currently selected language.
      */
+
     public static void checkLanguageSync() {
         String currentLang = BaseActivity.getLang();
-        if (!currentLang.equals(loadedLanguage)) {
+
+        // בודקים אם השפה של האפליקציה השתנתה מאז הבדיקה האחרונה שלנו
+        if (!currentLang.equals(lastCheckedLang)) {
             synchronized (DialogueManager.class) {
-                if (!currentLang.equals(loadedLanguage)) {
+                if (!currentLang.equals(lastCheckedLang)) {
+                    lastCheckedLang = currentLang;
                     dialogueCache.clear();
-                    loadedLanguage = currentLang;
-                    Log.i(TAG, "Dialogue cache cleared. Switched to language: " + currentLang);
+
+                    // בודקים אם קיימת תיקייה לשפה הזו ב-Assets
+                    if (isLanguageSupported(currentLang)) {
+                        loadedLanguage = currentLang;
+                    } else {
+                        // Fallback לאנגלית אם השפה לא קיימת בדיאלוגים
+                        loadedLanguage = "en";
+                        Log.w(TAG, "Dialogue folder for '" + currentLang + "' not found. Falling back to English.");
+                    }
+                    Log.i(TAG, "Dialogue cache cleared. Active dialogue language: " + loadedLanguage);
                 }
             }
         }
+    }
+
+
+    // פונקציית עזר שבודקת אם התיקייה קיימת ב-Assets
+    private static boolean isLanguageSupported(String lang) {
+        if (lang == null || lang.isEmpty()) return false;
+        if ("en".equals(lang)) return true; // אנגלית היא תמיד ה-Base
+        try {
+            String[] availableLangs = MyApp.getAppContext().getAssets().list("dialogues");
+            if (availableLangs != null) {
+                for (String s : availableLangs) {
+                    if (s.equals(lang)) return true;
+                }
+            }
+        } catch (Exception ignored) {}
+        return false;
     }
 
     /**
