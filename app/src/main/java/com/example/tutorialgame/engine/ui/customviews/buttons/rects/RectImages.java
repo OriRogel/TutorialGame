@@ -1,16 +1,10 @@
 package com.example.tutorialgame.engine.ui.customviews.buttons.rects;
 
-import static com.example.tutorialgame.engine.core.GameConstants.Sprite.SCALE_MULTIPLIER;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.NinePatchDrawable;
 import androidx.annotation.StringRes;
-import androidx.core.content.ContextCompat;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.interfaces.BitmapMethods;
-import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.ui.base.BaseActivity;
-import java.util.Objects;
 
 public enum RectImages implements BitmapMethods {
     REPLAY(Color.RED, R.string.replay),

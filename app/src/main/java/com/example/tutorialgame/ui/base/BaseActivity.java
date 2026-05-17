@@ -53,8 +53,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      * יוצר Context חדש המוגדר לשפה המבוקשת.
      */
     public static Context updateLocale(Context context, String langCode) {
-        // השתמש בקוד השפה כפי שהוא (en או iw)
-        Locale locale = new Locale(langCode);
+        Locale locale = localeCache.get(langCode);
+        if (locale == null) {
+            locale = new Locale(langCode);
+            localeCache.put(langCode, locale);
+        }
         Locale.setDefault(locale);
 
         Resources res = context.getResources();
