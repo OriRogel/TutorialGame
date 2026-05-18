@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">TutorialGame</string>
     <string name="play_Cap">PLAY</string>
@@ -19,7 +20,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="invalid_nickname">Nickname must be > 2</string>
 
-    //ToastMessages
+    <!--ToastMessages-->
     <string name="verification_email_sent">Verification email sent. Check your inbox!</string>
     <string name="reset_password_email_sent">Reset password email has been sent. Check your inbox!</string>
     <string name="verify_email">Please verify your email before logging in</string>
@@ -40,43 +41,43 @@
     <string name="hebrew" translatable="false">עברית</string>
     <string name="greek" translatable="false">Ελληνικά</string>
 
-    //Content Description
+    <!--Content Description-->
     <string name="close_button">close button</string>
     <string name="music_image">music image</string>
     <string name="menu_button">open settings menu button</string>
     <string name="sound_effects_image">sound effects image</string>
 
-    //Death Screen
+    <!--Death Screen-->
     <string name="you_died">You Died!</string>
     <string name="replay">Replay</string>
     <string name="back_launcher">Back To Launcher</string>
 
-    //Menu
+    <!--Menu-->
     <string name="game_menu">Game Menu</string>
     <string name="back">Back To Game</string>
     <string name="save_quit">Save and Quit</string>
     <string name="options">Options</string>
 
-    //Options (Menu sub)
+    <!--Options (Menu sub)-->
     <string name="done">Done</string>
     <string name="music_sounds"><![CDATA[Music & Sounds]]></string>
     <string name="video_settings">Video Settings</string>
     <string name="credits">Credits</string>
 
-    //SeekBar names
+    <!--SeekBar names-->
     <string name="music_cap">MUSIC</string>
     <string name="sounds_cap">SOUNDS</string>
     <string name="zoom_cap">ZOOM</string>
     <string name="camera_flow_cap">CAMERA FLOW</string>
 
-    //Switch names
+    <!--Switch names-->
     <string name="haptics">HAPTICS</string>
     <string name="fps">FPS</string>
     <string name="cam_shake">CAMERA SHAKE</string>
     <string name="hitbox">HITBOX</string>
     <string name="ui">UI</string>
 
-    //Upgrade
+    <!--Upgrade-->
     <string name="health">Health</string>
     <string name="health_desc">Increases your maximum health points.</string>
     <string name="strength">Strength</string>
@@ -91,7 +92,7 @@
     <string name="return_">Return</string>
     <string name="points_to_upgrade">Points to upgrade</string>
 
-    //DialogThings
+    <!--DialogThings-->
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="wanna_logout">Are you sure you want to\nlogout?</string>
@@ -113,7 +114,7 @@
     <string name="continue_">continue</string>
     <string name="ok">OK</string>
 
-    //AlertDialog
+    <!--AlertDialog-->
     <string name="error_loading">Error loading</string>
     <string name="unable_load_message">Unable to load data from the server. Please try again later.</string>
     <string name="try_again">try again</string>
@@ -122,7 +123,7 @@
     <string name="nickname">nickname</string>
     <string name="nickname_updated">Nickname updated successfully</string>
 
-    //TapEffects
+    <!--TapEffects-->
     <string name="tap_effect">Tap Effect</string>
     <string name="white_circle">white circle</string>
     <string name="orange_circle">orange circle</string>
@@ -131,7 +132,7 @@
 
     <string name="press_to_exit"><![CDATA[Press  again  to  exit]]></string>
 
-    //ProfileFragment
+    <!--ProfileFragment-->
     <string name="player_profile_Cap"><![CDATA[PLAYER  PROFILE]]></string>
     <string name="stats">STATS</string>
     <string name="save_slots">SAVE SLOTS</string>
@@ -140,7 +141,7 @@
     <string name="quests_completed">quests completed</string>
     <string name="frames_collected">frames collected</string>
 
-    //CharacterNames
+    <!--CharacterNames-->
     <string name="best_friend">Capu</string>
     <string name="black_knight">Kann</string>
     <string name="blacksmith">Blacksmith</string>
@@ -154,7 +155,7 @@
 
 
 
-    //Quest
+    <!--Quest-->
     <string name="quest">Quest</string>
     <string name="talk_to_father">Talk to Father</string>
     <string name="find_blacksmith">Find the Blacksmith</string>
@@ -164,7 +165,7 @@
     <string name="reach_center">Reach the Center</string>
     <string name="run">Run!</string>
 
-    //Circle Frames
+    <!--Circle Frames-->
     <string name="series_a_new_start">A New Start</string>
     <string name="series_king_pink">King Pink</string>
     <string name="series_monster_slayer">Monster Slayer</string>
@@ -183,7 +184,7 @@
     <string name="available">Available</string>
     <string name="unlock_prev_message">To unlock selected frame, first you need to unlock previous grade.</string>
 
-    //Unlock Conditions
+    <!--Unlock Conditions-->
     <string name="unlock">unlock</string>
     <string name="con_purchase">Coins to Purchase</string>
     <string name="con_days">Days to Login</string>
