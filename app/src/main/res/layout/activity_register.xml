@@ -1,116 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.authentication.RegisterActivity"
-    android:layoutDirection="ltr"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="15dp">
+    tools:context=".ui.activities.authentication.RegisterActivity">
 
-    <TextView
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@drawable/nine_path_panel"
+        android:importantForAccessibility="no" />
+
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#80000000" />-->
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/register"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:layoutDirection="ltr"
         android:gravity="center"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/pixel_font"/>
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cursorColor="@color/hint"
-        app:hintEnabled="false">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:gravity="center"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:shadowColor="@color/black"
+            android:shadowRadius="5"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/pixel_font"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cursorColor="@color/hint"
+            app:hintEnabled="false">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dialogbox_simple"
+                android:gravity="center_vertical"
+                android:hint="@string/nickname"
+                android:maxLength="20"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:fontFamily="@font/pixel_font">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cursorColor="@color/hint"
+            app:hintEnabled="false"
+            android:layout_marginTop="10dp">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nickname"
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dialogbox_simple"
+                android:gravity="center_vertical"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLength="320"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:fontFamily="@font/pixel_font">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/dialogbox_simple"
-            android:gravity="center_vertical"
-            android:hint="@string/nickname"
-            android:maxLength="20"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:fontFamily="@font/pixel_font">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
+            app:endIconMode="password_toggle"
+            app:endIconDrawable="@drawable/eye_toggle_selector"
+            app:cursorColor="@color/hint"
+            app:hintEnabled="false"
+            android:layout_marginTop="10dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dialogbox_simple"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="35dp"
+                android:fontFamily="@font/pixel_font">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cursorColor="@color/hint"
-        app:hintEnabled="false"
-        android:layout_marginTop="5dp">
-    <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
+
+
+        <android.widget.Button
+            android:id="@+id/btnRegister"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:background="@drawable/button_image_selector"
+            android:backgroundTint="@null"
+            android:textColor="@color/button_text_color"
+            android:layout_marginTop="15dp"
+            android:textSize="22sp"
+            android:fontFamily="@font/pixel_font"/>
+
+
+        <TextView
+            android:id="@+id/tvLoginNow"
+            android:gravity="center"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/dialogbox_simple"
-            android:gravity="center_vertical"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:maxLength="320"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:fontFamily="@font/pixel_font">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:endIconMode="password_toggle"
-        app:endIconDrawable="@drawable/eye_toggle_selector"
-        app:cursorColor="@color/hint"
-        app:hintEnabled="false"
-        android:layout_marginTop="5dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/dialogbox_simple"
-            android:gravity="center_vertical"
-            android:paddingStart="15dp"
-            android:paddingEnd="35dp"
-            android:fontFamily="@font/pixel_font">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-    <android.widget.Button
-        android:id="@+id/btnRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/register"
-        android:background="@drawable/button_image_selector"
-        android:backgroundTint="@null"
-        android:textColor="@color/button_text_color"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/pixel_font"/>
-
-
-    <TextView
-        android:id="@+id/tvLoginNow"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/click_to_login"
-        android:fontFamily="@font/pixel_font"
-        android:textColor="@color/text_press_color"
-        android:textAllCaps="true"/>
-</androidx.appcompat.widget.LinearLayoutCompat>
+            android:text="@string/click_to_login"
+            android:fontFamily="@font/pixel_font"
+            android:textColor="@color/text_press_color"
+            android:shadowColor="@color/black"
+            android:shadowRadius="2"
+            android:textAllCaps="true"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

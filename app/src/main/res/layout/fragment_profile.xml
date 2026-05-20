@@ -143,6 +143,7 @@
                                 android:paddingStart="1dp"
                                 android:textAlignment="center"
                                 android:fontFamily="@font/pixel_font"
+                                android:layout_gravity="center_vertical"
                                 tools:ignore="RtlSymmetry" />
                         </FrameLayout>
 
@@ -287,17 +288,18 @@
             </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/tv_stats"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black"
-                android:layout_below="@id/layout"
-                android:layout_marginTop="20dp"
-                android:text="@string/save_slots"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:fontFamily="@font/pixel_font" />
+    <TextView
+        android:id="@+id/tv_stats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/inventory_cell"
+        android:layout_below="@id/layout"
+        android:layout_marginTop="20dp"
+        android:text="@string/save_slots"
+        android:padding="8dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/pixel_font" />
 
             <LinearLayout
                 android:id="@+id/stats"

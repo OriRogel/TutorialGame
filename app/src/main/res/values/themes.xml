@@ -9,6 +9,14 @@
     <style name="Theme.TutorialGame" parent="Base.Theme.TutorialGame" >
     </style>
 
+    <!-- Post-Android 12 Splash Screen Theme -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@mipmap/ic_launcher_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.TutorialGame</item>
+        <item name="android:windowIsTranslucent" tools:targetApi="31">true</item>
+    </style>
+
     <style name="fragment_title" parent="Widget.AppCompat.TextView">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="fontFamily">@font/pixel_font</item>

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.core.view.GravityCompat;
@@ -23,17 +24,23 @@ import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.ui.PlayerFaceset;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
+import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.ui.fragments.ProfileFragment;
 import com.example.tutorialgame.ui.fragments.SettingsFragment;
+
+import java.text.MessageFormat;
+import java.util.Objects;
 
 public class LauncherActivity extends BaseActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
     private View settingsContainer;
     private Button btnPlay;
     private ImageButton imgBtnMenu;
-    private ImageView ivPic, ivFrame, ivBackground;
+    private ImageView ivPic, ivFrame, ivBackground, iv_coin;
+    private TextView tvNickname, tvCoins, tvLevel, tvXp;
+    private View profileHeader;
 
     // רפרנסים חדשים לרכיבים שהוספנו
     private FrameLayout profileContainer;
@@ -65,6 +72,13 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         ivPic = findViewById(R.id.iv_pic);
         ivFrame = findViewById(R.id.iv_profile_frame);
         ivBackground = findViewById(R.id.iv_profile_background);
+        iv_coin = findViewById(R.id.iv_coin);
+        profileHeader = findViewById(R.id.profile_header);
+
+        tvNickname = findViewById(R.id.tv_launcher_nickname);
+        tvCoins = findViewById(R.id.tv_launcher_coins);
+        tvLevel = findViewById(R.id.tv_level);
+        tvXp = findViewById(R.id.tv_xp);
 
         // אתחול הרכיבים החדשים
         profileContainer = findViewById(R.id.profile_container);
@@ -78,12 +92,15 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         btnPlay.setOnClickListener(this);
         imgBtnMenu.setOnClickListener(this);
         ivFrame.setOnClickListener(this);
+        profileHeader.setOnClickListener(this);
 
         // הוסף Listener לרקע המושחר כדי לסגור את הפרופיל בלחיצה עליו
         dimBackground.setOnClickListener(v -> closeProfileFragment());
     }
 
     private void setProfileBackground() {
+        if (MyApp.getCosmetic() == null || MyApp.getProgress() == null || MyApp.getProfile() == null) return;
+
         Bitmap frameBitmap = CircleFrames.valueOf(MyApp.getCosmetic().getCurrentFrame()).getCircleFrame();
         Bitmap faceBitmap = PlayerFaceset.IDLE.getFace();
         Bitmap bg = CircleFrames.BACKGROUND.getCircleFrame();
@@ -92,6 +109,12 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         ivFrame.setImageBitmap(frameBitmap);
         ivPic.setImageBitmap(faceBitmap);
 
+        tvNickname.setText(MyApp.getProfile().getNickname());
+        tvCoins.setText(String.valueOf(MyApp.getCosmetic().getCoinsLeft()));
+        tvLevel.setText(String.valueOf(MyApp.getProgress().getLevel()));
+        tvXp.setText(MessageFormat.format("{0}/{1}", MyApp.getProgress().getXp(), MyApp.getProgress().neededXpForLevelUp()));
+
+        iv_coin.setImageBitmap(Objects.requireNonNull(BitmapManager.getSpritesheet(R.drawable.spr_coin, 10, 10, 4, 1, false))[0]);
     }
 
     private void setFragmentDrawer() {
@@ -119,7 +142,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
             ft.commit();
             drawerLayout.openDrawer(GravityCompat.END);
         }
-        else if (v == ivFrame) {
+        else if (v == ivFrame || v == profileHeader) {
             openProfileFragment(); // קריאה למתודה חדשה שמטפלת בהצגת הפרופיל
         }
     }

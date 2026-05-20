@@ -17,7 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.core.splashscreen.SplashScreen;
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.UserDataManager;
@@ -37,34 +37,46 @@ import com.google.firebase.auth.FirebaseUser;
  */
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends BaseActivity {
-    private static final int SPLASH_DELAY = 4000; // Minimum time to show the splash screen
+    private static final int MIN_SPLASH_TIME = 2000; // Minimum time to show our custom branding
 
     private ImageView ivLogo;
     private TextView tvAppName;
     private ObjectAnimator logoAnimator;
     private float lastVol;
+    private boolean isInitialized = false; // Controls system splash dismissal
+    private long startTime;
 
-    // Handler and Runnable members for safe lifecycle management
+    // Handler for timing logic
     private final Handler splashHandler = new Handler(Looper.getMainLooper());
-    private final Runnable statusCheckRunnable = this::checkUserStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 1. Install Splash Screen API before super.onCreate()
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        startTime = System.currentTimeMillis();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        // 2. Dismiss the system splash screen as soon as our Activity is ready
+        splashScreen.setKeepOnScreenCondition(() -> !isInitialized);
+        
+        // Mark as initialized to let the system splash go and reveal our custom layout
+        isInitialized = true;
 
         setupMusic();
         initViews();
         initDimensions();
-        
-        startTransition();
-        startFadeInSlideUp();
 
         // Ensure localization is synced before any UI or Data load
         DialogueManager.checkLanguageSync();
 
-        // Schedule the transition to the next screen
-        splashHandler.postDelayed(statusCheckRunnable, SPLASH_DELAY);
+        // 3. Start our custom branding animations immediately (once layout is ready)
+        startTransition();
+        startFadeInSlideUp();
+
+        // 4. Begin the loading process
+        checkUserStatus();
     }
 
     /**
@@ -140,7 +152,7 @@ public class SplashActivity extends BaseActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser == null || !currentUser.isEmailVerified()) {
-            navigateToLogin();
+            finalizeLoading(this::navigateToLogin);
             return;
         }
 
@@ -160,7 +172,7 @@ public class SplashActivity extends BaseActivity {
                         // Preload map on a background thread to prevent UI stutter
                         new Thread(() -> {
                             MapManager.initStartingWorld();
-                            runOnUiThread(SplashActivity.this::navigateToMain);
+                            runOnUiThread(() -> finalizeLoading(SplashActivity.this::navigateToMain));
                         }).start();
                     }
 
@@ -175,11 +187,26 @@ public class SplashActivity extends BaseActivity {
     }
 
     /**
+     * Ensures minimum splash duration for branding before proceeding.
+     */
+    private void finalizeLoading(Runnable navigationTask) {
+        long elapsed = System.currentTimeMillis() - startTime;
+        long remaining = MIN_SPLASH_TIME - elapsed;
+
+        if (remaining > 0) {
+            splashHandler.postDelayed(navigationTask, remaining);
+        } else {
+            navigationTask.run();
+        }
+    }
+
+    /**
      * Handles fatal loading errors by showing a restart prompt.
      */
     private void handleLoadError() {
-        if (!isFinishing())
+        if (!isFinishing()) {
             AlertDialogUtils.showErrorDialogAndRestart(this);
+        }
     }
 
     private void navigateToMain() {
@@ -210,7 +237,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         // Cleanup resources to prevent memory leaks and orphaned animations
-        splashHandler.removeCallbacks(statusCheckRunnable);
         if (logoAnimator != null) {
             logoAnimator.cancel();
         }

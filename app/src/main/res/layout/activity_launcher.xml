@@ -8,6 +8,14 @@
     android:layoutDirection="ltr"
     tools:context=".ui.activities.LauncherActivity">
 
+    <ImageView
+        android:id="@+id/iv_launcher_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@mipmap/ic_launcher_background"
+        android:importantForAccessibility="no" />
+
     <FrameLayout
         android:id="@+id/root_container"
         android:layout_width="match_parent"
@@ -18,44 +26,152 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/profile_button_container"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:layout_constraintStart_toStartOf="parent"
+            <!-- Top Bar Stats -->
+            <LinearLayout
+                android:id="@+id/top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-                <ImageView
-                    android:id="@+id/iv_profile_background"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:importantForAccessibility="no" />
+                <!-- Profile and Nickname -->
+                <LinearLayout
+                    android:id="@+id/profile_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/dialogbox_simple"
+                    android:paddingEnd="15dp">
 
-                <ImageView
-                    android:id="@+id/iv_profile_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:stateListAnimator="@animator/rotate90_view_animator"
-                    android:contentDescription="Profile Frame" />
+                    <FrameLayout
+                        android:id="@+id/profile_button_container"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp">
 
-                <ImageView
-                    android:id="@+id/iv_pic"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="3dp"
-                    android:importantForAccessibility="no" />
-            </FrameLayout>
+                        <ImageView
+                            android:id="@+id/iv_profile_background"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:importantForAccessibility="no" />
 
+                        <ImageView
+                            android:id="@+id/iv_profile_frame"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:stateListAnimator="@animator/rotate90_view_animator"
+                            android:contentDescription="Profile Frame" />
+
+                        <ImageView
+                            android:id="@+id/iv_pic"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="2dp"
+                            android:importantForAccessibility="no" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tv_launcher_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/pixel_font"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:text="Nickname" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!-- Coins -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/interior_background"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:layout_marginEnd="10dp">
+
+                    <ImageView
+                        android:id="@+id/iv_coin"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+
+                    <TextView
+                        android:id="@+id/tv_launcher_coins"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/pixel_font"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:text="0" />
+                </LinearLayout>
+
+                <!-- Level / XP -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_xp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/xp_container"
+                        android:gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:textSize="11sp"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="10dp"
+                        android:fontFamily="@font/pixel_font"
+                        android:textColor="@color/white"
+                        android:paddingHorizontal="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/xp_img"
+                        android:gravity="center"
+                        android:textSize="15sp"
+                        android:textColor="@color/magnolia_white"
+                        android:shadowColor="@color/black"
+                        android:shadowRadius="1"
+                        android:shadowDy="2"
+                        android:paddingStart="1dp"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/pixel_font"
+                        tools:ignore="RtlSymmetry"
+                        android:layout_gravity="center_vertical"/>
+                </FrameLayout>
+
+                <ImageButton
+                    android:id="@+id/btnMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/menu_image_selector"
+                    android:backgroundTint="@null"
+                    android:contentDescription="@string/menu_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/top_bar" />
+            </LinearLayout>
 
             <android.widget.Button
                 android:id="@+id/btnPlay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_width="200dp"
+                android:layout_height="80dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/button_image_selector"
                 android:backgroundTint="@null"
                 android:fontFamily="@font/pixel_font"
@@ -63,20 +179,8 @@
                 android:textColor="@color/button_text_color"
                 android:textSize="40sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <ImageButton
-                android:id="@+id/btnMenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/menu_image_selector"
-                android:backgroundTint="@null"
-                android:contentDescription="@string/menu_button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 2. רקע מושחר (Dim Background) שיופיע מעל התוכן הראשי -->
