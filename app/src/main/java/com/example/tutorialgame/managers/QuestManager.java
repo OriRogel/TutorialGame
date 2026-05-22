@@ -6,20 +6,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
-import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
-import com.example.tutorialgame.entities.Weapons;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.environments.GameMap;
 import com.example.tutorialgame.environments.maploder.ObjectData;
 import com.example.tutorialgame.quest.ComplexQuest;
 import com.example.tutorialgame.quest.Quest;
+import com.example.tutorialgame.quest.QuestParser;
 import com.example.tutorialgame.quest.QuestType;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class QuestManager {
@@ -53,62 +50,10 @@ public final class QuestManager {
 
     private QuestManager() {}
 
-    /**
-     * פעולת עזר ליצירת Quest בצורה מקוצרת.
-     */
-    private static Quest quest(int taskRes, String id, QuestType.Type type, String target, int coins, int xp, Runnable action) {
-        return new Quest(taskRes, id, new QuestType(type, target), coins, xp, action);
-    }
-
-    /**
-     * פעולת עזר להוספת משימה מורכבת לעלילה הראשית.
-     */
-    private static void addStory(int titleRes, Quest... subQuests) {
-        mainStoryLine.add(new ComplexQuest(titleRes, Arrays.asList(subQuests)));
-    }
 
     private static void initQuests() {
         mainStoryLine.clear();
-
-        // 1. לדבר עם אבא
-        addStory(R.string.quest,
-                quest(R.string.talk_to_father, "event_player_talkedToFather", QuestType.Type.DIALOGUE_WITH, "FATHER", 1, 20, null)
-        );
-
-        // 2. מצא את הנפח וקבל חרב
-        addStory(R.string.quest,
-                quest(R.string.find_blacksmith, "event_player_talkedToFriend", QuestType.Type.DIALOGUE_WITH, "BEST_FRIEND", 0, 10,
-                        () -> WorldEventManager.triggerEvent("TALKED_TO_FRIEND_FIRST_TIME")),
-                quest(R.string.find_blacksmith, "event_blacksmith_finishedFirstTalk", QuestType.Type.DIALOGUE_WITH, "BLACKSMITH", 0, 5,
-                        () -> Game.setNextGameState(Game.GameState.CUTSCENE)),
-                quest(R.string.find_blacksmith, "event_player_receivedWeapon", QuestType.Type.DIALOGUE_WITH, "BLACKSMITH", 3, 15,
-                        () -> {
-                            MyApp.getWorldStateDoc().setCurrentWeapon(Weapons.BIG_SWARD.name());
-                            WorldEventManager.triggerEvent("RECEIVED_SWORD_FROM_BLACKSMITH");
-                        })
-        );
-
-        // 3. מה הוא רוצה?
-        addStory(R.string.quest,
-                quest(R.string.what_he_wants, "event_player_talkedToFriend2", QuestType.Type.DIALOGUE_WITH, "BEST_FRIEND", 0, 15,
-                        () -> WorldEventManager.triggerEvent("TALKED_TO_FRIEND_IN_SHOP"))
-        );
-
-        // 4. חיפוש רמזים
-        addStory(R.string.quest,
-                quest(R.string.find_clues, "event_player_talkedToWhiteKnight", QuestType.Type.DIALOGUE_WITH, "WHITE_KNIGHT", 0, 30,
-                        () -> WorldEventManager.triggerEvent("TALKED_TO_WHITE_KNIGHT"))
-        );
-
-        // 5. המבוך
-        addStory(R.string.quest,
-                quest(R.string.maybe_strong_enough, "event_enter_maze", QuestType.Type.ENTER_ZONE, "maze.tmx", 0, 0,
-                        () -> WorldEventManager.triggerEvent("ENTER_MAZE")),
-                quest(R.string.reach_center, "event_enter_maze_center", QuestType.Type.ENTER_ZONE, "MAZE_CENTER", 0, 0,
-                        () -> Game.setNextGameState(Game.GameState.CUTSCENE)),
-                quest(R.string.run, "event_escaped_from_maze", QuestType.Type.ENTER_ZONE, "chief_home.tmx", 5, 20, null)
-        );
-
+        mainStoryLine.addAll(QuestParser.parseQuests(BaseActivity.getContext(), "quests.xml"));
         update();
     }
 

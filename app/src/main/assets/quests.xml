@@ -1,0 +1,81 @@
+<quests>
+    <!-- 1. לדבר עם אבא -->
+    <quest title_res="quest">
+        <step id="event_player_talkedToFather" task_res="talk_to_father" coins="1" xp="20">
+            <requirement type="DIALOGUE_WITH" target="FATHER" />
+        </step>
+    </quest>
+
+    <!-- 2. מצא את הנפח וקבל חרב -->
+    <quest title_res="quest">
+        <step id="event_player_talkedToFriend" task_res="find_blacksmith" coins="0" xp="10">
+            <requirement type="DIALOGUE_WITH" target="BEST_FRIEND" />
+            <onSuccess>
+                <!-- WorldEventManager.triggerEvent("TALKED_TO_FRIEND_FIRST_TIME") -->
+                <action type="SET_HOME" char="BEST_FRIEND" map="village.tmx" x="-64" y="9.6" relative="true" />
+            </onSuccess>
+        </step>
+        <step id="event_blacksmith_finishedFirstTalk" task_res="find_blacksmith" coins="0" xp="5">
+            <requirement type="DIALOGUE_WITH" target="BLACKSMITH" />
+            <onSuccess>
+                <action type="CHANGE_STATE" state="CUTSCENE" />
+            </onSuccess>
+        </step>
+        <step id="event_player_receivedWeapon" task_res="find_blacksmith" coins="3" xp="15">
+            <requirement type="DIALOGUE_WITH" target="BLACKSMITH" />
+            <onSuccess>
+                <action type="GIVE_WEAPON" weapon="BIG_SWARD" />
+                <!-- WorldEventManager.triggerEvent("RECEIVED_SWORD_FROM_BLACKSMITH") -->
+                <action type="MOVE_NPC" char="BEST_FRIEND" from="village.tmx" to="weapon_store.tmx" x="70.4" y="268.8" />
+                <action type="TELEPORT" char="FATHER" map="chief_home.tmx" x="2880" y="2880" />
+                <action type="SET_DOOR" map="weapon_store.tmx" door="weapon_store_to_village" active="false" />
+            </onSuccess>
+        </step>
+    </quest>
+
+    <!-- 3. מה הוא רוצה? -->
+    <quest title_res="quest">
+        <step id="event_player_talkedToFriend2" task_res="what_he_wants" coins="0" xp="15">
+            <requirement type="DIALOGUE_WITH" target="BEST_FRIEND" />
+            <onSuccess>
+                <!-- WorldEventManager.triggerEvent("TALKED_TO_FRIEND_IN_SHOP") -->
+                <action type="SET_DOOR" map="weapon_store.tmx" door="weapon_store_to_village" active="true" />
+                <action type="MOVE_NPC" char="BEST_FRIEND" from="weapon_store.tmx" to="village.tmx" x="800" y="544" />
+            </onSuccess>
+        </step>
+    </quest>
+
+    <!-- 4. חיפוש רמזים -->
+    <quest title_res="quest">
+        <step id="event_player_talkedToWhiteKnight" task_res="find_clues" coins="0" xp="30">
+            <requirement type="DIALOGUE_WITH" target="WHITE_KNIGHT" />
+            <onSuccess>
+<!--                 WorldEventManager.triggerEvent("TALKED_TO_WHITE_KNIGHT") -->
+                <!-- Note: Angry state for knights might need a specific action if it's not handled by generic components -->
+                <!-- For now, I'll stick to what can be done via actions or keep WorldEventManager for complex logic -->
+                <action type="TELEPORT" char="FATHER" map="chief_home.tmx" x="2880" y="2880" />
+            </onSuccess>
+        </step>
+    </quest>
+
+    <!-- 5. המבוך -->
+    <quest title_res="quest">
+        <step id="event_enter_maze" task_res="maybe_strong_enough" coins="0" xp="0">
+            <requirement type="ENTER_ZONE" target="maze.tmx" />
+            <onSuccess>
+                <!-- WorldEventManager.triggerEvent("ENTER_MAZE") -->
+                <action type="SET_DIALOGUE" char="PLAYER" map="maze.tmx" speakerType="PLAYER" />
+                <action type="SET_DOOR" map="maze.tmx" door="maze_to_chief_home" active="false" />
+            </onSuccess>
+        </step>
+        <step id="event_enter_maze_center" task_res="reach_center" coins="0" xp="0">
+            <requirement type="ENTER_ZONE" target="MAZE_CENTER" />
+            <onSuccess>
+                <action type="CHANGE_STATE" state="CUTSCENE" />
+            </onSuccess>
+        </step>
+        <step id="event_escaped_from_maze" task_res="run" coins="5" xp="20">
+            <requirement type="ENTER_ZONE" target="chief_home.tmx" />
+        </step>
+    </quest>
+</quests>

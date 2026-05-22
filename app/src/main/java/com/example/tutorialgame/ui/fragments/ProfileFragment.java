@@ -158,7 +158,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 // עדכון בענן ורק לאחר מכן ריסטרט לאפליקציה
                 MyApp.getProfile().updateLastSelectedSlot(slotId).addOnCompleteListener(task -> {
                     AlertDialogUtils.resetApp(requireActivity());
-                    dismiss();
+                    ProfileFragment.this.dismiss();
                 });
             }
         };
