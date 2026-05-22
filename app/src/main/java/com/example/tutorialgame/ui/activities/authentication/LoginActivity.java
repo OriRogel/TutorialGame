@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.ui.activities.LauncherActivity;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.ui.dialogs.AlertDialogUtils;
+import com.example.tutorialgame.ui.fragments.LanguageFragment;
 import com.example.tutorialgame.utils.ValidationUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +38,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private FirebaseAuth mAuth;
     private TextInputEditText etEmail, etPassword;
     private Button btnLogin;
+    private ImageButton imgBtnLanguage;
     private TextView tvRegisterNow, tvForgotPassword;
     private ProgressBar progressBar;
 
@@ -58,6 +61,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         etEmail = findViewById(R.id.email);
         etPassword = findViewById(R.id.password);
         btnLogin = findViewById(R.id.btnLogin);
+        imgBtnLanguage = findViewById(R.id.imgBtnLanguage);
         progressBar = findViewById(R.id.progressBar);
         tvRegisterNow = findViewById(R.id.tvRegisterNow);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
@@ -77,6 +81,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void initListeners() {
         btnLogin.setOnClickListener(this);
+        imgBtnLanguage.setOnClickListener(this);
         tvRegisterNow.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
     }
@@ -111,6 +116,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if (v == btnLogin) loginUser();
+        else if (v == imgBtnLanguage) {
+            LanguageFragment langDialog = new LanguageFragment();
+            langDialog.show(getSupportFragmentManager(), "language_picker");
+        }
         else if (v == tvForgotPassword) resetPassword();
         else if (v == tvRegisterNow) {
             startActivity(new Intent(this, RegisterActivity.class));

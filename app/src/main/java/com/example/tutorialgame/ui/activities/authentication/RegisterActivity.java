@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.UserDataManager;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
+import com.example.tutorialgame.ui.fragments.LanguageFragment;
 import com.example.tutorialgame.utils.ValidationUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +27,7 @@ import java.util.Objects;
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvLoginNow;
     private Button btnRegister;
+    private ImageButton imgBtnLanguage;
     private TextInputEditText etEmail, etPassword, etNickname;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
@@ -44,6 +47,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         etPassword = findViewById(R.id.password);
         etNickname = findViewById(R.id.nickname);
         btnRegister = findViewById(R.id.btnRegister);
+        imgBtnLanguage = findViewById(R.id.imgBtnLanguage);
         tvLoginNow = findViewById(R.id.tvLoginNow);
         progressBar = findViewById(R.id.progressBar);
 
@@ -54,6 +58,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void initListeners() {
         tvLoginNow.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
+        imgBtnLanguage.setOnClickListener(this);
     }
 
     private void initTextWatcher() {
@@ -95,6 +100,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v == btnRegister) {
             registerUser();
+        } else if (v == imgBtnLanguage) {
+            LanguageFragment langDialog = new LanguageFragment();
+            langDialog.show(getSupportFragmentManager(), "language_picker");
         } else if (v == tvLoginNow) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();

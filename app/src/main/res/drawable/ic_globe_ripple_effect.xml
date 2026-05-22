@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/light_gray"> <!-- צבע האדווה (לבן שקוף) -->
+
+    <!-- שכבה 1: המסיכה. היא קובעת איפה האפקט יצויר.
+         ה-tint כאן עוזר למערכת להבין את הצורה טוב יותר -->
+    <item android:id="@android:id/mask">
+        <bitmap
+            android:src="@drawable/ic_globe"
+            android:tint="#FFFFFF" />
+    </item>
+
+    <!-- שכבה 2: התמונה עצמה שרואים תמיד.
+         כאן ה-tint הופך את הגלובוס השחור ללבן -->
+    <item>
+        <bitmap
+            android:src="@drawable/ic_globe"
+            android:tint="#FFFFFF" />
+    </item>
+
+</ripple>

@@ -64,18 +64,20 @@ public class LanguageFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v == imgBtnClose) {
-            replaceFragment(R.id.settings_container,
+            if (getShowsDialog()) dismiss();
+            else {replaceFragment(R.id.settings_container,
                     new SettingsFragment(),
                     R.anim.enter_from_right,
                     R.anim.exit_to_left);
+            }
         } else if (v instanceof Button) {
             Button b = (Button) v;
             String langCode = langMap.get(b);
             if (langCode != null) {
                 changeLanguage(langCode, b);
             }
+            if (getShowsDialog()) dismiss();
         }
-
     }
 
     private void changeLanguage(String langKey, Button b) {

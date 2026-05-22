@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.authentication.RegisterActivity">
+    android:background="@drawable/nine_path_panel"
+    tools:context=".ui.activities.authentication.RegisterActivity"
+    android:padding="0dp"
+    android:clipChildren="false"
+    android:clipToPadding="false" >
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:background="@drawable/nine_path_panel"
-        android:importantForAccessibility="no" />
-
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="#80000000" />-->
+    <ImageButton
+        android:id="@+id/imgBtnLanguage"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_globe_ripple_effect"
+        android:layout_gravity="end"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="27dp"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -26,6 +27,8 @@
         android:layoutDirection="ltr"
         android:gravity="center"
         android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:padding="20dp">
 
         <TextView
@@ -127,7 +130,7 @@
         <TextView
             android:id="@+id/tvLoginNow"
             android:gravity="center"
-            android:textSize="19sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
@@ -137,6 +140,8 @@
             android:textColor="@color/text_press_color"
             android:shadowColor="@color/black"
             android:shadowRadius="2"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginRight="-10dp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>
