@@ -170,7 +170,7 @@
             <android.widget.Button
                 android:id="@+id/btnPlay"
                 android:layout_width="200dp"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/button_image_selector"
                 android:backgroundTint="@null"

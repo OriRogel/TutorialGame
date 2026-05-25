@@ -21,6 +21,7 @@ import com.example.tutorialgame.engine.ui.effects.weathereffects.WeatherEffect;
 import com.example.tutorialgame.engine.renderer.LightRenderer;
 import com.example.tutorialgame.engine.ui.effects.MapTransitionEffect;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class OverWorld extends BaseState {
 
     private boolean doorwayJustPassed;
     private List<Entity> listOfDrawables;
-    private boolean listOfEntitiesMade;
+    private final List<Entity> visibleEntities = new ArrayList<>();
 
     private final LightRenderer lightRenderer;
     private final MapTransitionEffect transitionEffect;
@@ -53,6 +54,8 @@ public class OverWorld extends BaseState {
         // מנגנים מוזיקה
         MusicManager.getInstance(context).play(MapManager.getCurrentMap().getMusicRes());
         CameraManager.stopShake();
+
+        buildEntityList();
     }
 
     public OverWorld(Game game, PlayingManager playingManager) {
@@ -87,7 +90,6 @@ public class OverWorld extends BaseState {
 
         playingUI.update(delta);
         mapManager.updateWorldEntities(player, delta);
-        buildEntityList();
 
         // חסימת תנועה בזמן מוות
         if (player.isDead()) setPlayerMoveFalse();
@@ -105,7 +107,23 @@ public class OverWorld extends BaseState {
         checkForDoorway();
 
         updateEffects(delta);
-        Collections.sort(listOfDrawables);
+        prepareVisibleEntities();
+    }
+
+    private void prepareVisibleEntities() {
+        visibleEntities.clear();
+        if (listOfDrawables == null) return;
+
+        RectF viewRect = mapManager.getViewRect();
+
+        for (int i = 0; i < listOfDrawables.size(); i++) {
+            Entity e = listOfDrawables.get(i);
+            if (e != null && RectF.intersects(viewRect, e.getHitBox())) {
+                visibleEntities.add(e);
+            }
+        }
+
+        Collections.sort(visibleEntities);
     }
 
     public void updateEffects(double delta) {
@@ -144,9 +162,8 @@ public class OverWorld extends BaseState {
     }
 
 
-    private void buildEntityList() {
+    public void buildEntityList() {
         listOfDrawables = MapManager.getCurrentMap().getDrawableList();
-        listOfEntitiesMade = (listOfDrawables != null);
     }
 
     public void resetWorld(Runnable onComplete) {
@@ -176,15 +193,8 @@ public class OverWorld extends BaseState {
     }
 
     private void drawSortedEntities(Canvas c) {
-        if (!listOfEntitiesMade || listOfDrawables == null) return;
-        RectF viewRect = mapManager.getViewRect();
-
-        for (int i = 0; i < listOfDrawables.size(); i++) {
-            try {
-                Entity e = listOfDrawables.get(i);
-                if (e == null || !RectF.intersects(viewRect, e.getHitBox())) continue;
-                e.draw(c);
-            } catch (Exception ignored) {}
+        for (int i = 0; i < visibleEntities.size(); i++) {
+            visibleEntities.get(i).draw(c);
         }
     }
 

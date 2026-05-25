@@ -193,6 +193,7 @@ public class MapManager {
             newMap.setPlayer(overWorld.getPlayer());
         }
         overWorld.setDoorwayJustPassed(true);
+        overWorld.buildEntityList();
         connectDoorwaysForMap(newMap);
         QuestManager.onEnterZone(newMap.getFileName());
         initWeatherForCurrentMap();

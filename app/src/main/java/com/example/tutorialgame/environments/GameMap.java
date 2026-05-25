@@ -272,10 +272,8 @@ public class GameMap {
             if (currentDist >= targetDistPx && currentDist <= targetDistPx + tolerance) {
                 // במקום GameCharacters.createCharacter(...)
                 Character monster = ObjectPoolManager.acquireCharacter(spawnType, new PointF(worldX, worldY));
-                if (monster != null) {
-                    addCharacter(monster);
-                    return true;
-                }
+                addCharacter(monster);
+                return true;
             }
         }
 
@@ -291,12 +289,8 @@ public class GameMap {
             float worldY = tile.y * GameConstants.Sprite.TILE_SIZE;
 
             if (CollisionUtils.getDistance(worldX, worldY, player.getHitBox().centerX(), player.getHitBox().centerY()) > minDistPx) {
-                // מעכשיו משתמש ב-Pool:
-                Character monster = ObjectPoolManager.acquireCharacter(spawnType, new PointF(worldX, worldY));
-                if (monster != null) {
-                    addCharacter(monster);
-                    return true;
-                }
+                addCharacter(ObjectPoolManager.acquireCharacter(spawnType, new PointF(worldX, worldY)));
+                return true;
             }
         }
         return false;
@@ -362,7 +356,8 @@ public class GameMap {
         if (pendingAddition.isEmpty()) return;
         synchronized (pendingAddition) {
             synchronized (drawableList) {
-                for (Entity e : pendingAddition) {
+                for (int i = 0; i < pendingAddition.size(); i++) {
+                    Entity e = pendingAddition.get(i);
                     if (e instanceof Coin) {
                         animatedEntities.add((Coin) e);
                     } else if (e instanceof CollectibleItem) {
