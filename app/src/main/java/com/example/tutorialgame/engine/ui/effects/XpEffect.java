@@ -12,8 +12,6 @@ import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
 
-import java.util.Objects;
-
 public class XpEffect {
     private Bitmap xpImg;
     private int value;
@@ -30,22 +28,40 @@ public class XpEffect {
     }
 
     public void init(int value, float x, float y) {
-        this.value = value;
-        this.xpImg = BitmapManager.getBitmap(R.drawable.xp_img, value*0.9/32, false);
-        this.pos.set(x, y - Objects.requireNonNull(xpImg).getHeight()/2f);
+        this.value = Math.max(1, value);
+        
+        // Slightly smaller scale
+        double scale = (0.5 + (this.value / 200.0));
+        this.xpImg = BitmapManager.getBitmap(R.drawable.xp_img, scale, false);
+        if (this.xpImg == null) {
+            this.isActive = false;
+            return;
+        }
+
+        // Center the bitmap over the death location
+        this.pos.set(x - xpImg.getWidth()/2f, y - xpImg.getHeight());
 
         creationTime = System.currentTimeMillis();
-        lifeTime = 800;
-        floatSpeed = TILE_SIZE/2f;
+        lifeTime = 1000;
+        floatSpeed = TILE_SIZE * 0.75f;
         this.isActive = true;
 
-        textRenderer = new TextRenderer(xpImg.getWidth()/2.5f, R.color.floral_white);
+        // Smaller font size
+        float fontSize = 8f * SCALE_MULTIPLIER;
+        textRenderer = new TextRenderer(fontSize, R.color.floral_white);
 
-        float x1 = x + (xpImg.getWidth() - textRenderer.measureText("+" + value)) / 2f;
-        offsetY = textRenderer.getTextSize()*1.5f;
+        // Calculate centering
+        float textWidth = textRenderer.measureText("+" + this.value);
+        float centerX = pos.x + xpImg.getWidth() / 2f;
+        float textX = centerX - textWidth / 2f;
+        
+        // Vertically center text relative to image
+        // textRenderer draws from baseline, so we adjust by font size
+        offsetY = (xpImg.getHeight() + fontSize * 0.6f) / 2f;
 
-        textRenderer.setPosition(x1, this.pos.y + offsetY);
-        textRenderer.setShadowOffset(x1, this.pos.y + offsetY + 0.3f*SCALE_MULTIPLIER);
+        textRenderer.setPosition(textX, this.pos.y + offsetY);
+        // Correctly set shadow offset as a small relative value
+        textRenderer.setShadowOffset(0.5f * SCALE_MULTIPLIER, 0.5f * SCALE_MULTIPLIER);
         textRenderer.setShadowColor(R.color.dark_moon);
     }
 

@@ -270,7 +270,6 @@ public class GameMap {
             // האם המרחק הוא בערך מה שביקשנו? (בין המרחק לבין המרחק + גמישות)
             // בתוך spawnNewMonster
             if (currentDist >= targetDistPx && currentDist <= targetDistPx + tolerance) {
-                // במקום GameCharacters.createCharacter(...)
                 Character monster = ObjectPoolManager.acquireCharacter(spawnType, new PointF(worldX, worldY));
                 addCharacter(monster);
                 return true;

@@ -68,6 +68,14 @@ public class TextRenderer extends TextPaint {
         this.shadowRenderer = null;
     }
 
+    @Override
+    public void setAlpha(int alpha) {
+        super.setAlpha(alpha);
+        if (shadowRenderer != null) {
+            shadowRenderer.setAlpha(alpha);
+        }
+    }
+
     public void drawText(String text, Canvas c) {
         c.drawText(text, x, y, this);
     }
@@ -158,8 +166,14 @@ public class TextRenderer extends TextPaint {
     }
 
     // ... שאר ה-getters וה-setters ...
-    public void setX(float x) { this.x = x; }
-    public void setY(float y) { this.y = y; }
+    public void setX(float x) { 
+        this.x = x; 
+        updateShadowPosition();
+    }
+    public void setY(float y) { 
+        this.y = y; 
+        updateShadowPosition();
+    }
     public float getX() { return x; }
     public float getY() { return y; }
 
