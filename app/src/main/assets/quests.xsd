@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- Root element -->
+    <xs:element name="quests">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="quest" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="step" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="requirement">
+                                            <xs:complexType>
+                                                <xs:attribute name="type" use="required">
+                                                    <xs:simpleType>
+                                                        <xs:restriction base="xs:string">
+                                                            <xs:enumeration value="DIALOGUE_WITH" />
+                                                            <xs:enumeration value="ENTER_ZONE" />
+                                                            <xs:enumeration value="COLLECT_ITEM" />
+                                                        </xs:restriction>
+                                                    </xs:simpleType>
+                                                </xs:attribute>
+                                                <xs:attribute name="target" type="xs:string" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="onSuccess" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="action" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="type" use="required">
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:string">
+                                                                        <xs:enumeration value="MOVE_NPC" />
+                                                                        <xs:enumeration value="SET_DOOR" />
+                                                                        <xs:enumeration value="TELEPORT" />
+                                                                        <xs:enumeration value="SET_HOME" />
+                                                                        <xs:enumeration value="SET_DIALOGUE" />
+                                                                        <xs:enumeration value="SPAWN_MONSTERS" />
+                                                                        <xs:enumeration value="CHANGE_MUSIC" />
+                                                                        <xs:enumeration value="UPDATE_WEAPON" />
+                                                                        <xs:enumeration value="GIVE_WEAPON" />
+                                                                        <xs:enumeration value="CHANGE_STATE" />
+                                                                        <xs:enumeration value="SET_DIALOGUE" />
+                                                                    </xs:restriction>
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                            <!-- Required parameters for various actions -->
+                                                            <xs:attribute name="char" type="xs:string" />
+                                                            <xs:attribute name="from" type="xs:string" />
+                                                            <xs:attribute name="to" type="xs:string" />
+                                                            <xs:attribute name="map" type="xs:string" />
+                                                            <xs:attribute name="door" type="xs:string" />
+                                                            <xs:attribute name="active" type="xs:boolean" />
+                                                            <xs:attribute name="x" type="xs:float" />
+                                                            <xs:attribute name="y" type="xs:float" />
+                                                            <xs:attribute name="relative" type="xs:boolean" />
+                                                            <xs:attribute name="speakerType" type="xs:string" />
+                                                            <xs:attribute name="spawnType" type="xs:string" />
+                                                            <xs:attribute name="minCount" type="xs:integer" />
+                                                            <xs:attribute name="immediateCount" type="xs:integer" />
+                                                            <xs:attribute name="music" type="xs:string" />
+                                                            <xs:attribute name="weapon" type="xs:string" />
+                                                            <xs:attribute name="state" type="xs:string" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
+                                    <xs:attribute name="task_res" type="xs:string" use="required" />
+                                    <xs:attribute name="coins" type="xs:integer" default="0" />
+                                    <xs:attribute name="xp" type="xs:integer" default="0" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="title_res" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

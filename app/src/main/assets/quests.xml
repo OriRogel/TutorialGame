@@ -1,4 +1,5 @@
-<quests>
+<quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="quests.xsd">
     <!-- 1. לדבר עם אבא -->
     <quest title_res="quest">
         <step id="event_player_talkedToFather" task_res="talk_to_father" coins="1" xp="20">
