@@ -48,7 +48,7 @@ public class WorldActions {
         @Override
         public void execute() {
             GameMap map = MapManager.getMapByName(mapName);
-            if (map != null && map.getDoorwayByName(doorName) != null) {
+            if (map.getDoorwayByName(doorName) != null) {
                 map.getDoorwayByName(doorName).setDoorwayActive(active);
             }
         }
@@ -122,11 +122,9 @@ public class WorldActions {
         @Override
         public void execute() {
             GameMap map = MapManager.getMapByName(mapName);
-            if (map != null) {
-                map.setSpawnType(spawnType);
-                map.setMinMonsters(minCount);
-                if (immediateCount > 0) map.spawnMonsterOnPlayer(immediateCount);
-            }
+            map.setSpawnType(spawnType);
+            map.setMinMonsters(minCount);
+            if (immediateCount > 0) map.spawnMonsterOnPlayer(immediateCount);
         }
     }
 
@@ -142,11 +140,9 @@ public class WorldActions {
         @Override
         public void execute() {
             GameMap map = MapManager.getMapByName(mapName);
-            if (map != null) {
-                map.setMusicRes(musicRes);
-                if (MapManager.getCurrentMap() == map) {
-                    MusicManager.getInstance(BaseActivity.getContext()).play(musicRes);
-                }
+            map.setMusicRes(musicRes);
+            if (MapManager.getCurrentMap() == map) {
+                MusicManager.getInstance(BaseActivity.getContext()).play(musicRes);
             }
         }
     }

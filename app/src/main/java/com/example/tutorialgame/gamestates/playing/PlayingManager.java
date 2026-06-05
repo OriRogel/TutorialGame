@@ -7,8 +7,6 @@ import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.gamestates.BaseState;
 import com.example.tutorialgame.gamestates.playing.playingstates.DialogState;
 import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
-import com.example.tutorialgame.managers.WorldEventManager;
-
 import java.util.List;
 
 public class PlayingManager extends BaseState {
