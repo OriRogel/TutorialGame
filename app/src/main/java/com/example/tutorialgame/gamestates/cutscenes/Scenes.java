@@ -7,16 +7,17 @@ import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.R;
 
 public enum Scenes implements BitmapMethods {
-    INTRO(R.drawable.cutscene_1, 5, "seen_cutscene_coldOpening", R.raw.cutscene_intro, false),
-    GETTING_SWORD(R.drawable.cutscene_2, 3, "seen_cutscene_gettingSword", R.raw.cutscene_getting_sword, true),
-    SKELETON_ARISE(R.drawable.cutscene_3, 6, "seen_cutscene_skeletonArise", R.raw.cutscene_skeleton_arise, false);
+    INTRO(R.drawable.cutscene_1, 5, "seen_cutscene_coldOpening", R.raw.cutscene_intro, false, null),
+    GETTING_SWORD(R.drawable.cutscene_2, 3, "seen_cutscene_gettingSword", R.raw.cutscene_getting_sword, true, null),
+    SKELETON_ARISE(R.drawable.cutscene_3, 6, "seen_cutscene_skeletonArise", R.raw.cutscene_skeleton_arise, false, "RUNWAY");
 
     private final Bitmap[] frameArr;
     private final String checkPoint;
     private final int musicRes;
     private final boolean dialogueAfter;
+    private final String onExitEvent;
 
-    Scenes(int resId, int frames, String checkPoint, int musicRes, boolean dialogueAfter) {
+    Scenes(int resId, int frames, String checkPoint, int musicRes, boolean dialogueAfter, String onExitEvent) {
         // ביטול Scaling אוטומטי של אנדרואיד כדי לשמור על הרזולוציה המקורית של ה-Atlas
         options.inScaled = false;
         Bitmap atlas = BitmapFactory.decodeResource(BaseActivity.getContext().getResources(), resId, options);
@@ -32,6 +33,7 @@ public enum Scenes implements BitmapMethods {
         this.checkPoint = checkPoint;
         this.musicRes = musicRes;
         this.dialogueAfter = dialogueAfter;
+        this.onExitEvent = onExitEvent;
     }
 
     public Bitmap[] getFrameArr() {
@@ -43,4 +45,5 @@ public enum Scenes implements BitmapMethods {
     public boolean getDialogueAfter() {
         return dialogueAfter;
     }
+    public String getOnExitEvent() { return onExitEvent; }
 }

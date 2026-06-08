@@ -65,7 +65,7 @@ public final class DialogueManager {
     // פונקציית עזר שבודקת אם התיקייה קיימת ב-Assets
     private static boolean isLanguageSupported(String lang) {
         if (lang == null || lang.isEmpty()) return false;
-        if ("en".equals(lang)) return true; // אנגלית היא תמיד ה-Base
+        if ("en".equals(lang)) return true; // אנגלית היא תמיד ה-Scene
         try {
             String[] availableLangs = MyApp.getAppContext().getAssets().list("dialogues");
             if (availableLangs != null) {

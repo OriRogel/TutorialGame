@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Base class for all living characters in the game.
+ * Scene class for all living characters in the game.
  * Uses a component-based architecture to handle physics, combat, and rendering.
  */
 public abstract class Character extends Entity {

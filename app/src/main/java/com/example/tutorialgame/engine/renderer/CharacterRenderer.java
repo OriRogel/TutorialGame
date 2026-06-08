@@ -84,7 +84,7 @@ public class CharacterRenderer {
         float drawX = character.getHitBox().left - X_DRAW_OFFSET;
         float drawY = character.getHitBox().top - Y_DRAW_OFFSET;
 
-        // 1. Base Layer
+        // 1. Scene Layer
         c.drawBitmap(sprite, drawX, drawY, null);
 
         // 2. Effects Layers

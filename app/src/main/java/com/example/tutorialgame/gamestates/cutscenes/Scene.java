@@ -15,12 +15,13 @@ import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.gamestates.BaseState;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.managers.WorldEventManager;
 
 /**
- * Base class for cinematic sequences.
+ * Scene class for cinematic sequences.
  * Handles frame sequencing, fade effects, and narrative progression.
  */
-public class BaseScene extends BaseState {
+public class Scene extends BaseState {
     protected final SceneManager sceneManager;
     private double frameTimer;
     private double inputGuardTimer;
@@ -32,6 +33,7 @@ public class BaseScene extends BaseState {
     private final String checkPointKey;
     private final boolean hasDialogueAfter;
     private final int musicRes;
+    private final String onExitEvent;
 
     private boolean isSkipping = false;
     private final Rect screenRect = new Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -39,13 +41,14 @@ public class BaseScene extends BaseState {
     private static final float SECONDS_PER_FRAME = 4.5f;
     private static final float INPUT_DELAY_SEC = 0.5f;
 
-    public BaseScene(Game game, SceneManager sceneManager, Scenes sceneData) {
+    public Scene(Game game, SceneManager sceneManager, Scenes sceneData) {
         super(game);
         this.sceneManager = sceneManager;
         this.frames = sceneData.getFrameArr();
         this.checkPointKey = sceneData.getCheckPoint();
         this.musicRes = sceneData.getMusicRes();
         this.hasDialogueAfter = sceneData.getDialogueAfter();
+        this.onExitEvent = sceneData.getOnExitEvent();
 
         nextLabel = new TextRenderer(SCALE_MULTIPLIER * 13, R.color.magnolia_white);
         nextLabel.setShadowOffset(SCALE_MULTIPLIER, SCALE_MULTIPLIER);
@@ -77,6 +80,9 @@ public class BaseScene extends BaseState {
     @Override
     public void onExit() {
         super.onExit();
+        if (onExitEvent != null) {
+            WorldEventManager.triggerEvent(onExitEvent);
+        }
         sceneManager.onSceneFinished();
     }
 

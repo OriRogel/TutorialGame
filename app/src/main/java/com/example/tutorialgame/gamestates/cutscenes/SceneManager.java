@@ -4,9 +4,6 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.gamestates.BaseState;
-import com.example.tutorialgame.gamestates.cutscenes.scenes.GettingSword;
-import com.example.tutorialgame.gamestates.cutscenes.scenes.Intro;
-import com.example.tutorialgame.gamestates.cutscenes.scenes.SkeletonArise;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +14,8 @@ import java.util.List;
  * based on the player's progress (Checkpoints).
  */
 public class SceneManager extends BaseState {
-    private final List<BaseScene> scenePlaylist = new ArrayList<>();
-    private BaseScene currentScene = null;
+    private final List<Scene> scenePlaylist = new ArrayList<>();
+    private Scene currentScene = null;
     private boolean isStartingDialogueAfter;
 
     public SceneManager(Game game) {
@@ -28,13 +25,13 @@ public class SceneManager extends BaseState {
 
     /**
      * Builds the global sequence of story events.
-     * New scenes should be added here in chronological order.
+     * New scenes are added here automatically from the Scenes enum.
      */
     private void buildPlaylist() {
         scenePlaylist.clear();
-        scenePlaylist.add(new Intro(game, this));
-        scenePlaylist.add(new GettingSword(game, this));
-        scenePlaylist.add(new SkeletonArise(game, this));
+        for (Scenes scene : Scenes.values()) {
+            scenePlaylist.add(new Scene(game, this, scene));
+        }
     }
 
     /**
@@ -44,7 +41,7 @@ public class SceneManager extends BaseState {
     public void playNextRelevantScene() {
         if (currentScene != null) return; // Guard: Don't interrupt active scene
 
-        for (BaseScene scene : scenePlaylist) {
+        for (Scene scene : scenePlaylist) {
             if (!scene.checkCheckPoint()) { 
                 this.currentScene = scene;
                 this.currentScene.onEnter();
@@ -57,7 +54,7 @@ public class SceneManager extends BaseState {
     }
 
     /**
-     * Callback triggered by a BaseScene when it finishes its execution.
+     * Callback triggered by a Scene when it finishes its execution.
      */
     public void onSceneFinished() {
         if (currentScene != null) {

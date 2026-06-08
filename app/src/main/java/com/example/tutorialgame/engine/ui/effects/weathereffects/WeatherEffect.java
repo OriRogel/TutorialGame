@@ -10,7 +10,7 @@ import com.example.tutorialgame.MyApp;
 import java.util.Random;
 
 /**
- * Base class for all environmental weather effects.
+ * Scene class for all environmental weather effects.
  */
 public abstract class WeatherEffect {
     // שמות ברורים שמתארים איפה האפקט מצויר ביחס לעולם
