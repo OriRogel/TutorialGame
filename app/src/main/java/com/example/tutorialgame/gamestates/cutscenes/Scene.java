@@ -13,7 +13,7 @@ import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
-import com.example.tutorialgame.gamestates.BaseState;
+import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.managers.WorldEventManager;
 
@@ -21,7 +21,7 @@ import com.example.tutorialgame.managers.WorldEventManager;
  * Scene class for cinematic sequences.
  * Handles frame sequencing, fade effects, and narrative progression.
  */
-public class Scene extends BaseState {
+public class Scene extends GameState {
     protected final SceneManager sceneManager;
     private double frameTimer;
     private double inputGuardTimer;

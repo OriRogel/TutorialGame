@@ -15,7 +15,7 @@ import android.view.MotionEvent;
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleImages;
 import com.example.tutorialgame.engine.ui.displays.CoinDisplay;
@@ -28,7 +28,7 @@ import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
 import com.example.tutorialgame.managers.QuestManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
-public class PlayingUI implements BaseButton.OnClickListener {
+public class PlayingUI implements GameButton.OnClickListener {
     private static boolean SHOW_UI;
     private final Joystick joystick;
     private final CircleButton btnJump, btnAttack, btnSpeak, btnMenu;
@@ -279,7 +279,7 @@ public class PlayingUI implements BaseButton.OnClickListener {
     }
 
     @Override
-    public void onClick(BaseButton button) {
+    public void onClick(GameButton button) {
         if (button == btnMenu) Game.setNextGameState(Game.GameState.MENU);
         if (button == btnAttack && !player.isAttacking()) player.setAttacking(true);
         if (button == btnSpeak) {

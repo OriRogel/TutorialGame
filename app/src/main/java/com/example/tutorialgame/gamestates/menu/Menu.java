@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
-import com.example.tutorialgame.gamestates.BaseState;
+import com.example.tutorialgame.gamestates.GameState;
 
 import java.util.Objects;
 
@@ -23,13 +23,13 @@ import java.util.Objects;
  * Provides a consistent visual framework including a common background, 
  * frame, and titled layout using the TextRenderer system.
  */
-public abstract class BaseMenu extends BaseState {
+public abstract class Menu extends GameState {
     protected final NinePatchDrawable background, frame;
     protected final TextRenderer titlePaint;
     protected final MenuManager menuManager;
     private int lastRes = -1;
 
-    public BaseMenu(Game game, MenuManager menuManager) {
+    public Menu(Game game, MenuManager menuManager) {
         super(game);
         this.menuManager = menuManager;
 

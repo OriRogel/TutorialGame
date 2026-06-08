@@ -13,10 +13,10 @@ import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.engine.ui.customviews.buttons.ButtonImages;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
-import com.example.tutorialgame.gamestates.BaseState;
+import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.gamestates.playing.PlayingManager;
 
-public class TicTacToe extends BaseState {
+public class TicTacToe extends GameState {
     private final PlayingManager playingManager;
     private final TicTacToeAI ticTacToeAI;
 

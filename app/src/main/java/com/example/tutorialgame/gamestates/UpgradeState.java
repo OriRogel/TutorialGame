@@ -42,7 +42,7 @@ import com.example.tutorialgame.entities.characters.GameCharacters;
 import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.managers.MapManager;
 
-public class UpgradeState extends BaseState implements CustomUpgrade.OnUpgradeListener {
+public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeListener {
 
     private static final int
             LINE_ANIM_SPEED = 7,

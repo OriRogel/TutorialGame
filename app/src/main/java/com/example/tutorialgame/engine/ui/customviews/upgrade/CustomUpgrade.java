@@ -19,13 +19,13 @@ import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleImages;
 import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
-public class CustomUpgrade implements BaseButton.OnClickListener {
+public class CustomUpgrade implements GameButton.OnClickListener {
 
     public interface OnUpgradeListener {
         boolean onUpgradeChanged(CustomUpgrade upgrade, int costChange);
@@ -217,7 +217,7 @@ public class CustomUpgrade implements BaseButton.OnClickListener {
     }
 
     @Override
-    public void onClick(BaseButton button) {
+    public void onClick(GameButton button) {
         if (button == btnUpgrade) {
             if (listener != null && listener.onUpgradeChanged(this, price)) {
                 countToApply++;

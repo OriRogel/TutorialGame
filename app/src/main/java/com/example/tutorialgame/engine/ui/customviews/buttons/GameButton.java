@@ -10,14 +10,14 @@ import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleImages;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
-public abstract class BaseButton {
+public abstract class GameButton {
     public interface OnClickListener {
-        void onClick(BaseButton button);
+        void onClick(GameButton button);
     }
 
     public enum PressType {ON_DOWN, ON_UP}
 
-    private static BaseButton exclusiveOwner = null;
+    private static GameButton exclusiveOwner = null;
     protected final RectF hitbox;
     protected boolean pushed, enabled = true;
     protected int pointerId = -1;
@@ -27,13 +27,13 @@ public abstract class BaseButton {
     // 2. הוספת שדה לאחסון המאזין
     private OnClickListener onClickListener;
 
-    public BaseButton(RectF hitbox, boolean multitouch) {
+    public GameButton(RectF hitbox, boolean multitouch) {
         this.hitbox = hitbox;
         vibe = true;
         this.multitouch = multitouch;
     }
 
-    public BaseButton(PointF centerPos, CircleImages circleImage, boolean multitouch) {
+    public GameButton(PointF centerPos, CircleImages circleImage, boolean multitouch) {
         float w = circleImage.getWidth();
         float h = circleImage.getHeight();
         hitbox = new RectF(

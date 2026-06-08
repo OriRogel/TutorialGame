@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import androidx.core.content.ContextCompat;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.TapEffect;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.ImpactEffectType;
@@ -27,7 +27,7 @@ import java.util.Objects;
  * Manages the screen displayed upon player death.
  * Uses a state machine to coordinate opening animations, music, and UI interaction.
  */
-public class DeathScreen extends BaseState implements BaseButton.OnClickListener {
+public class DeathScreen extends GameState implements GameButton.OnClickListener {
 
     private final RectButton btnReplay, btnExit;
     private final NinePatchDrawable background, frame;
@@ -182,7 +182,7 @@ public class DeathScreen extends BaseState implements BaseButton.OnClickListener
     }
 
     @Override
-    public void onClick(BaseButton button) {
+    public void onClick(GameButton button) {
         if (button == btnReplay) {
             MusicManager.getInstance(context).play(R.raw.music_calm_village);
             game.restartGame();

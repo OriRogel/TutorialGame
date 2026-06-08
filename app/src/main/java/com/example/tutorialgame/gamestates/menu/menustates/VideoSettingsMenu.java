@@ -21,7 +21,7 @@ import com.example.tutorialgame.engine.ui.customviews.radiogroup.RadioGroupList;
 import com.example.tutorialgame.engine.ui.customviews.switches.CustomSwitch;
 import com.example.tutorialgame.engine.ui.customviews.switches.SwitchList;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.ImpactEffectType;
-import com.example.tutorialgame.gamestates.menu.BaseMenu;
+import com.example.tutorialgame.gamestates.menu.Menu;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
 import com.example.tutorialgame.managers.CameraManager;
 import com.example.tutorialgame.managers.MapManager;
@@ -30,7 +30,7 @@ import com.example.tutorialgame.managers.MapManager;
  * Sub-menu for adjusting video, camera, and debug settings.
  * Allows users to customize the visual experience and performance overlays.
  */
-public class VideoSettingsMenu extends BaseMenu implements CustomRadioGroup.OnSelectionChangedListener {
+public class VideoSettingsMenu extends Menu implements CustomRadioGroup.OnSelectionChangedListener {
     private final RectButton btnDone;
     private final CustomSeekBar sbZoom, sbCameraSpeed;
     private final CustomRadioGroup radioTapEffects;

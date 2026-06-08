@@ -11,17 +11,17 @@ import android.view.MotionEvent;
 
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.core.Game;
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
-import com.example.tutorialgame.gamestates.menu.BaseMenu;
+import com.example.tutorialgame.gamestates.menu.Menu;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
 
 /**
  * The main entry point of the menu system.
  * Handles the initial sliding animation and primary navigation options.
  */
-public class MainMenu extends BaseMenu implements BaseButton.OnClickListener {
+public class MainMenu extends Menu implements GameButton.OnClickListener {
     
     private boolean isEntering, isExiting;
     private final RectButton btnBack, btnOptions, btnExit;
@@ -115,7 +115,7 @@ public class MainMenu extends BaseMenu implements BaseButton.OnClickListener {
     }
 
     @Override
-    public void onClick(BaseButton button) {
+    public void onClick(GameButton button) {
         if (button == btnBack) {
             isExiting = true;
         } else if (button == btnOptions) {

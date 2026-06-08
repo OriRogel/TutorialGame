@@ -11,7 +11,7 @@ import com.example.tutorialgame.entities.Entity;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.environments.Doorway;
 import com.example.tutorialgame.managers.MapManager;
-import com.example.tutorialgame.gamestates.BaseState;
+import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.gamestates.playing.PlayingManager;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.audio.MusicManager;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OverWorld extends BaseState {
+public class OverWorld extends GameState {
     private boolean movePlayer;
     private PointF lastTouchDiff;
     final private MapManager mapManager;

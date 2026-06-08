@@ -15,10 +15,9 @@ import android.view.SurfaceHolder;
 
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.TapEffect;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.ImpactEffectType;
-import com.example.tutorialgame.gamestates.BaseState;
 import com.example.tutorialgame.gamestates.DeathScreen;
 import com.example.tutorialgame.gamestates.cutscenes.SceneManager;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
@@ -66,9 +65,9 @@ public class Game {
 
         handleStateChange();
 
-        BaseState currentStateObj = getStateInstance(currentGameState);
+        com.example.tutorialgame.gamestates.GameState currentStateObj = getStateInstance(currentGameState);
 
-        if (currentGameState == GameState.UPGRADE_STATE && playingManager != null)
+        if (currentGameState == Game.GameState.UPGRADE_STATE && playingManager != null)
             playingManager.update(delta*0.8);
         if (currentStateObj != null)
             currentStateObj.update(delta);
@@ -89,11 +88,11 @@ public class Game {
                 synchronized (holder) {
                     c.drawColor(Color.BLACK);
 
-                    if (currentGameState != GameState.CUTSCENE && playingManager != null) {
+                    if (currentGameState != Game.GameState.CUTSCENE && playingManager != null) {
                         playingManager.render(c);
                     }
 
-                    BaseState state = getStateInstance(currentGameState);
+                    com.example.tutorialgame.gamestates.GameState state = getStateInstance(currentGameState);
                     if (state != null && state != playingManager) state.render(c);
 
                     drawFPS(c);
@@ -113,10 +112,10 @@ public class Game {
         sceneManager = new SceneManager(this);
 
         if (!MyApp.getWorldStateDoc().getCheckPoint("seen_cutscene_coldOpening")) {
-            currentGameState = GameState.CUTSCENE;
+            currentGameState = Game.GameState.CUTSCENE;
             sceneManager.onEnter();
         } else {
-            currentGameState = GameState.PLAYING;
+            currentGameState = Game.GameState.PLAYING;
             playingManager.onEnter();
         }
     }
@@ -149,7 +148,7 @@ public class Game {
                 if (playingManager != null && playingManager.getOverWorld() != null) {
                     playingManager.getOverWorld().resetWorld(() -> {
                         nextGameState = null;
-                        this.currentGameState = GameState.PLAYING;
+                        this.currentGameState = Game.GameState.PLAYING;
 
                         if (playingManager != null) {
                             playingManager.onEnter();
@@ -174,15 +173,15 @@ public class Game {
         if (nextGameState == null || isResetting) return;
 
         if (currentGameState != nextGameState) {
-            BaseState old = getStateInstance(currentGameState);
+            com.example.tutorialgame.gamestates.GameState old = getStateInstance(currentGameState);
             if (old != null) old.onExit();
 
             currentGameState = nextGameState;
 
-            BaseState now = getStateInstance(currentGameState);
+            com.example.tutorialgame.gamestates.GameState now = getStateInstance(currentGameState);
             if (now != null) now.onEnter();
 
-            BaseButton.releaseExclusiveOwner();
+            GameButton.releaseExclusiveOwner();
         }
         nextGameState = null;
     }
@@ -205,7 +204,7 @@ public class Game {
     public void stopGameLoop() { gameLoop.stopGameLoop(); }
     public GameState getCurrentGameState() { return currentGameState; }
 
-    public BaseState getStateInstance(GameState s) {
+    public com.example.tutorialgame.gamestates.GameState getStateInstance(GameState s) {
         if (s == null) return null;
         switch (s) {
             case MENU: return menuManager;

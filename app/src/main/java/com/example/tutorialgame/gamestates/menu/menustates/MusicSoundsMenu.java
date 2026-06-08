@@ -18,7 +18,7 @@ import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
 import com.example.tutorialgame.engine.ui.customviews.switches.CustomSwitch;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
 import com.example.tutorialgame.engine.ui.customviews.switches.SwitchList;
-import com.example.tutorialgame.gamestates.menu.BaseMenu;
+import com.example.tutorialgame.gamestates.menu.Menu;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
@@ -26,7 +26,7 @@ import com.example.tutorialgame.ui.base.BaseActivity;
  * Sub-menu for managing audio settings (Music, SFX) and haptic feedback.
  * Synchronizes UI components with persistent storage and audio managers.
  */
-public class MusicSoundsMenu extends BaseMenu implements CustomSeekBar.OnProgressChangedListener {
+public class MusicSoundsMenu extends Menu implements CustomSeekBar.OnProgressChangedListener {
     private final CustomSeekBar sbMusic, sbSound;
     private final RectButton btnDone;
     private final CustomSwitch swHaptics;

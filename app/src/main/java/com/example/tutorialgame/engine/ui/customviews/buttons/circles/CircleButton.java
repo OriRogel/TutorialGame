@@ -5,10 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 
 
-public class CircleButton extends BaseButton {
+public class CircleButton extends GameButton {
     private final Bitmap normal, pressed, disabled;
 
     public CircleButton(PointF centerPos, CircleImages circleImage, boolean multitouch) {

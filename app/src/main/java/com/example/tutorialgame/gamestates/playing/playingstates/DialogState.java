@@ -14,7 +14,7 @@ import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.ui.DialoguePanel;
-import com.example.tutorialgame.gamestates.BaseState;
+import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.gamestates.playing.PlayingManager;
 import com.example.tutorialgame.managers.CameraManager;
 import com.example.tutorialgame.managers.DialogueManager;
@@ -25,7 +25,7 @@ import java.util.List;
  * Manages the state of the game during dialogues.
  * Handles cinematic camera movements, zooming, letterboxing, and audio ducking.
  */
-public class DialogState extends BaseState {
+public class DialogState extends GameState {
     private final PlayingManager playingManager;
     private final DialoguePanel dialoguePanel;
     private Character lastSpeaker;

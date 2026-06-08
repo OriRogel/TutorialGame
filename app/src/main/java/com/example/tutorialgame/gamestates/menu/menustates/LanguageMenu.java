@@ -9,10 +9,10 @@ import android.view.MotionEvent;
 
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.core.Game;
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
-import com.example.tutorialgame.gamestates.menu.BaseMenu;
+import com.example.tutorialgame.gamestates.menu.Menu;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * A modular menu for selecting game language.
  * Automatically cycles through supported locales and updates the game instantly.
  */
-public class LanguageMenu extends BaseMenu implements BaseButton.OnClickListener {
+public class LanguageMenu extends Menu implements GameButton.OnClickListener {
 
     private static class LanguageOption {
         final String code;
@@ -88,7 +88,7 @@ public class LanguageMenu extends BaseMenu implements BaseButton.OnClickListener
     }
 
     @Override
-    public void onClick(BaseButton button) {
+    public void onClick(GameButton button) {
         if (button == btnDone) {
             menuManager.setCurrentMenuState(MenuManager.MenuState.Options);
             return;

@@ -11,12 +11,12 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 import java.util.Objects;
 
-public class RectButton extends BaseButton {
+public class RectButton extends GameButton {
     private NinePatchDrawable normal, pressed;
     private RectImages rectImages;
     private final TextRenderer textPaint;

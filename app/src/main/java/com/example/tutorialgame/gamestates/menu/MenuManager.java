@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 
 import com.example.tutorialgame.engine.core.Game;
-import com.example.tutorialgame.gamestates.BaseState;
+import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.gamestates.menu.menustates.LanguageMenu;
 import com.example.tutorialgame.gamestates.menu.menustates.MainMenu;
 import com.example.tutorialgame.gamestates.menu.menustates.OptionsMenu;
@@ -15,7 +15,7 @@ import com.example.tutorialgame.gamestates.menu.menustates.VideoSettingsMenu;
  * Orchestrates the menu system by managing sub-menu states.
  * Handles transitions between different menu screens (MainMenu, OptionsMenu, etc.)
  */
-public class MenuManager extends BaseState {
+public class MenuManager extends GameState {
     private MainMenu mainMenu;
     private OptionsMenu optionsMenu;
     private MusicSoundsMenu musicSoundsMenu;
@@ -47,16 +47,16 @@ public class MenuManager extends BaseState {
     }
 
     public void setCurrentMenuState(MenuState newState) {
-        BaseMenu old = getMenuInstance(currentMenuState);
+        Menu old = getMenuInstance(currentMenuState);
         if (old != null) old.onExit();
         
         this.currentMenuState = newState;
         
-        BaseMenu now = getMenuInstance(currentMenuState);
+        Menu now = getMenuInstance(currentMenuState);
         if (now != null) now.onEnter();
     }
 
-    private BaseMenu getMenuInstance(MenuState state) {
+    private Menu getMenuInstance(MenuState state) {
         switch (state) {
             case Main: return mainMenu;
             case Options: return optionsMenu;
@@ -69,19 +69,19 @@ public class MenuManager extends BaseState {
 
     @Override
     public void update(double delta) {
-        BaseMenu current = getMenuInstance(currentMenuState);
+        Menu current = getMenuInstance(currentMenuState);
         if (current != null) current.update(delta);
     }
 
     @Override
     public void render(Canvas c) {
-        BaseMenu current = getMenuInstance(currentMenuState);
+        Menu current = getMenuInstance(currentMenuState);
         if (current != null) current.render(c);
     }
 
     @Override
     public void touchEvents(MotionEvent event) {
-        BaseMenu current = getMenuInstance(currentMenuState);
+        Menu current = getMenuInstance(currentMenuState);
         if (current != null) current.touchEvents(event);
     }
 

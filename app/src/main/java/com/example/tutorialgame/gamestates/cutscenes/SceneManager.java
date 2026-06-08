@@ -3,7 +3,7 @@ package com.example.tutorialgame.gamestates.cutscenes;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import com.example.tutorialgame.engine.core.Game;
-import com.example.tutorialgame.gamestates.BaseState;
+import com.example.tutorialgame.gamestates.GameState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * Orchestrates the transition between gameplay and narrative moments
  * based on the player's progress (Checkpoints).
  */
-public class SceneManager extends BaseState {
+public class SceneManager extends GameState {
     private final List<Scene> scenePlaylist = new ArrayList<>();
     private Scene currentScene = null;
     private boolean isStartingDialogueAfter;

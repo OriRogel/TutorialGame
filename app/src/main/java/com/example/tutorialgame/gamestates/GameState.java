@@ -10,12 +10,12 @@ import com.example.tutorialgame.ui.activities.LauncherActivity;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.engine.core.Game;
 
-public abstract class BaseState implements GameStateInterface {
+public abstract class GameState implements GameStateInterface {
     protected Game game;
     protected Context context;
     private final Intent intent;
 
-    public BaseState(Game game) {
+    public GameState(Game game) {
         this.game = game;
         this.context = BaseActivity.getContext();
         this.intent = new Intent(context, LauncherActivity.class)

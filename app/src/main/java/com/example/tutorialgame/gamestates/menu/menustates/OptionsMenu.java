@@ -8,12 +8,11 @@ import android.view.MotionEvent;
 
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.core.Game;
-import com.example.tutorialgame.engine.ui.customviews.buttons.BaseButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
-import com.example.tutorialgame.gamestates.menu.BaseMenu;
+import com.example.tutorialgame.gamestates.menu.Menu;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
-import com.example.tutorialgame.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.List;
  * A sub-menu that acts as a central hub for various game settings.
  * Manages navigation between audio, video, and general configuration screens.
  */
-public class OptionsMenu extends BaseMenu implements BaseButton.OnClickListener {
+public class OptionsMenu extends Menu implements GameButton.OnClickListener {
     private final List<RectButton> buttons = new ArrayList<>();
     private final RectButton btnDone, btnVideoSettings, btnMusicSounds, btnLanguage, btnCredits;
 
@@ -74,7 +73,7 @@ public class OptionsMenu extends BaseMenu implements BaseButton.OnClickListener 
     }
 
     @Override
-    public void onClick(BaseButton button) {
+    public void onClick(GameButton button) {
         if (button == btnDone) {
             menuManager.setCurrentMenuState(MenuManager.MenuState.Main);
         } else if (button == btnMusicSounds) {
