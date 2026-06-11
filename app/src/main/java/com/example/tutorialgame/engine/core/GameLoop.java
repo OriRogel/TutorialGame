@@ -33,6 +33,7 @@ public class GameLoop implements Runnable {
 
             try {
                 // --- שיפור 2: הגנה קריטית - אם ה-Update קורס, הלולאה לא תמות ---
+                game.processNextState();
                 game.update(delta);
                 game.render();
                 errorCount = 0;
