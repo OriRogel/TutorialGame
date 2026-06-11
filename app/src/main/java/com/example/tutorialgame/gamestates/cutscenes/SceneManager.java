@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.gamestates.GameState;
+import com.example.tutorialgame.gamestates.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class SceneManager extends GameState {
         }
 
         // Fallback: If no scenes are pending, resume normal gameplay
-        Game.setNextGameState(Game.GameState.PLAYING);
+        Game.setNextGameState(State.PLAYING);
     }
 
     /**
@@ -61,7 +62,7 @@ public class SceneManager extends GameState {
             isStartingDialogueAfter = currentScene.isDialogueAfter();
         }
         this.currentScene = null;
-        Game.setNextGameState(Game.GameState.PLAYING);
+        Game.setNextGameState(State.PLAYING);
     }
 
     @Override

@@ -14,6 +14,7 @@ import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
+import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.gamestates.menu.Menu;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
 
@@ -86,7 +87,7 @@ public class MainMenu extends Menu implements GameButton.OnClickListener {
             if (offsetY <= -SCREEN_HEIGHT) {
                 offsetY = -SCREEN_HEIGHT;
                 isExiting = false;
-                Game.setNextGameState(Game.GameState.PLAYING);
+                Game.setNextGameState(State.PLAYING);
             }
         }
     }

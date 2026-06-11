@@ -6,6 +6,7 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.managers.CameraManager;
 import com.example.tutorialgame.entities.Entity;
 import com.example.tutorialgame.entities.characters.Player;
@@ -66,7 +67,7 @@ public class OverWorld extends GameState {
         transitionEffect = new MapTransitionEffect();
 
         player = new Player();
-        player.setOnDeathCompleteListener(() -> Game.setNextGameState(Game.GameState.DEATH_SCREEN));
+        player.setOnDeathCompleteListener(() -> Game.setNextGameState(State.DEATH_SCREEN));
 
         MapManager.getCurrentMap().setPlayer(player);
         setCameraRelativeToPlayer(0);

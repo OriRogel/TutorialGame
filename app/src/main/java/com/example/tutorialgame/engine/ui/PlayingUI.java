@@ -24,6 +24,7 @@ import com.example.tutorialgame.engine.ui.displays.StaminaDisplay;
 import com.example.tutorialgame.engine.ui.effects.LevelUpEffect;
 import com.example.tutorialgame.engine.ui.joystick.Joystick;
 import com.example.tutorialgame.entities.characters.Player;
+import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
 import com.example.tutorialgame.managers.QuestManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
@@ -166,7 +167,7 @@ public class PlayingUI implements GameButton.OnClickListener {
 
     public void draw(Canvas c) {
         if(!SHOW_UI) return;
-        if (overWorld.getGame().getCurrentGameState() != Game.GameState.PLAYING) return;
+        if (overWorld.getGame().getCurrentGameState() != State.PLAYING) return;
         // ציור הג'ויסטיק החדש
         joystick.draw(c);
 
@@ -261,7 +262,7 @@ public class PlayingUI implements GameButton.OnClickListener {
         } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP) {
             if (facesetPressed && pointerId == facesetPointerId) {
                 if (facesetHitbox.contains(event.getX(actionIndex), event.getY(actionIndex)) && startFace) {
-                    Game.setNextGameState(Game.GameState.UPGRADE_STATE);
+                    Game.setNextGameState(State.UPGRADE_STATE);
                     facesetBaseRotation = facesetBaseRotation + 90f;
                 } else {
                     startRotateTo(facesetBaseRotation);
@@ -280,7 +281,7 @@ public class PlayingUI implements GameButton.OnClickListener {
 
     @Override
     public void onClick(GameButton button) {
-        if (button == btnMenu) Game.setNextGameState(Game.GameState.MENU);
+        if (button == btnMenu) Game.setNextGameState(State.MENU);
         if (button == btnAttack && !player.isAttacking()) player.setAttacking(true);
         if (button == btnSpeak) {
             overWorld.getPlayingManager().setDialogState(player.getCurrentSpeaker());

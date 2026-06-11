@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.tutorialgame.engine.core.GameConstants.Sprite.SCALE_MULTIPLIER;
 import static com.example.tutorialgame.engine.core.GameConstants.Sprite.TILE_SIZE;
 import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_HEIGHT;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
@@ -13,73 +14,118 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
-import com.example.tutorialgame.engine.ui.effects.impcateffects.TapEffect;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.ImpactEffectType;
+import com.example.tutorialgame.engine.ui.effects.impcateffects.TapEffect;
 import com.example.tutorialgame.gamestates.DeathScreen;
+import com.example.tutorialgame.gamestates.GameState;
+import com.example.tutorialgame.gamestates.State;
+import com.example.tutorialgame.gamestates.UpgradeState;
 import com.example.tutorialgame.gamestates.cutscenes.SceneManager;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
 import com.example.tutorialgame.gamestates.playing.PlayingManager;
-import com.example.tutorialgame.gamestates.UpgradeState;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * The core Game class that manages the game loop, states, and rendering.
+ */
 public class Game {
-    final private SurfaceHolder holder;
-    final private GameLoop gameLoop;
+    private static final String TAG = "Game";
+
+    private final SurfaceHolder holder;
+    private final GameLoop gameLoop;
     private final TapEffect tapEffect = new TapEffect(null);
     private final PointF lastTouch = new PointF();
-    private MenuManager menuManager;
-    private PlayingManager playingManager;
-    private DeathScreen deathScreen;
-    private SceneManager sceneManager;
-    private UpgradeState upgradeState;
-    private volatile GameState currentGameState;
+
+    // Game States - Finalized as they are initialized in the constructor
+    private final MenuManager menuManager;
+    private final PlayingManager playingManager;
+    private final DeathScreen deathScreen;
+    private final SceneManager sceneManager;
+    private final UpgradeState upgradeState;
+
+    private volatile State currentState;
+    private volatile GameState currentStateObj; // Volatile for thread safety
+
     private final SharedPreferences spSettings;
     private final Context context;
     private final TextRenderer fpsRendered = new TextRenderer(TILE_SIZE / 2f);
     private boolean showFPS;
-    private volatile boolean isResetting;
 
-    // שיפור: שימוש ב-Executor לביצוע פעולות רקע כבדות (כמו ריסטרט)
+    /**
+     * atomic lock to prevent multiple simultaneous restarts.
+     */
+    private final AtomicBoolean isResetting = new AtomicBoolean(false);
+
     private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
 
-    private static volatile GameState nextGameState = null;
+    private static final AtomicReference<State> nextState = new AtomicReference<>(null);
 
-    public Game(SurfaceHolder holder, Context context) {
+    public Game(@NonNull SurfaceHolder holder, @NonNull Context context) {
         this.holder = holder;
         this.context = context;
 
-        gameLoop = new GameLoop(this);
-        initGameStates();
+        // Initialize managers
+        this.menuManager = new MenuManager(this);
+        this.playingManager = new PlayingManager(this);
+        this.deathScreen = new DeathScreen(this);
+        this.upgradeState = new UpgradeState(this);
+        this.sceneManager = new SceneManager(this);
 
-        spSettings = context.getSharedPreferences("settings", MODE_PRIVATE);
+        this.gameLoop = new GameLoop(this);
+        this.spSettings = context.getSharedPreferences("settings", MODE_PRIVATE);
+
+        initInitialState();
         initTapEffect();
         initFPS();
     }
 
+    private void initInitialState() {
+        if (!MyApp.getWorldStateDoc().getCheckPoint("seen_cutscene_coldOpening")) {
+            currentState = State.CUTSCENE;
+        } else {
+            currentState = State.PLAYING;
+        }
+        currentStateObj = getStateInstance(currentState);
+        if (currentStateObj != null) {
+            currentStateObj.onEnter();
+        }
+    }
+
     public void update(double delta) {
-        if (isResetting || currentGameState == null) return;
+        if (isResetting.get() || currentState == null) return;
 
         handleStateChange();
 
-        com.example.tutorialgame.gamestates.GameState currentStateObj = getStateInstance(currentGameState);
+        // Re-capture to local variable for consistent use in update
+        GameState currentObj = currentStateObj;
+        if (currentObj == null) return;
 
-        if (currentGameState == Game.GameState.UPGRADE_STATE && playingManager != null)
-            playingManager.update(delta*0.8);
-        if (currentStateObj != null)
-            currentStateObj.update(delta);
+        // Dynamic Background Update Logic
+        double backgroundSpeed = currentState.getBackgroundUpdateSpeed();
+        if (backgroundSpeed > 0 && currentState != State.PLAYING) {
+            playingManager.update(delta * backgroundSpeed);
+        }
+
+        // Current State Update
+        currentObj.update(delta);
 
         if (showFPS) {
             fpsRendered.updateColorBasedOnValue(gameLoop.getFPS(), 0, 60);
         }
     }
 
-
     public void render() {
-        if (isResetting) return;
+        if (isResetting.get()) return;
 
         Canvas c = null;
         try {
@@ -88,47 +134,37 @@ public class Game {
                 synchronized (holder) {
                     c.drawColor(Color.BLACK);
 
-                    if (currentGameState != Game.GameState.CUTSCENE && playingManager != null) {
+                    // Capture current states to local variables for thread-safe access within render
+                    State current = currentState;
+                    GameState currentObj = currentStateObj;
+
+                    // Dynamic Background Rendering Logic
+                    if (current == State.PLAYING || current.isTransparent()) {
                         playingManager.render(c);
                     }
 
-                    com.example.tutorialgame.gamestates.GameState state = getStateInstance(currentGameState);
-                    if (state != null && state != playingManager) state.render(c);
+                    // Current State Rendering (if different from playingManager)
+                    if (currentObj != null && current != State.PLAYING) {
+                        currentObj.render(c);
+                    }
 
                     drawFPS(c);
                     tapEffect.show(c, lastTouch.x, lastTouch.y);
                 }
             }
         } finally {
-            if (c != null) holder.unlockCanvasAndPost(c);
-        }
-    }
-
-    private void initGameStates() {
-        menuManager = new MenuManager(this);
-        playingManager = new PlayingManager(this);
-        deathScreen = new DeathScreen(this);
-        upgradeState = new UpgradeState(this);
-        sceneManager = new SceneManager(this);
-
-        if (!MyApp.getWorldStateDoc().getCheckPoint("seen_cutscene_coldOpening")) {
-            currentGameState = Game.GameState.CUTSCENE;
-            sceneManager.onEnter();
-        } else {
-            currentGameState = Game.GameState.PLAYING;
-            playingManager.onEnter();
+            if (c != null) {
+                holder.unlockCanvasAndPost(c);
+            }
         }
     }
 
     public boolean touchEvent(MotionEvent event) {
-        if (currentGameState == null || isResetting) return false;
-        switch (currentGameState) {
-            case MENU: menuManager.touchEvents(event); break;
-            case PLAYING: if (playingManager != null) playingManager.touchEvents(event); break;
-            case DEATH_SCREEN: deathScreen.touchEvents(event); break;
-            case UPGRADE_STATE: upgradeState.touchEvents(event); break;
-            case CUTSCENE: sceneManager.touchEvents(event); break;
-        }
+        GameState currentObj = currentStateObj;
+        if (isResetting.get() || currentObj == null) return false;
+
+        currentObj.touchEvents(event);
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             tapEffect.resetEffect();
             lastTouch.set(event.getX(), event.getY());
@@ -136,59 +172,72 @@ public class Game {
         return true;
     }
 
-    
+    /**
+     * Resets the game world and returns to the playing state.
+     * The reset is performed on a background thread to avoid blocking the UI/Game thread.
+     */
     public void restartGame() {
-        if (isResetting) return;
-        isResetting = true;
-        Log.d("GameRestart", "Restart Initiated - Moving to background thread");
+        if (!isResetting.compareAndSet(false, true)) {
+            Log.d(TAG, "Restart already in progress. Ignoring request.");
+            return;
+        }
 
-        // שיפור 2: העברת הריסטרט ל-Thread רקע כדי למנוע ANR ב-UI Thread
+        Log.d(TAG, "Restart Initiated - Moving to background thread");
+
         backgroundExecutor.execute(() -> {
             try {
-                if (playingManager != null && playingManager.getOverWorld() != null) {
+                if (playingManager.getOverWorld() != null) {
                     playingManager.getOverWorld().resetWorld(() -> {
-                        nextGameState = null;
-                        this.currentGameState = Game.GameState.PLAYING;
-
-                        if (playingManager != null) {
-                            playingManager.onEnter();
-                        }
-
-                        this.isResetting = false;
-                        Log.d("GameRestart", "World Reset Successfully - Resume Rendering.");
+                        // Safe state transition via handleStateChange in the next update loop
+                        setNextGameState(State.PLAYING);
+                        isResetting.set(false);
+                        Log.d(TAG, "World Reset Successfully.");
                     });
+                } else {
+                    isResetting.set(false);
                 }
             } catch (Exception e) {
-                Log.e("GameRestart", "Error during restart", e);
-                isResetting = false;
+                Log.e(TAG, "Error during restart", e);
+                isResetting.set(false);
             }
         });
     }
 
-    public static void setNextGameState(GameState newState) {
-        nextGameState = newState;
+    public static void setNextGameState(State newState) {
+        nextState.set(newState);
     }
 
     private void handleStateChange() {
-        if (nextGameState == null || isResetting) return;
+        // Only consume the nextState if we are not resetting
+        if (isResetting.get()) return;
 
-        if (currentGameState != nextGameState) {
-            com.example.tutorialgame.gamestates.GameState old = getStateInstance(currentGameState);
-            if (old != null) old.onExit();
+        State next = nextState.getAndSet(null);
+        if (next == null) return;
 
-            currentGameState = nextGameState;
+        if (currentState != next) {
+            if (currentStateObj != null) {
+                currentStateObj.onExit();
+            }
 
-            com.example.tutorialgame.gamestates.GameState now = getStateInstance(currentGameState);
-            if (now != null) now.onEnter();
+            currentState = next;
+            currentStateObj = getStateInstance(next);
+
+            if (currentStateObj != null) {
+                currentStateObj.onEnter();
+            }
 
             GameButton.releaseExclusiveOwner();
         }
-        nextGameState = null;
     }
 
     private void initTapEffect() {
         int index = spSettings.getInt("tapEffect", ImpactEffectType.SPARK.ordinal());
-        tapEffect.setTapType(ImpactEffectType.values()[index]);
+        ImpactEffectType[] types = ImpactEffectType.values();
+        if (index >= 0 && index < types.length) {
+            tapEffect.setTapType(types[index]);
+        } else {
+            tapEffect.setTapType(ImpactEffectType.SPARK);
+        }
     }
 
     private void initFPS() {
@@ -197,14 +246,17 @@ public class Game {
     }
 
     private void drawFPS(Canvas c) {
-        if (showFPS) fpsRendered.drawText("FPS: " + gameLoop.getFPS(), c);
+        if (showFPS) {
+            fpsRendered.drawText("FPS: " + gameLoop.getFPS(), c);
+        }
     }
 
     public void startGameLoop() { gameLoop.startGameLoop(); }
     public void stopGameLoop() { gameLoop.stopGameLoop(); }
-    public GameState getCurrentGameState() { return currentGameState; }
+    public State getCurrentGameState() { return currentState; }
 
-    public com.example.tutorialgame.gamestates.GameState getStateInstance(GameState s) {
+    @Nullable
+    public GameState getStateInstance(State s) {
         if (s == null) return null;
         switch (s) {
             case MENU: return menuManager;
@@ -235,8 +287,7 @@ public class Game {
     }
 
     public void onDestroy() {
+        stopGameLoop();
         backgroundExecutor.shutdownNow();
     }
-
-    public enum GameState { MENU, PLAYING, DEATH_SCREEN, UPGRADE_STATE, CUTSCENE }
 }

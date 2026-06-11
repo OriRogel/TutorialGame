@@ -49,7 +49,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
             LINE_FRAME_COUNT = 5,
             LINE_FRAME_W = 230,
             LINE_FRAME_H = 13;
-    
+
     // --- מערך סטטי עבור הבלר ---
     private static final int BLUR_STEPS = 30;
     private static final BlurMaskFilter[] BLUR_FILTERS = new BlurMaskFilter[BLUR_STEPS];
@@ -58,7 +58,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     static {
         for (int i = 0; i < BLUR_STEPS; i++) {
             // יצירת ערכי בלר מדורגים (צמיחה חלקה)
-            float radius = (float) (2 + Math.pow(i, 1.5)); 
+            float radius = (float) (2 + Math.pow(i, 1.5));
             BLUR_FILTERS[i] = new BlurMaskFilter(radius, BlurMaskFilter.Blur.NORMAL);
         }
     }
@@ -118,10 +118,10 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
         dragThreshold = ViewConfiguration.get(context).getScaledTouchSlop();
         previewPaint.setColorFilter(new PorterDuffColorFilter(Color.parseColor("#AA00FFFF"), PorterDuff.Mode.SRC_ATOP));
         fadePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        
+
         // אתחול צבע הבלר - כחול עמוק שקוף למחצה
         blurPaint.setColor(Color.parseColor("#44001122"));
-        
+
         createLine();
         createUI();
     }
@@ -243,7 +243,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     @Override
     public void render(Canvas c) {
         c.drawRect(screenRect, blurPaint); // שכבת הבלר הדינמית
-        
+
         c.drawBitmap(lineSprites[lineAnimation.getAniIndex()], lineX, lineY, null);
         drawModel(c);
         drawHearts(c);
@@ -271,7 +271,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     @Override
     public void touchEvents(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) handleBalloonDismissal(event);
-        if (btnReturn.eventHandler(event)) { Game.setNextGameState(Game.GameState.PLAYING); return; }
+        if (btnReturn.eventHandler(event)) { Game.setNextGameState(State.PLAYING); return; }
         if (btnApplyChanges.eventHandler(event)) { applyChanges(); return; }
 
         handleScrolling(event);

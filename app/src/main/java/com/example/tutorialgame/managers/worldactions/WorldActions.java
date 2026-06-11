@@ -6,6 +6,7 @@ import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.environments.GameMap;
+import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.managers.DialogueManager;
 import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
@@ -173,7 +174,7 @@ public class WorldActions {
         @Override
         public void execute() {
             try {
-                Game.setNextGameState(Game.GameState.valueOf(stateName.toUpperCase()));
+                Game.setNextGameState(State.valueOf(stateName.toUpperCase()));
             } catch (Exception ignored) {}
         }
     }

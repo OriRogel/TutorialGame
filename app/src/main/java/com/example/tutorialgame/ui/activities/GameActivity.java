@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.core.GamePanel;
+import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 /**
@@ -52,13 +53,13 @@ public class GameActivity extends BaseActivity {
                 if (gamePanel == null || gamePanel.getGame() == null) return;
 
                 // אם השחקן כבר במסך מוות, אין טעם לשנות מצב
-                if (gamePanel.getGame().getCurrentGameState() == Game.GameState.DEATH_SCREEN) return;
+                if (gamePanel.getGame().getCurrentGameState() == State.DEATH_SCREEN) return;
 
                 if (intent != null && TelephonyManager.ACTION_PHONE_STATE_CHANGED.equals(intent.getAction())) {
                     String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
                     if (TelephonyManager.EXTRA_STATE_RINGING.equals(state) ||
                             TelephonyManager.EXTRA_STATE_OFFHOOK.equals(state)) {
-                        Game.setNextGameState(Game.GameState.MENU);
+                        Game.setNextGameState(State.MENU);
                     }
                 }
             }
@@ -82,9 +83,9 @@ public class GameActivity extends BaseActivity {
 
         // לוגיקת גיבוי למעבר לתפריט ביציאה רגילה מהאפליקציה
         if (!isFinishing()) {
-            Game.GameState currentState = gamePanel.getGame().getCurrentGameState();
-            if (currentState != Game.GameState.DEATH_SCREEN && currentState != Game.GameState.MENU) {
-                Game.setNextGameState(Game.GameState.MENU);
+            State currentState = gamePanel.getGame().getCurrentGameState();
+            if (currentState != State.DEATH_SCREEN && currentState != State.MENU) {
+                Game.setNextGameState(State.MENU);
             }
         }
 
