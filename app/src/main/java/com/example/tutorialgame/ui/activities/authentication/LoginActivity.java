@@ -75,8 +75,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String email = intent.getStringExtra("email");
         String password = intent.getStringExtra("password");
 
-        etEmail.setText(email);
-        etPassword.setText(password);
+        if (email != null && password != null) {
+            etEmail.setText(email);
+            etPassword.setText(password);
+
+            btnLogin.setEnabled(true);
+        }
     }
 
     private void initListeners() {

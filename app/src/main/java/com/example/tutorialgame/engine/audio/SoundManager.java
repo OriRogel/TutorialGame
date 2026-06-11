@@ -8,14 +8,13 @@ import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.managers.CameraManager;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,7 +29,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SoundManager {
     private static final String TAG = "SoundManager";
 
+    // Constants
+    private static final String
+            PREFS_NAME = "settings",
+            KEY_SOUND_VOLUME = "sound_volume";
     private static final long SAVE_DELAY_MS = 500L;
+    private static final int MAX_STREAMS = 16;
+    private static final float
+            MIN_RATE = 0.9f,
+            MAX_RATE = 1.1f,
+            DEFAULT_VOLUME = 0.5f;
+    private static final float SPATIAL_DISTANCE_MULTIPLIER = 1.5f;
+
     private static SoundManager instance;
     private final SoundPool soundPool;
     private final Context appContext;
@@ -43,33 +53,30 @@ public class SoundManager {
     /**
      * Tracks successfully loaded sound IDs.
      */
-    private final Set<Integer> loadedSoundIds = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<Integer> loadedSoundIds = ConcurrentHashMap.newKeySet();
 
-    private final float minRate = 0.9f;
-    private final float maxRate = 1.1f;
     private final Handler saveHandler = new Handler(Looper.getMainLooper());
-    private SharedPreferences sp;
+    private final SharedPreferences sp;
     private float soundVolume;
-    private final Runnable saveRunnable = () -> sp.edit().putFloat("sound_volume", soundVolume).apply();
+    private final Runnable saveRunnable;
 
     // --- Sound Throttling System ---
-    private final Map<Integer, Long> throttledSounds = new ConcurrentHashMap<>();
     private final Map<String, SoundThrottleGroup> soundGroups = new ConcurrentHashMap<>();
 
     private static class SoundThrottleGroup {
-        int count;
-        long lastReset;
-        final int limit;
-        final long interval;
+        private int count;
+        private long lastReset;
+        private final int limit;
+        private final long interval;
 
         SoundThrottleGroup(int limit, long interval) {
             this.limit = limit;
             this.interval = interval;
-            this.lastReset = System.currentTimeMillis();
+            this.lastReset = SystemClock.elapsedRealtime();
         }
 
-        boolean canPlay() {
-            long now = System.currentTimeMillis();
+        synchronized boolean canPlay() {
+            long now = SystemClock.elapsedRealtime();
             if (now - lastReset > interval) {
                 count = 0;
                 lastReset = now;
@@ -91,7 +98,7 @@ public class SoundManager {
                 .build();
 
         soundPool = new SoundPool.Builder()
-                .setMaxStreams(13)
+                .setMaxStreams(MAX_STREAMS)
                 .setAudioAttributes(audioAttributes)
                 .build();
 
@@ -103,8 +110,9 @@ public class SoundManager {
             }
         });
 
-        sp = appContext.getSharedPreferences("settings", Context.MODE_PRIVATE);
-        this.soundVolume = clamp(sp.getFloat("sound_volume", 0.5f));
+        this.sp = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        this.soundVolume = clamp(sp.getFloat(KEY_SOUND_VOLUME, DEFAULT_VOLUME));
+        this.saveRunnable = () -> sp.edit().putFloat(KEY_SOUND_VOLUME, soundVolume).apply();
     }
 
     public static synchronized SoundManager getInstance(Context context) {
@@ -119,38 +127,62 @@ public class SoundManager {
      */
     public void loadAllSfx(int[] resIds) {
         for (int resId : resIds) {
-            if (!resIdToSoundId.containsKey(resId)) {
-                int soundId = soundPool.load(appContext, resId, 1);
-                resIdToSoundId.put(resId, soundId);
-            }
+            loadSfx(resId);
         }
     }
 
     /**
-     * Checks if a sound resource is loaded and ready to be played.
+     * Loads a single SFX resource.
      */
-    public boolean isLoaded(int resId) {
+    public void loadSfx(int resId) {
+        if (!resIdToSoundId.containsKey(resId)) {
+            int soundId = soundPool.load(appContext, resId, 1);
+            resIdToSoundId.put(resId, soundId);
+        }
+    }
+
+    /**
+     * Unloads an SFX resource.
+     */
+    public void unloadSfx(int resId) {
+        Integer soundId = resIdToSoundId.remove(resId);
+        if (soundId != null) {
+            soundPool.unload(soundId);
+            loadedSoundIds.remove(soundId);
+        }
+    }
+
+    /**
+     * Gets the SoundPool ID for a resource if it is loaded and ready.
+     * @return soundId or -1 if not ready.
+     */
+    private int getLoadedSoundId(int resId) {
         Integer soundId = resIdToSoundId.get(resId);
-        return (soundId != null && loadedSoundIds.contains(soundId));
+        if (soundId != null && loadedSoundIds.contains(soundId)) {
+            return soundId;
+        }
+        return -1;
+    }
+
+    /**
+     * @return A random pitch rate between MIN_RATE and MAX_RATE.
+     */
+    private float getRandomRate() {
+        return MIN_RATE + MyApp.RND.nextFloat() * (MAX_RATE - MIN_RATE);
     }
 
     /**
      * Plays a sound effect with a slightly randomized pitch.
      */
     public void playRndPitchSfx(int resId) {
-        if (!isLoaded(resId)) return;
-        float rate = minRate + MyApp.RND.nextFloat() * (maxRate - minRate);
-        soundPool.play(Objects.requireNonNull(resIdToSoundId.get(resId)), soundVolume, soundVolume, 1, 0, rate);
+        int soundId = getLoadedSoundId(resId);
+        if (soundId != -1) {
+            soundPool.play(soundId, soundVolume, soundVolume, 1, 0, getRandomRate());
+        }
     }
 
     /**
      * Plays a sound effect with spatial characteristics, with optional throttling.
-     *
-     * @param resId     The raw resource ID.
-     * @param sourceX   The world X coordinate.
-     * @param groupName Optional group name for shared throttling.
-     * @param limit     Max sounds per interval.
-     * @param interval  The interval in MS.
      */
     public void playSpatialSfxThrottled(int resId, float sourceX, String groupName, int limit, long interval) {
         SoundThrottleGroup group = soundGroups.computeIfAbsent(groupName, k -> new SoundThrottleGroup(limit, interval));
@@ -159,44 +191,32 @@ public class SoundManager {
         }
     }
 
-    /**
-     * Plays a spatial sound effect with a per-resource throttle.
-     */
-    public void playSpatialSfxThrottled(int resId, float sourceX, long minInterval) {
-        long now = System.currentTimeMillis();
-        Long lastTime = throttledSounds.get(resId);
-        if (lastTime == null || now - lastTime > minInterval) {
-            throttledSounds.put(resId, now);
-            playSpatialSfx(resId, sourceX);
-        }
-    }
+
 
     /**
      * Plays a sound effect with spatial characteristics (volume and panning) based on the source's X position
      * relative to the camera's focus point.
-     *
-     * @param resId   The raw resource ID of the sound.
-     * @param sourceX The world X coordinate of the sound source.
      */
     public void playSpatialSfx(int resId, float sourceX) {
-        if (!isLoaded(resId)) return;
+        int soundId = getLoadedSoundId(resId);
+        if (soundId == -1) return;
 
         int screenWidth = SCREEN_WIDTH;
-        if (screenWidth == 0) {
+        if (screenWidth <= 0) {
             playSfx(resId);
             return;
         }
 
         float listenerX = CameraManager.getLookAtX();
         float distanceX = Math.abs(sourceX - listenerX);
-        float maxHearingDistance = screenWidth * 1.5f;
+        float maxHearingDistance = screenWidth * SPATIAL_DISTANCE_MULTIPLIER;
 
         float attenuationFactor = 1.0f - (distanceX / maxHearingDistance);
         float distanceVolume = Math.max(0, attenuationFactor);
 
         float finalEffectiveVolume = soundVolume * distanceVolume;
-        float pan = (sourceX - listenerX) / (screenWidth / 2.0f);
-        pan = Math.max(-1.0f, Math.min(1.0f, pan));
+        float rawPan = (sourceX - listenerX) / (screenWidth / 2.0f);
+        float pan = Math.max(-1.0f, Math.min(1.0f, rawPan));
 
         float finalLeftVolume;
         float finalRightVolume;
@@ -208,16 +228,17 @@ public class SoundManager {
             finalRightVolume = finalEffectiveVolume * (1.0f + pan);
         }
 
-        float rate = minRate + MyApp.RND.nextFloat() * (maxRate - minRate);
-        soundPool.play(Objects.requireNonNull(resIdToSoundId.get(resId)), finalLeftVolume, finalRightVolume, 1, 0, rate);
+        soundPool.play(soundId, finalLeftVolume, finalRightVolume, 1, 0, getRandomRate());
     }
 
     /**
      * Plays a sound effect at the current global sound volume.
      */
     public void playSfx(int resId) {
-        if (!isLoaded(resId)) return;
-        soundPool.play(Objects.requireNonNull(resIdToSoundId.get(resId)), soundVolume, soundVolume, 1, 0, 1f);
+        int soundId = getLoadedSoundId(resId);
+        if (soundId != -1) {
+            soundPool.play(soundId, soundVolume, soundVolume, 1, 0, 1.0f);
+        }
     }
 
     /**
@@ -254,6 +275,8 @@ public class SoundManager {
     public void release() {
         persistVolumeNow();
         soundPool.release();
+        resIdToSoundId.clear();
+        loadedSoundIds.clear();
         instance = null;
     }
 

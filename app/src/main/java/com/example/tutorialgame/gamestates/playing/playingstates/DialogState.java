@@ -79,10 +79,10 @@ public class DialogState extends GameState {
             }
         }
 
-        float currentZoom = easeInOutCubic(elapsedTime, startZoom, deltaZoom, ZOOM_DURATION);
+        float currentZoom = easeInOutCubic(elapsedTime, startZoom, deltaZoom);
         CameraManager.setTempZoom(currentZoom);
 
-        float alphaProgress = easeInOutCubic(elapsedTime, 0, 220, ZOOM_DURATION);
+        float alphaProgress = easeInOutCubic(elapsedTime, 0, 220);
         letterboxPaint.setAlpha((int) alphaProgress);
     }
 
@@ -98,7 +98,7 @@ public class DialogState extends GameState {
         playingManager.getOverWorld().renderWithoutUi(c);
 
         if (letterboxPaint.getAlpha() > 0) {
-            float barHeight = easeInOutCubic(elapsedTime, 0, SCREEN_HEIGHT * 0.12f, ZOOM_DURATION);
+            float barHeight = easeInOutCubic(elapsedTime, 0, SCREEN_HEIGHT * 0.12f);
             c.drawRect(0, 0, SCREEN_WIDTH, barHeight, letterboxPaint);
             c.drawRect(0, SCREEN_HEIGHT - barHeight, SCREEN_WIDTH, SCREEN_HEIGHT, letterboxPaint);
         }
@@ -158,8 +158,8 @@ public class DialogState extends GameState {
         return (currentDialogue != null) ? currentDialogue.getNextLine() : null;
     }
 
-    private float easeInOutCubic(float t, float b, float c, float d) {
-        t /= d / 2;
+    private float easeInOutCubic(float t, float b, float c) {
+        t /= ZOOM_DURATION / 2;
         if (t < 1) return c / 2 * t * t * t + b;
         t -= 2;
         return c / 2 * (t * t * t + 2) + b;
