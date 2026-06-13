@@ -7,6 +7,7 @@ import com.example.tutorialgame.entities.characters.GameCharacters;
 import com.example.tutorialgame.entities.characters.nonenemies.neutral.BlackKnight;
 import com.example.tutorialgame.entities.characters.nonenemies.neutral.Father;
 import com.example.tutorialgame.entities.characters.nonenemies.neutral.WhiteKnight;
+import com.example.tutorialgame.managers.worldactions.ActionFactory;
 import com.example.tutorialgame.managers.worldactions.WorldActions;
 import com.example.tutorialgame.managers.worldactions.WorldAction;
 import com.example.tutorialgame.R;
@@ -15,35 +16,49 @@ import java.util.Map;
 
 public class WorldEventManager {
     private static final Map<String, WorldAction> events = new HashMap<>();
+    private static ActionFactory actionFactory;
 
-    static {
+    public static void init(com.example.tutorialgame.engine.interfaces.StateSwitcher switcher) {
+        actionFactory = new ActionFactory(switcher);
+        setupEvents();
+    }
+
+    private static void setupEvents() {
+        events.clear();
         // TALKED_TO_FRIEND_FIRST_TIME
-        events.put("TALKED_TO_FRIEND_FIRST_TIME", () -> 
-            new WorldActions.SetHome("BEST_FRIEND", "village.tmx", -TILE_SIZE * 2, TILE_SIZE * 0.3f, true).execute());
+        events.put("TALKED_TO_FRIEND_FIRST_TIME", actionFactory.createAction("SET_HOME", createParams("char", "BEST_FRIEND", "map", "village.tmx", "x", String.valueOf(-TILE_SIZE * 2), "y", String.valueOf(TILE_SIZE * 0.3f), "relative", "true")));
 
         // RECEIVED_SWORD_FROM_BLACKSMITH
         events.put("RECEIVED_SWORD_FROM_BLACKSMITH", () -> {
-            new WorldActions.MoveNpc("BEST_FRIEND", "village.tmx", "weapon_store.tmx", TILE_SIZE * 2.2f, TILE_SIZE * 8.4f).execute();
-            new WorldActions.SetDoor("weapon_store.tmx", "weapon_store_to_village", false).execute();
-            new WorldActions.UpdateWeapon().execute();
+            actionFactory.createAction("MOVE_NPC", createParams("char", "BEST_FRIEND", "from", "village.tmx", "to", "weapon_store.tmx", "x", String.valueOf(TILE_SIZE * 2.2f), "y", String.valueOf(TILE_SIZE * 8.4f))).execute();
+            actionFactory.createAction("SET_DOOR", createParams("map", "weapon_store.tmx", "door", "weapon_store_to_village", "active", "false")).execute();
+            actionFactory.createAction("UPDATE_WEAPON", createParams("weapon", "")).execute();
         });
 
         // TALKED_TO_FRIEND_IN_SHOP
         events.put("TALKED_TO_FRIEND_IN_SHOP", () -> {
-            new WorldActions.SetDoor("weapon_store.tmx", "weapon_store_to_village", true).execute();
-            new WorldActions.MoveNpc("BEST_FRIEND", "weapon_store.tmx", "village.tmx", TILE_SIZE * 25, TILE_SIZE * 17).execute();
+            actionFactory.createAction("SET_DOOR", createParams("map", "weapon_store.tmx", "door", "weapon_store_to_village", "active", "true")).execute();
+            actionFactory.createAction("MOVE_NPC", createParams("char", "BEST_FRIEND", "from", "weapon_store.tmx", "to", "village.tmx", "x", String.valueOf(TILE_SIZE * 25), "y", String.valueOf(TILE_SIZE * 17))).execute();
         });
 
         // ENTER_MAZE
         events.put("ENTER_MAZE", () -> 
-            new WorldActions.SetDialogue(GameCharacters.PLAYER.name()).execute());
+            actionFactory.createAction("SET_DIALOGUE", createParams("speakerType", GameCharacters.PLAYER.name())).execute());
 
         // RUNWAY
         events.put("RUNWAY", () -> {
-            new WorldActions.SetDoor("maze.tmx", "maze_to_chief_home", true).execute();
-            new WorldActions.ChangeMusic("maze.tmx", R.raw.music_runaway).execute();
-            new WorldActions.SpawnMonsters("maze.tmx", "SKELETON", 50, 5).execute();
+            actionFactory.createAction("SET_DOOR", createParams("map", "maze.tmx", "door", "maze_to_chief_home", "active", "true")).execute();
+            actionFactory.createAction("CHANGE_MUSIC", createParams("map", "maze.tmx", "music", "music_runaway")).execute();
+            actionFactory.createAction("SPAWN_MONSTERS", createParams("map", "maze.tmx", "spawnType", "SKELETON", "minCount", "50", "immediateCount", "5")).execute();
         });
+    }
+
+    private static Map<String, String> createParams(String... kvs) {
+        Map<String, String> params = new HashMap<>();
+        for (int i = 0; i < kvs.length; i += 2) {
+            params.put(kvs[i], kvs[i+1]);
+        }
+        return params;
     }
 
     public static void triggerEvent(String eventId) {
@@ -90,6 +105,8 @@ public class WorldEventManager {
     }
 
     public static void setDoorState(String mapName, String doorName, boolean active) {
-        new WorldActions.SetDoor(mapName, doorName, active).execute();
+        if (actionFactory != null) {
+            actionFactory.createAction("SET_DOOR", createParams("map", mapName, "door", doorName, "active", String.valueOf(active))).execute();
+        }
     }
 }

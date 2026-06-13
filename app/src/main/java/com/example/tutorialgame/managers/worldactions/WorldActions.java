@@ -11,6 +11,7 @@ import com.example.tutorialgame.managers.DialogueManager;
 import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import java.util.List;
 
 /**
@@ -18,6 +19,12 @@ import java.util.List;
  * Consolidating actions into one file for easier navigation and parameter lookup.
  */
 public class WorldActions {
+
+    private final StateSwitcher switcher;
+
+    public WorldActions(StateSwitcher switcher) {
+        this.switcher = switcher;
+    }
 
     /** Moves a character to a different map. */
     public static class MoveNpc implements WorldAction {
@@ -167,16 +174,15 @@ public class WorldActions {
     }
 
     /** Changes the overall Game State (e.g., to CUTSCENE). */
-    public static class ChangeState implements WorldAction {
+    public class ChangeState implements WorldAction {
         private final String stateName;
         public ChangeState(String stateName) { this.stateName = stateName; }
 
         @Override
         public void execute() {
             try {
-                GamePanel panel = com.example.tutorialgame.MyApp.getGamePanel();
-                if (panel != null && panel.getGame() != null) {
-                    panel.getGame().changeState(State.valueOf(stateName.toUpperCase()));
+                if (switcher != null) {
+                    switcher.changeState(State.valueOf(stateName.toUpperCase()));
                 }
             } catch (Exception ignored) {}
         }

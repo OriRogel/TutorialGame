@@ -22,7 +22,6 @@ import java.util.Random;
 public class MyApp extends Application {
     private static Context appContext;
     private static CloudManager cloudManager;
-    private static GamePanel gamePanel;
     final public static Random RND = new Random();
 
     @Override
@@ -99,7 +98,4 @@ public class MyApp extends Application {
     public static WorldStateDoc getWorldStateDoc() { 
         return cloudManager.getActiveSlot().getWorldStateDoc();
     }
-
-    public static void setGamePanel(GamePanel gamePanel) { MyApp.gamePanel = gamePanel; }
-    public static GamePanel getGamePanel() { return gamePanel; }
 }

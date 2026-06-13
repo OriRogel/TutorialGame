@@ -21,6 +21,7 @@ import com.example.tutorialgame.managers.WorldEventManager;
 import com.example.tutorialgame.engine.ui.effects.weathereffects.WeatherEffect;
 import com.example.tutorialgame.engine.renderer.LightRenderer;
 import com.example.tutorialgame.engine.ui.effects.MapTransitionEffect;
+import com.example.tutorialgame.managers.QuestManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class OverWorld extends GameState {
         // מעדכנים כניסה יומית עבור הסלוט הספציפי
         MyApp.getProgress().updateLogin();
 
-        // מרעננים את מצב העולם
+        WorldEventManager.init(switcher);
         WorldEventManager.refreshWorldState();
 
         // מנגנים מוזיקה
@@ -73,6 +74,8 @@ public class OverWorld extends GameState {
         setCameraRelativeToPlayer(0);
 
         mapManager.initWeatherForCurrentMap();
+
+        QuestManager.initQuests(switcher);
 
         playingUI = new PlayingUI(this);
     }

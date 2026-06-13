@@ -5,10 +5,8 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import androidx.annotation.NonNull;
 
-import com.example.tutorialgame.MyApp;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private final Game game;
@@ -18,7 +16,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
         game = new Game(holder, context);
-        MyApp.setGamePanel(this);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -59,6 +56,5 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
         pauseGame();
-        MyApp.setGamePanel(null);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.tutorialgame.managers.worldactions;
 
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import android.util.Log;
 import java.util.Map;
 
@@ -9,8 +10,13 @@ import java.util.Map;
  */
 public class ActionFactory {
     private static final String TAG = "ActionFactory";
+    private final WorldActions worldActions;
 
-    public static WorldAction createAction(String type, Map<String, String> params) {
+    public ActionFactory(StateSwitcher switcher) {
+        this.worldActions = new WorldActions(switcher);
+    }
+
+    public WorldAction createAction(String type, Map<String, String> params) {
         if (type == null) return null;
         
         String upperType = type.toUpperCase();
@@ -73,7 +79,7 @@ public class ActionFactory {
                 return new WorldActions.UpdateWeapon(params.get("weapon"));
             case "CHANGE_STATE":
                 if (!validateParams(upperType, params, "state")) return null;
-                return new WorldActions.ChangeState(params.get("state"));
+                return worldActions.new ChangeState(params.get("state"));
             default:
                 Log.w(TAG, "Unknown action type: " + type);
                 return null;

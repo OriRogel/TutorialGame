@@ -44,16 +44,14 @@ public final class QuestManager {
         lineShadow = new Paint();
         lineShadow.setColor(Color.BLACK);
         lineShadow.setStrokeWidth(SCALE_MULTIPLIER);
-
-        initQuests();
     }
 
     private QuestManager() {}
 
 
-    private static void initQuests() {
+    public static void initQuests(com.example.tutorialgame.engine.interfaces.StateSwitcher switcher) {
         mainStoryLine.clear();
-        mainStoryLine.addAll(QuestParser.parseQuests(BaseActivity.getContext(), "quests.xml"));
+        mainStoryLine.addAll(com.example.tutorialgame.quest.QuestParser.parseQuests(BaseActivity.getContext(), "quests.xml", switcher));
         update();
     }
 

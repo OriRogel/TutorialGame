@@ -7,6 +7,7 @@ import android.util.Xml;
 import com.example.tutorialgame.managers.worldactions.ActionFactory;
 import com.example.tutorialgame.managers.worldactions.WorldAction;
 import com.example.tutorialgame.managers.worldactions.WorldEvent;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -25,7 +26,8 @@ import java.util.Map;
 public class QuestParser {
     private static final String TAG = "QuestParser";
 
-    public static List<ComplexQuest> parseQuests(Context context, String fileName) {
+    public static List<ComplexQuest> parseQuests(Context context, String fileName, StateSwitcher switcher) {
+        ActionFactory actionFactory = new ActionFactory(switcher);
         List<ComplexQuest> mainStoryLine = new ArrayList<>();
         try (InputStream is = context.getAssets().open(fileName)) {
             XmlPullParser parser = Xml.newPullParser();
@@ -45,7 +47,7 @@ public class QuestParser {
                             currentSubQuests = new ArrayList<>();
                             currentComplexQuest = new ComplexQuest(titleRes, currentSubQuests);
                         } else if ("step".equals(name)) {
-                            Quest step = parseStep(context, parser);
+                            Quest step = parseStep(context, parser, actionFactory);
                             if (currentSubQuests != null) currentSubQuests.add(step);
                         }
                         break;
@@ -63,7 +65,7 @@ public class QuestParser {
         return mainStoryLine;
     }
 
-    private static Quest parseStep(Context context, XmlPullParser parser) throws IOException, XmlPullParserException {
+    private static Quest parseStep(Context context, XmlPullParser parser, ActionFactory actionFactory) throws IOException, XmlPullParserException {
         String id = parser.getAttributeValue(null, "id");
         int taskRes = getResId(context, parser.getAttributeValue(null, "task_res"), "string");
         int coins = getIntAttribute(parser, "coins", 0);
@@ -81,7 +83,7 @@ public class QuestParser {
                     String target = parser.getAttributeValue(null, "target");
                     questType = new QuestType(QuestType.Type.valueOf(typeStr), target);
                 } else if ("onSuccess".equals(name)) {
-                    parseActions(parser, onComplete);
+                    parseActions(parser, onComplete, actionFactory);
                 }
             }
             eventType = parser.next();
@@ -90,7 +92,7 @@ public class QuestParser {
         return new Quest(taskRes, id, questType, coins, xp, onComplete::trigger);
     }
 
-    private static void parseActions(XmlPullParser parser, WorldEvent event) throws IOException, XmlPullParserException {
+    private static void parseActions(XmlPullParser parser, WorldEvent event, ActionFactory actionFactory) throws IOException, XmlPullParserException {
         int eventType = parser.next();
         while (!(eventType == XmlPullParser.END_TAG && "onSuccess".equals(parser.getName()))) {
             if (eventType == XmlPullParser.START_TAG && "action".equals(parser.getName())) {
@@ -108,7 +110,7 @@ public class QuestParser {
                     params.put("musicRes", String.valueOf(getResId(BaseActivity.getContext(), params.get("music"), "raw")));
                 }
 
-                WorldAction action = ActionFactory.createAction(type, params);
+                WorldAction action = actionFactory.createAction(type, params);
                 if (action != null) event.addAction(action);
             }
             eventType = parser.next();
