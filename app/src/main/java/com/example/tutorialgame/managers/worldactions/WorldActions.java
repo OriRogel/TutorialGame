@@ -2,7 +2,7 @@ package com.example.tutorialgame.managers.worldactions;
 
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.engine.audio.MusicManager;
-import com.example.tutorialgame.engine.core.Game;
+import com.example.tutorialgame.engine.core.GamePanel;
 import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.environments.GameMap;
@@ -174,7 +174,10 @@ public class WorldActions {
         @Override
         public void execute() {
             try {
-                Game.setNextGameState(State.valueOf(stateName.toUpperCase()));
+                GamePanel panel = com.example.tutorialgame.MyApp.getGamePanel();
+                if (panel != null && panel.getGame() != null) {
+                    panel.getGame().changeState(State.valueOf(stateName.toUpperCase()));
+                }
             } catch (Exception ignored) {}
         }
     }

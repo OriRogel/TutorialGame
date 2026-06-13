@@ -67,7 +67,7 @@ public class OverWorld extends GameState {
         transitionEffect = new MapTransitionEffect();
 
         player = new Player();
-        player.setOnDeathCompleteListener(() -> Game.setNextGameState(State.DEATH_SCREEN));
+        player.setOnDeathCompleteListener(() -> switcher.changeState(State.DEATH_SCREEN));
 
         MapManager.getCurrentMap().setPlayer(player);
         setCameraRelativeToPlayer(0);

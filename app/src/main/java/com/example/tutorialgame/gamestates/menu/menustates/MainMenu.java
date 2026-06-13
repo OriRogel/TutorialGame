@@ -87,7 +87,7 @@ public class MainMenu extends Menu implements GameButton.OnClickListener {
             if (offsetY <= -SCREEN_HEIGHT) {
                 offsetY = -SCREEN_HEIGHT;
                 isExiting = false;
-                Game.setNextGameState(State.PLAYING);
+                switcher.changeState(State.PLAYING);
             }
         }
     }

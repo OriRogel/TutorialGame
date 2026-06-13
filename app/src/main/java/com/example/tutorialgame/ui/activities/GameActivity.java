@@ -14,7 +14,6 @@ import android.view.Gravity;
 import android.widget.FrameLayout;
 
 import com.example.tutorialgame.engine.audio.MusicManager;
-import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.core.GamePanel;
 import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.ui.base.BaseActivity;
@@ -59,7 +58,7 @@ public class GameActivity extends BaseActivity {
                     String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
                     if (TelephonyManager.EXTRA_STATE_RINGING.equals(state) ||
                             TelephonyManager.EXTRA_STATE_OFFHOOK.equals(state)) {
-                        Game.setNextGameState(State.MENU);
+                        gamePanel.getGame().changeState(State.MENU);
                     }
                 }
             }
@@ -85,7 +84,7 @@ public class GameActivity extends BaseActivity {
         if (!isFinishing()) {
             State currentState = gamePanel.getGame().getCurrentGameState();
             if (currentState != State.DEATH_SCREEN && currentState != State.MENU) {
-                Game.setNextGameState(State.MENU);
+                gamePanel.getGame().changeState(State.MENU);
             }
         }
 

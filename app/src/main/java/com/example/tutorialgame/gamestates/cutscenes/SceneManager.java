@@ -51,7 +51,7 @@ public class SceneManager extends GameState {
         }
 
         // Fallback: If no scenes are pending, resume normal gameplay
-        Game.setNextGameState(State.PLAYING);
+        switcher.changeState(State.PLAYING);
     }
 
     /**
@@ -62,7 +62,7 @@ public class SceneManager extends GameState {
             isStartingDialogueAfter = currentScene.isDialogueAfter();
         }
         this.currentScene = null;
-        Game.setNextGameState(State.PLAYING);
+        switcher.changeState(State.PLAYING);
     }
 
     @Override

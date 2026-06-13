@@ -13,7 +13,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 import com.example.tutorialgame.MyApp;
-import com.example.tutorialgame.engine.core.Game;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
 import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleButton;
@@ -36,6 +36,7 @@ public class PlayingUI implements GameButton.OnClickListener {
     private final Player player;
 
     private final OverWorld overWorld;
+    private final StateSwitcher switcher;
     private final RectF facesetHitbox;
     private final Bitmap currentFrame = CircleFrames.valueOf(MyApp.getCosmetic().getCurrentFrame()).getCircleFrame();
 
@@ -66,6 +67,7 @@ public class PlayingUI implements GameButton.OnClickListener {
 
     public PlayingUI(OverWorld overWorld) {
         this.overWorld = overWorld;
+        this.switcher = overWorld.getGame();
         this.player = overWorld.getPlayer();
 
         // אתחול הג'ויסטיק החדש במקום הנקודות הידניות
@@ -262,7 +264,7 @@ public class PlayingUI implements GameButton.OnClickListener {
         } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP) {
             if (facesetPressed && pointerId == facesetPointerId) {
                 if (facesetHitbox.contains(event.getX(actionIndex), event.getY(actionIndex)) && startFace) {
-                    Game.setNextGameState(State.UPGRADE_STATE);
+                    switcher.changeState(State.UPGRADE_STATE);
                     facesetBaseRotation = facesetBaseRotation + 90f;
                 } else {
                     startRotateTo(facesetBaseRotation);
@@ -281,7 +283,7 @@ public class PlayingUI implements GameButton.OnClickListener {
 
     @Override
     public void onClick(GameButton button) {
-        if (button == btnMenu) Game.setNextGameState(State.MENU);
+        if (button == btnMenu) switcher.changeState(State.MENU);
         if (button == btnAttack && !player.isAttacking()) player.setAttacking(true);
         if (button == btnSpeak) {
             overWorld.getPlayingManager().setDialogState(player.getCurrentSpeaker());

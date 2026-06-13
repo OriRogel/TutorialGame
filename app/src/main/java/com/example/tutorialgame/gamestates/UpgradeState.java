@@ -271,7 +271,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     @Override
     public void touchEvents(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) handleBalloonDismissal(event);
-        if (btnReturn.eventHandler(event)) { Game.setNextGameState(State.PLAYING); return; }
+        if (btnReturn.eventHandler(event)) { switcher.changeState(State.PLAYING); return; }
         if (btnApplyChanges.eventHandler(event)) { applyChanges(); return; }
 
         handleScrolling(event);

@@ -8,15 +8,18 @@ import com.example.tutorialgame.environments.GameMap;
 import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.ui.activities.LauncherActivity;
 import com.example.tutorialgame.ui.base.BaseActivity;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.core.Game;
 
 public abstract class GameState implements GameStateInterface {
     protected Game game;
+    protected StateSwitcher switcher;
     protected Context context;
     private final Intent intent;
 
     public GameState(Game game) {
         this.game = game;
+        this.switcher = game;
         this.context = BaseActivity.getContext();
         this.intent = new Intent(context, LauncherActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

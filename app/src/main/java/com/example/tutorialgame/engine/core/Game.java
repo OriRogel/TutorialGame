@@ -7,6 +7,7 @@ import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.input.InputManager;
 import com.example.tutorialgame.engine.renderer.GameRenderer;
 import com.example.tutorialgame.engine.ui.HUDManager;
@@ -23,7 +24,7 @@ import com.example.tutorialgame.gamestates.playing.PlayingManager;
  * The core Game class that coordinates the game loop, states, and rendering.
  * Refactored to delegate responsibilities to specialized components.
  */
-public class Game {
+public class Game implements StateSwitcher {
     private final GameLoop gameLoop;
     private final Context context;
 
@@ -111,20 +112,16 @@ public class Game {
         resetManager.restartGame();
     }
 
-    public static void setNextGameState(State newState) {
-        // This static method is still used by various parts of the game
-        // We'll need a way to access the current Game instance or StateMachine
-        // For now, we can use a static reference or find a better way to decouple
-        // But to keep it working with existing code:
-        StaticGameStateBridge.setNextState(newState);
+    @Override
+    public void changeState(State newState) {
+        stateMachine.queueTransition(newState);
     }
+
+
 
     // Bridge for handleStateChange in the next update
     public void processNextState() {
-        State next = StaticGameStateBridge.getAndClearNextState();
-        if (next != null) {
-            stateMachine.queueTransition(next);
-        }
+        // State transitions are now handled primarily via changeState() instance calls
     }
 
     // Accessors for Managers
