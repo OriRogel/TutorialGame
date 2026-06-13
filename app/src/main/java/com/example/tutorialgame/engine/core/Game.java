@@ -74,7 +74,7 @@ public class Game implements StateSwitcher {
     }
 
     private void initInitialState() {
-        State initialState = MyApp.getWorldStateDoc().getCheckPoint("seen_cutscene_coldOpening") 
+        State initialState = MyApp.getWorldStateDoc().getCheckPoint("seen_cutscene_coldOpening")
                 ? State.PLAYING : State.CUTSCENE;
         stateMachine.setInitialState(initialState);
     }

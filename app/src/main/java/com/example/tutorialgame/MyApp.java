@@ -12,7 +12,6 @@ import com.example.tutorialgame.cloud.document.WorldStateDoc;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.cloud.document.StatsDoc;
-import com.example.tutorialgame.engine.core.GamePanel;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,24 +77,24 @@ public class MyApp extends Application {
 
     public static Context getAppContext() { return appContext; }
     public static CloudManager getCloudManager() { return cloudManager; }
-    
+
     // נתוני חשבון גלובליים
     public static ProfileDoc getProfile() { return cloudManager.getProfile(); }
-    
+
     // קיצורי דרך ישירים לנתוני הסלוט הפעיל
-    public static StatsDoc getPlayerStats() { 
+    public static StatsDoc getPlayerStats() {
         return cloudManager.getActiveSlot().getPlayerStats();
     }
-    
-    public static ProgressDoc getProgress() { 
+
+    public static ProgressDoc getProgress() {
         return cloudManager.getActiveSlot().getProgress();
     }
-    
-    public static CosmeticDoc getCosmetic() { 
+
+    public static CosmeticDoc getCosmetic() {
         return cloudManager.getActiveSlot().getCosmeticDoc();
     }
-    
-    public static WorldStateDoc getWorldStateDoc() { 
+
+    public static WorldStateDoc getWorldStateDoc() {
         return cloudManager.getActiveSlot().getWorldStateDoc();
     }
 }
