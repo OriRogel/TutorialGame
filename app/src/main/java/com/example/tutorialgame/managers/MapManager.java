@@ -69,7 +69,7 @@ public class MapManager {
         if (map.hasLeavesEffect()) {
             for (int i = 0; i < 15; i++) {
                 PointF pos = getRandomViewPosition();
-                weatherEffects.add(new Leaf(MyApp.RND.nextBoolean() ? Leaves.LEAF_GREEN : Leaves.LEAF_PINK, pos.x, pos.y));
+                weatherEffects.add(new Leaf(MyApp.getRandom().nextBoolean() ? Leaves.LEAF_GREEN : Leaves.LEAF_PINK, pos.x, pos.y));
             }
         }
 
@@ -114,8 +114,8 @@ public class MapManager {
 
     private PointF getRandomViewPosition() {
         return new PointF(
-            viewRect.left + MyApp.RND.nextFloat() * viewRect.width(),
-            viewRect.top + MyApp.RND.nextFloat() * viewRect.height()
+            viewRect.left + MyApp.getRandom().nextFloat() * viewRect.width(),
+            viewRect.top + MyApp.getRandom().nextFloat() * viewRect.height()
         );
     }
 

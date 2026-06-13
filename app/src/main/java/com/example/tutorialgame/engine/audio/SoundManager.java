@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.managers.CameraManager;
 
 import java.util.Map;
@@ -89,6 +90,21 @@ public class SoundManager {
         }
     }
 
+    private static final int[] STARTUP_SFX = {
+            R.raw.sfx_bloop, R.raw.sfx_impact_enemy2, R.raw.sfx_impact_enemy1,
+            R.raw.sfx_impact_player, R.raw.sfx_slash, R.raw.sfx_whoosh,
+            R.raw.sfx_slash3, R.raw.sfx_slash2, R.raw.sfx_impact3,
+            R.raw.sfx_error, R.raw.sfx_jump, R.raw.sfx_coin_drop,
+            R.raw.sfx_coin_collected, R.raw.sfx_success4, R.raw.sfx_voice_player,
+            R.raw.sfx_voice_bestfriend, R.raw.sfx_voice_black_knight,
+            R.raw.sfx_voice_white_knight, R.raw.sfx_voice_blacksmith,
+            R.raw.sfx_elemental_grass, R.raw.sfx_elemental_dirt,
+            R.raw.sfx_elemental_stone, R.raw.sfx_unlock, R.raw.sfx_iris_close,
+            R.raw.sfx_iris_open, R.raw.sfx_explosion1, R.raw.sfx_explosion3,
+            R.raw.sfx_explosion5, R.raw.sfx_pop, R.raw.sfx_scarry1,
+            R.raw.sfx_scarry2, R.raw.sfx_scarry3, R.raw.sfx_landing
+    };
+
     private SoundManager(Context context) {
         this.appContext = context.getApplicationContext();
 
@@ -120,15 +136,6 @@ public class SoundManager {
             instance = new SoundManager(context);
         }
         return instance;
-    }
-
-    /**
-     * Loads multiple SFX resources into the SoundPool.
-     */
-    public void loadAllSfx(int[] resIds) {
-        for (int resId : resIds) {
-            loadSfx(resId);
-        }
     }
 
     /**
@@ -168,7 +175,7 @@ public class SoundManager {
      * @return A random pitch rate between MIN_RATE and MAX_RATE.
      */
     private float getRandomRate() {
-        return MIN_RATE + MyApp.RND.nextFloat() * (MAX_RATE - MIN_RATE);
+        return MIN_RATE + MyApp.getRandom().nextFloat() * (MAX_RATE - MIN_RATE);
     }
 
     /**
@@ -283,5 +290,11 @@ public class SoundManager {
     private float clamp(float v) {
         if (Float.isNaN(v)) return 0f;
         return Math.max(0f, Math.min(1f, v));
+    }
+
+    public void preloadDefaultSfx() {
+        for (int resId : STARTUP_SFX) {
+            loadSfx(resId);
+        }
     }
 }

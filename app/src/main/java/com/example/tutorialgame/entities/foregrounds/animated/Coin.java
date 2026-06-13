@@ -56,12 +56,12 @@ public class Coin extends AnimatedObject {
         this.isHovering = false;
         this.screenPosition = null;
         
-        float desiredJumpHeight = Math.max(0.6f, MyApp.RND.nextFloat());
+        float desiredJumpHeight = Math.max(0.6f, MyApp.getRandom().nextFloat());
         float timeToApex = desiredJumpHeight / 3;
-        this.hoverOffset = MyApp.RND.nextBoolean() ? SCALE_MULTIPLIER / 2f : -SCALE_MULTIPLIER / 2f;
+        this.hoverOffset = MyApp.getRandom().nextBoolean() ? SCALE_MULTIPLIER / 2f : -SCALE_MULTIPLIER / 2f;
         this.jumpComponent = new JumpComponent(desiredJumpHeight, timeToApex);
         
-        if (animation != null) animation.setSpeed(4 + MyApp.RND.nextInt(2));
+        if (animation != null) animation.setSpeed(4 + MyApp.getRandom().nextInt(2));
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Coin extends AnimatedObject {
 
         SoundManager.getInstance(BaseActivity.getContext()).playRndPitchSfx(R.raw.sfx_coin_collected);
         MyApp.getCosmetic().addCoin();
-        animation.setSpeed((int) (animation.getSpeed() * MyApp.RND.nextFloat()) + 1);
+        animation.setSpeed((int) (animation.getSpeed() * MyApp.getRandom().nextFloat()) + 1);
     }
 
     private void goToDestination(double delta) {

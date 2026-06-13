@@ -33,8 +33,8 @@ public class DropComponent {
     public void dropCoin() {
         if (dropEntry == null) return;
         for (int i = 0; i < dropEntry.getCoinsAmount(); i++) {
-            float x = MyApp.RND.nextInt(4 * SCALE_MULTIPLIER) + character.getHitBox().left + SCALE_MULTIPLIER;
-            float y = MyApp.RND.nextInt(4 * SCALE_MULTIPLIER) + character.getHitBox().top + SCALE_MULTIPLIER;
+            float x = MyApp.getRandom().nextInt(4 * SCALE_MULTIPLIER) + character.getHitBox().left + SCALE_MULTIPLIER;
+            float y = MyApp.getRandom().nextInt(4 * SCALE_MULTIPLIER) + character.getHitBox().top + SCALE_MULTIPLIER;
 
             Coin coin = ObjectPoolManager.acquireCoin(x, y);
             MapManager.getCurrentMap().addCoin(coin);

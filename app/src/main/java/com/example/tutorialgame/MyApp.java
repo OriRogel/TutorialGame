@@ -15,9 +15,8 @@ import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Random;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Main Application class for TutorialGame.
@@ -26,24 +25,6 @@ import java.util.concurrent.Executors;
 public class MyApp extends Application {
     private static MyApp instance;
     private static CloudManager cloudManager;
-    
-    // Using a single Random instance is fine for a game, but consider ThreadLocalRandom for high-concurrency needs
-    public static final Random RND = new Random();
-
-    private static final int[] ALL_SFX = {
-            R.raw.sfx_bloop, R.raw.sfx_impact_enemy2, R.raw.sfx_impact_enemy1,
-            R.raw.sfx_impact_player, R.raw.sfx_slash, R.raw.sfx_whoosh,
-            R.raw.sfx_slash3, R.raw.sfx_slash2, R.raw.sfx_impact3,
-            R.raw.sfx_error, R.raw.sfx_jump, R.raw.sfx_coin_drop,
-            R.raw.sfx_coin_collected, R.raw.sfx_success4, R.raw.sfx_voice_player,
-            R.raw.sfx_voice_bestfriend, R.raw.sfx_voice_black_knight,
-            R.raw.sfx_voice_white_knight, R.raw.sfx_voice_blacksmith,
-            R.raw.sfx_elemental_grass, R.raw.sfx_elemental_dirt,
-            R.raw.sfx_elemental_stone, R.raw.sfx_unlock, R.raw.sfx_iris_close,
-            R.raw.sfx_iris_open, R.raw.sfx_explosion1, R.raw.sfx_explosion3,
-            R.raw.sfx_explosion5, R.raw.sfx_pop, R.raw.sfx_scarry1,
-            R.raw.sfx_scarry2, R.raw.sfx_scarry3, R.raw.sfx_landing
-    };
 
     @Override
     public void onCreate() {
@@ -51,7 +32,7 @@ public class MyApp extends Application {
         instance = this;
         
         // Asynchronously load sound effects to prevent blocking the main thread during startup.
-        Executors.newSingleThreadExecutor().execute(() -> SoundManager.getInstance(this).loadAllSfx(ALL_SFX));
+        Executors.newSingleThreadExecutor().execute(() -> SoundManager.getInstance(this).preloadDefaultSfx());
     }
 
     /**
@@ -140,5 +121,13 @@ public class MyApp extends Application {
     public static WorldStateDoc getWorldStateDoc() {
         UserDataManager slot = getActiveSlot();
         return (slot != null) ? slot.getWorldStateDoc() : null;
+    }
+
+    /**
+     * @return A thread-safe random instance for the current thread.
+     * Use this instead of creating new Random() instances.
+     */
+    public static ThreadLocalRandom getRandom() {
+        return ThreadLocalRandom.current();
     }
 }

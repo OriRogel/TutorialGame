@@ -244,7 +244,7 @@ public class GameMap {
         }
 
         if (currentCount + respawnQueue.size() < minMonsters && !walkableTiles.isEmpty()) {
-            double delay = 2.0 + MyApp.RND.nextDouble() * 4.0; // Wait 2-6 seconds
+            double delay = 2.0 + MyApp.getRandom().nextDouble() * 4.0; // Wait 2-6 seconds
             respawnQueue.add(ObjectPoolManager.acquireRespawnTask(delay));
         }
     }
@@ -261,7 +261,7 @@ public class GameMap {
         float tolerance = 5 * GameConstants.Sprite.TILE_SIZE; // טווח גמישות של 5 טיילים
 
         for (int i = 0; i < 20; i++) { // יותר ניסיונות כי אנחנו יותר ספציפיים
-            Point tile = walkableTiles.get(MyApp.RND.nextInt(walkableTiles.size()));
+            Point tile = walkableTiles.get(MyApp.getRandom().nextInt(walkableTiles.size()));
             float worldX = tile.x * GameConstants.Sprite.TILE_SIZE;
             float worldY = tile.y * GameConstants.Sprite.TILE_SIZE;
 
@@ -283,7 +283,7 @@ public class GameMap {
     private boolean spawnAtMinimumDistance(int minDistanceInTiles) {
         float minDistPx = minDistanceInTiles * GameConstants.Sprite.TILE_SIZE;
         for (int i = 0; i < 15; i++) {
-            Point tile = walkableTiles.get(MyApp.RND.nextInt(walkableTiles.size()));
+            Point tile = walkableTiles.get(MyApp.getRandom().nextInt(walkableTiles.size()));
             float worldX = tile.x * GameConstants.Sprite.TILE_SIZE;
             float worldY = tile.y * GameConstants.Sprite.TILE_SIZE;
 

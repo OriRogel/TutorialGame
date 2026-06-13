@@ -137,7 +137,7 @@ public class CombatComponent {
 
         if (owner.getFaction() == GameConstants.Faction.PLAYER) {
             int chance = MyApp.getPlayerStats().getCritHitChance();
-            int roll = MyApp.RND.nextInt(100);
+            int roll = MyApp.getRandom().nextInt(100);
             if (roll < chance) {
                 totalDamage *= 2;
                 isCritical = true;

@@ -29,8 +29,8 @@ public class Skeleton extends Enemy {
         super.onIdeal(delta, gameMap);
         animation.update();
 
-        if (System.currentTimeMillis() - lastDirChange >= MyApp.RND.nextInt(3000) + 3000) {
-            faceDir = MyApp.RND.nextInt(4);
+        if (System.currentTimeMillis() - lastDirChange >= MyApp.getRandom().nextInt(3000) + 3000) {
+            faceDir = MyApp.getRandom().nextInt(4);
             lastDirChange = System.currentTimeMillis();
             setJumping(true);
         }

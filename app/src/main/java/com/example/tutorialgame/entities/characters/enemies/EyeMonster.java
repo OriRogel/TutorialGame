@@ -173,21 +173,21 @@ public class EyeMonster extends Enemy {
 
         if (lookingAround) {
             this.moving = false;
-            if (now - lastDirChange > 400 + MyApp.RND.nextInt(300)) {
-                faceDir = MyApp.RND.nextInt(4);
+            if (now - lastDirChange > 400 + MyApp.getRandom().nextInt(300)) {
+                faceDir = MyApp.getRandom().nextInt(4);
                 lastDirChange = now;
                 lookSteps++;
 
-                if (lookSteps > 2 + MyApp.RND.nextInt(3)) {
+                if (lookSteps > 2 + MyApp.getRandom().nextInt(3)) {
                     lookingAround = false;
                     this.moving = true; 
-                    faceDir = MyApp.RND.nextInt(4);
+                    faceDir = MyApp.getRandom().nextInt(4);
                     lastDirChange = now; 
                 }
             }
         } else {
             this.moving = true; 
-            if (now - lastDirChange > 3000 + MyApp.RND.nextInt(2000)) {
+            if (now - lastDirChange > 3000 + MyApp.getRandom().nextInt(2000)) {
                 this.moving = false; 
                 lookingAround = true;
                 lookSteps = 0;
@@ -212,7 +212,7 @@ public class EyeMonster extends Enemy {
                 movementComponent.moveInDir(moveStep, gameMap);
             } else {
                 // Hitting a wall: turn immediately
-                faceDir = MyApp.RND.nextInt(4);
+                faceDir = MyApp.getRandom().nextInt(4);
                 lastDirChange = now; 
             }
         } else {

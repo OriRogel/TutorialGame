@@ -49,7 +49,7 @@ public class BreakableEntity extends Entity {
         this.collider = false;
 
         // Visual Feedback: Acquire particles from the centralized pool
-        int pieces = 4 + MyApp.RND.nextInt(4);
+        int pieces = 4 + MyApp.getRandom().nextInt(4);
         for (int i = 0; i < pieces; i++) {
             activeParticles.add(ObjectPoolManager.acquireParticle(
                     hitBox.centerX(),
@@ -59,7 +59,7 @@ public class BreakableEntity extends Entity {
         }
 
         SoundManager.getInstance(BaseActivity.getContext()).playRndPitchSfx(type.getParticles().getSfxId());
-        this.respawnTimer = (type.getRespawnTime() + MyApp.RND.nextInt(10000)) / 1000f;
+        this.respawnTimer = (type.getRespawnTime() + MyApp.getRandom().nextInt(10000)) / 1000f;
         return false;
     }
 

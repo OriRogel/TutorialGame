@@ -37,15 +37,15 @@ public class BrokenParticle {
         this.img = img;
         this.active = true;
         this.alpha = 255;
-        this.rotation = MyApp.RND.nextFloat() * 360;
+        this.rotation = MyApp.getRandom().nextFloat() * 360;
         
         // Randomized velocities scaled by the engine's multiplier
-        this.velX = (MyApp.RND.nextFloat() - 0.5f) * 100f * SCALE_MULTIPLIER;
-        this.velY = (MyApp.RND.nextFloat() - 0.8f) * 100f * SCALE_MULTIPLIER;
-        this.rotVel = (MyApp.RND.nextFloat() - 0.5f) * 720f;
+        this.velX = (MyApp.getRandom().nextFloat() - 0.5f) * 100f * SCALE_MULTIPLIER;
+        this.velY = (MyApp.getRandom().nextFloat() - 0.8f) * 100f * SCALE_MULTIPLIER;
+        this.rotVel = (MyApp.getRandom().nextFloat() - 0.5f) * 720f;
         
-        this.fadeSpeed = 300f + MyApp.RND.nextInt(200);
-        this.timeBeforeFade = 0.15f + MyApp.RND.nextFloat() * 0.1f;
+        this.fadeSpeed = 300f + MyApp.getRandom().nextInt(200);
+        this.timeBeforeFade = 0.15f + MyApp.getRandom().nextFloat() * 0.1f;
         this.lifeTimer = 0;
         this.paint.setAlpha(255);
     }

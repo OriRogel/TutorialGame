@@ -58,8 +58,8 @@ public class CameraManager {
     private static void updateShake(double delta) {
         if (shakeDuration > 0) {
             shakeDuration -= (float) delta;
-            shakeOffsetX = (MyApp.RND.nextFloat() - 0.5f) * 2 * shakeMagnitude;
-            shakeOffsetY = (MyApp.RND.nextFloat() - 0.5f) * 2 * shakeMagnitude;
+            shakeOffsetX = (MyApp.getRandom().nextFloat() - 0.5f) * 2 * shakeMagnitude;
+            shakeOffsetY = (MyApp.getRandom().nextFloat() - 0.5f) * 2 * shakeMagnitude;
 
             if (shakeDuration <= 0) {
                 stopShake();

@@ -69,8 +69,8 @@ public class LightSource {
 
         switch (type) {
             case FLICKER:
-                if (MyApp.RND.nextFloat() > 0.85f) {
-                    jitter = (MyApp.RND.nextFloat() - 0.5f) * (baseRadius * 0.12f);
+                if (MyApp.getRandom().nextFloat() > 0.85f) {
+                    jitter = (MyApp.getRandom().nextFloat() - 0.5f) * (baseRadius * 0.12f);
                 }
                 currentRadius = baseRadius + (float) Math.sin(animationTime * 20) * (baseRadius * 0.02f) + jitter;
                 break;

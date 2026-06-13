@@ -23,7 +23,7 @@ public abstract class WeatherEffect {
     protected int alpha = 255;
     
     protected boolean fading, dead;
-    protected static final Random random = MyApp.RND;
+    protected static final java.util.Random random = MyApp.getRandom();
 
     public WeatherEffect(float startX, float startY) {
         this.x = startX;

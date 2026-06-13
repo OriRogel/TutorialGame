@@ -73,10 +73,10 @@ public class CollectibleItem extends Entity {
         this.glowPaint.setAlpha(255);
 
         // Randomized ejection
-        float desiredJumpHeight = 0.5f + MyApp.RND.nextFloat() * 0.4f;
+        float desiredJumpHeight = 0.5f + MyApp.getRandom().nextFloat() * 0.4f;
         float timeToApex = desiredJumpHeight / 2.5f;
         this.jumpComponent = new JumpComponent(desiredJumpHeight, timeToApex);
-        this.horizontalVelocity = (MyApp.RND.nextFloat() - 0.5f) * 4f * SCALE_MULTIPLIER;
+        this.horizontalVelocity = (MyApp.getRandom().nextFloat() - 0.5f) * 4f * SCALE_MULTIPLIER;
     }
 
     public void update(double delta, Player player) {

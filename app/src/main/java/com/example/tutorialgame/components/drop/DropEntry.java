@@ -38,15 +38,15 @@ public class DropEntry {
 
     public int getCoinsAmount() {
         // Return minCoins guaranteed, and try for a bonus if chance succeeds
-        if (maxCoins > minCoins && MyApp.RND.nextDouble() <= chance)
-            return minCoins + MyApp.RND.nextInt(maxCoins - minCoins + 1);
+        if (maxCoins > minCoins && MyApp.getRandom().nextDouble() <= chance)
+            return minCoins + MyApp.getRandom().nextInt(maxCoins - minCoins + 1);
         return minCoins;
     }
 
     public int getXpAmount() {
         // Return minXp guaranteed, and try for a bonus if chance succeeds
-        if (maxXp > minXp && MyApp.RND.nextDouble() <= chance)
-            return minXp + MyApp.RND.nextInt(maxXp - minXp + 1);
+        if (maxXp > minXp && MyApp.getRandom().nextDouble() <= chance)
+            return minXp + MyApp.getRandom().nextInt(maxXp - minXp + 1);
         return minXp;
     }
 
@@ -55,7 +55,7 @@ public class DropEntry {
      * Uses Collections.emptyList() to avoid new object allocations.
      */
     public List<Items> getItemsToDrop() {
-        if (!items.isEmpty() && MyApp.RND.nextDouble() <= chance/2) {
+        if (!items.isEmpty() && MyApp.getRandom().nextDouble() <= chance/2) {
             return items;
         }
         return null;
