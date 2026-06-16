@@ -13,15 +13,10 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.UserDataManager;
-import com.example.tutorialgame.engine.audio.MusicManager;
-import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.ui.activities.LauncherActivity;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.ui.dialogs.AlertDialogUtils;
@@ -30,9 +25,7 @@ import com.example.tutorialgame.utils.ValidationUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import java.util.Objects;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -45,6 +38,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView tvRegisterNow, tvForgotPassword;
     private ProgressBar progressBar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +48,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         initListeners();
         initTextWatcher();
 
-        MusicManager.getInstance(this).play(R.raw.music_login);
-        MusicManager.getInstance(this).setLooping(true);
+        musicManager.play(R.raw.music_login);
+        musicManager.setLooping(true);
 
         askPermission();
     }
@@ -143,27 +137,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
                         progressBar.setVisibility(View.GONE);
-                        SoundManager.getInstance(this).playSfx(R.raw.sfx_error);
+                        soundManager.playSfx(R.raw.sfx_error);
                         showToast(getString(R.string.error) + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT);
                     }
                     else {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null && user.isEmailVerified()) {
                             showToast(getString(R.string.loading_data), Toast.LENGTH_SHORT);
-                            MyApp.initializeCloudManager();
+                            userRepository.initializeFromAuth();
                             
                             // שלב 1: טעינת נתוני חשבון (פרופיל)
-                            MyApp.startLoadingAccountData(new UserDataManager.OnDataLoadedListener() {
+                            userRepository.startLoadingAccountData(new UserDataManager.OnDataLoadedListener() {
                                 @Override
                                 public void onDataLoadSuccess() {
                                     // שלב 2: בחירת הסלוט האחרון שנשמר בענן
-                                    int lastSlotId = MyApp.getProfile().getLastSelectedSlot();
+                                    int lastSlotId = userRepository.getProfile().getLastSelectedSlot();
                                     
-                                    MyApp.getCloudManager().selectSlot(lastSlotId, new UserDataManager.OnDataLoadedListener() {
+                                    userRepository.getCloudManager().selectSlot(lastSlotId, new UserDataManager.OnDataLoadedListener() {
                                         @Override
                                         public void onDataLoadSuccess() {
                                             progressBar.setVisibility(View.GONE);
-                                            SoundManager.getInstance(getContext()).playSfx(R.raw.sfx_success4);
+                                            soundManager.playSfx(R.raw.sfx_success4);
                                             showToast(getString(R.string.login_successful), Toast.LENGTH_SHORT);
                                             startActivity(new Intent(getContext(), LauncherActivity.class));
                                             finish();

@@ -11,11 +11,8 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.UserDataManager;
-import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.ui.fragments.LanguageFragment;
 import com.example.tutorialgame.utils.ValidationUtils;
@@ -131,20 +128,20 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void handleRegisterSuccess(String email, String nickname, String password) {
-        MyApp.initializeCloudManager();
-        if (MyApp.getCloudManager() == null) return;
+        userRepository.initializeFromAuth();
+        if (userRepository.getCloudManager() == null) return;
 
         // 1. יצירת פרופיל גלובלי
-        MyApp.getProfile().createProfile(nickname, email);
+        userRepository.getProfile().createProfile(nickname, email);
         
         // 2. יצירת סלוט ראשון אוטומטית למשתמש חדש
-        MyApp.getCloudManager().createNewSlot(1, new UserDataManager.OnDataLoadedListener() {
+        userRepository.getCloudManager().createNewSlot(1, new UserDataManager.OnDataLoadedListener() {
             @Override
             public void onDataLoadSuccess() {
                 sendVerificationEmail();
                 FirebaseAuth.getInstance().signOut();
-                MyApp.clearCloudManager();
-                SoundManager.getInstance(RegisterActivity.this).playSfx(R.raw.sfx_success4);
+                userRepository.clear();
+                soundManager.playSfx(R.raw.sfx_success4);
 
                 startActivity(getSuccessIntent(email, password));
                 finish();
@@ -153,7 +150,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onDataLoadFailed() {
                 showToast("Failed to initialize game data.", Toast.LENGTH_LONG);
-                SoundManager.getInstance(RegisterActivity.this).playSfx(R.raw.sfx_error);
+                soundManager.playSfx(R.raw.sfx_error);
             }
         });
     }
@@ -174,7 +171,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void handleRegisterFailure(Exception e) {
-        SoundManager.getInstance(this).playSfx(R.raw.sfx_error);
+        soundManager.playSfx(R.raw.sfx_error);
         if (e instanceof com.google.firebase.auth.FirebaseAuthUserCollisionException) showToast(getString(R.string.email_exists), Toast.LENGTH_SHORT);
         else showToast(getString(R.string.error) + " " + (e != null ? e.getMessage() : ""), Toast.LENGTH_SHORT);
     }

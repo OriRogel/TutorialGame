@@ -23,7 +23,6 @@ import androidx.core.splashscreen.SplashScreen;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.CloudManager;
 import com.example.tutorialgame.cloud.UserDataManager;
-import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.managers.DialogueManager;
 import com.example.tutorialgame.managers.MapManager;
@@ -32,9 +31,6 @@ import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.ui.dialogs.AlertDialogUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
@@ -45,8 +41,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends BaseActivity {
     private static final int MIN_SPLASH_TIME = 2000; // Minimum time to show our custom branding
-
-    @Inject UserRepository userRepository;
 
     private ImageView ivLogo;
     private TextView tvAppName;

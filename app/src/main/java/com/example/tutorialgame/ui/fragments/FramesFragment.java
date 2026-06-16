@@ -6,9 +6,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrameSeries;
 import com.example.tutorialgame.engine.ui.circleframes.FrameData;
 import com.example.tutorialgame.engine.ui.circleframes.FrameSeriesAdapter;
@@ -18,6 +17,8 @@ import com.example.tutorialgame.ui.base.BaseFragment;
 import java.text.MessageFormat;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -25,6 +26,7 @@ public class FramesFragment extends BaseFragment implements View.OnClickListener
     private RecyclerView recyclerView;
     private ImageButton btnClose;
     private TextView tvFramesCollected;
+    @Inject UserRepository userRepository;
 
     @Override
     protected int getLayoutResId() {
@@ -63,6 +65,6 @@ public class FramesFragment extends BaseFragment implements View.OnClickListener
 
     private void onDataChanged() {
         // עדכון המונה העליון
-        tvFramesCollected.setText(MessageFormat.format("{0}/67", MyApp.getCosmetic().getAvailableFrames().size()));
+        tvFramesCollected.setText(MessageFormat.format("{0}/67", userRepository.getCosmetic().getAvailableFrames().size()));
     }
 }

@@ -12,14 +12,9 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.Gravity;
 import android.widget.FrameLayout;
-
-import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.core.GamePanel;
 import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.ui.base.BaseActivity;
-
-import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
@@ -29,7 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint;
  */
 @AndroidEntryPoint
 public class GameActivity extends BaseActivity {
-    @Inject UserRepository userRepository;
     private GamePanel gamePanel;
     private BroadcastReceiver receiveCall;
 
