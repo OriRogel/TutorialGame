@@ -18,10 +18,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.core.splashscreen.SplashScreen;
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.UserDataManager;
-import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.managers.DialogueManager;
 import com.example.tutorialgame.managers.MapManager;
@@ -31,13 +29,22 @@ import com.example.tutorialgame.ui.dialogs.AlertDialogUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.example.tutorialgame.cloud.CloudManager;
+import com.example.tutorialgame.cloud.UserRepository;
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * The entry point of the application.
  * Handles initial setup, branding animations, and automatic user authentication.
  */
+@AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends BaseActivity {
     private static final int MIN_SPLASH_TIME = 2000; // Minimum time to show our custom branding
+
+    @Inject UserRepository userRepository;
 
     private ImageView ivLogo;
     private TextView tvAppName;
@@ -91,11 +98,10 @@ public class SplashActivity extends BaseActivity {
      * Configures the Splash Screen music and saves previous volume settings.
      */
     private void setupMusic() {
-        MusicManager music = MusicManager.getInstance(this);
-        lastVol = music.getVolume();
-        music.setVolume(1.0f);
-        music.play(R.raw.music_monkey_splash);
-        music.setLooping(true);
+        lastVol = musicManager.getVolume();
+        musicManager.setVolume(1.0f);
+        musicManager.play(R.raw.music_monkey_splash);
+        musicManager.setLooping(true);
     }
 
     /**
@@ -156,34 +162,39 @@ public class SplashActivity extends BaseActivity {
             return;
         }
 
-        if (MyApp.getCloudManager() == null) {
-            MyApp.initializeCloudManager();
+        if (userRepository.getCloudManager() == null) {
+            userRepository.initializeFromAuth();
         }
 
         // Deep Loading Chain: Profile -> Slot -> Map -> Launcher
-        MyApp.startLoadingAccountData(new UserDataManager.OnDataLoadedListener() {
-            @Override
-            public void onDataLoadSuccess() {
-                int savedSlotId = MyApp.getProfile().getLastSelectedSlot();
-                
-                MyApp.getCloudManager().selectSlot(savedSlotId, new UserDataManager.OnDataLoadedListener() {
-                    @Override
-                    public void onDataLoadSuccess() {
-                        // Preload map on a background thread to prevent UI stutter
-                        new Thread(() -> {
-                            MapManager.initStartingWorld();
-                            runOnUiThread(() -> finalizeLoading(SplashActivity.this::navigateToMain));
-                        }).start();
-                    }
+        CloudManager cloudManager = userRepository.getCloudManager();
+        if (cloudManager != null) {
+            cloudManager.loadAccountData(new UserDataManager.OnDataLoadedListener() {
+                @Override
+                public void onDataLoadSuccess() {
+                    int savedSlotId = userRepository.getProfile().getLastSelectedSlot();
+                    
+                    userRepository.getCloudManager().selectSlot(savedSlotId, new UserDataManager.OnDataLoadedListener() {
+                        @Override
+                        public void onDataLoadSuccess() {
+                            // Preload map on a background thread to prevent UI stutter
+                            new Thread(() -> {
+                                MapManager.initStartingWorld();
+                                runOnUiThread(() -> finalizeLoading(SplashActivity.this::navigateToMain));
+                            }).start();
+                        }
 
-                    @Override
-                    public void onDataLoadFailed() { handleLoadError(); }
-                });
-            }
+                        @Override
+                        public void onDataLoadFailed() { handleLoadError(); }
+                    });
+                }
 
-            @Override
-            public void onDataLoadFailed() { handleLoadError(); }
-        });
+                @Override
+                public void onDataLoadFailed() { handleLoadError(); }
+            });
+        } else {
+            handleLoadError();
+        }
     }
 
     /**
@@ -231,7 +242,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void restoreVolume() {
-        MusicManager.getInstance(this).setVolume(lastVol);
+        musicManager.setVolume(lastVol);
     }
 
     @Override

@@ -18,6 +18,9 @@ import com.example.tutorialgame.ui.base.BaseFragment;
 import java.text.MessageFormat;
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class FramesFragment extends BaseFragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private ImageButton btnClose;

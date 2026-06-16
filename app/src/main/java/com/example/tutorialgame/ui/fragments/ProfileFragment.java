@@ -25,7 +25,16 @@ import java.text.MessageFormat;
 import java.util.Objects;
 
 
+import com.example.tutorialgame.cloud.UserRepository;
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
+    @Inject UserRepository userRepository;
+    @Inject SoundManager soundManager;
+
     private ImageView ivFrame, ivBackground, ivCoin;
     private Button btnNickname, btnEmail;
     private TextView tvLevel, tvXp, tvCoins, tvEnemies, tvDays, tvQuests;
@@ -47,22 +56,22 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void initPrefs() {
-        Bitmap crnFrm = CircleFrames.valueOf(Objects.requireNonNull(MyApp.getCosmetic()).getCurrentFrame()).getCircleFrame();
+        Bitmap crnFrm = CircleFrames.valueOf(Objects.requireNonNull(userRepository.getCosmetic()).getCurrentFrame()).getCircleFrame();
         Bitmap bgFrame = CircleFrames.BACKGROUND.getCircleFrame();
 
         ivBackground.setImageBitmap(bgFrame);
         ivFrame.setImageBitmap(crnFrm);
         ivCoin.setImageBitmap(Objects.requireNonNull(BitmapManager.getSpritesheet(R.drawable.spr_coin, 10, 10, 4, 1, false))[0]);
 
-        btnNickname.setText(MyApp.getProfile().getField(ProfileDoc.Field.NICKNAME));
-        btnEmail.setText(MyApp.getProfile().getField(ProfileDoc.Field.EMAIL));
+        btnNickname.setText(userRepository.getProfile().getField(ProfileDoc.Field.NICKNAME));
+        btnEmail.setText(userRepository.getProfile().getField(ProfileDoc.Field.EMAIL));
 
-        tvLevel.setText(String.valueOf(Objects.requireNonNull(MyApp.getProgress()).getLevel()));
-        tvXp.setText(MessageFormat.format("{0}/{1}", MyApp.getProgress().getXp(), MyApp.getProgress().neededXpForLevelUp()));
-        tvCoins.setText(String.valueOf(MyApp.getCosmetic().getCoinsLeft()));
-        tvEnemies.setText(String.valueOf(MyApp.getProgress().getEnemiesDefeated()));
-        tvDays.setText(String.valueOf(MyApp.getProgress().getDaysLoggedIn()));
-        tvQuests.setText(String.valueOf(MyApp.getProgress().getQuestsCompleted()));
+        tvLevel.setText(String.valueOf(Objects.requireNonNull(userRepository.getProgress()).getLevel()));
+        tvXp.setText(MessageFormat.format("{0}/{1}", userRepository.getProgress().getXp(), userRepository.getProgress().neededXpForLevelUp()));
+        tvCoins.setText(String.valueOf(userRepository.getCosmetic().getCoinsLeft()));
+        tvEnemies.setText(String.valueOf(userRepository.getProgress().getEnemiesDefeated()));
+        tvDays.setText(String.valueOf(userRepository.getProgress().getDaysLoggedIn()));
+        tvQuests.setText(String.valueOf(userRepository.getProgress().getQuestsCompleted()));
     }
 
     private void updateSlotsUI() {
@@ -72,13 +81,13 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void setupSlotView(int slotId) {
-        SaveSlotMetadata.Slot slotData = MyApp.getCloudManager().getSlotsMetadata().getSlot(slotId);
+        SaveSlotMetadata.Slot slotData = userRepository.getCloudManager().getSlotsMetadata().getSlot(slotId);
 
         View slotRoot = getSlotRoot(slotId);
         View layoutUnselected = slotRoot.findViewById(R.id.layout_unselected);
         View layoutSelected = slotRoot.findViewById(R.id.layout_selected);
         
-        if (MyApp.getCloudManager().getActiveSlotId() == slotId) {
+        if (userRepository.getCloudManager().getActiveSlotId() == slotId) {
             layoutSelected.setBackgroundResource(R.drawable.btn_pressed);
         } else {
             layoutSelected.setBackgroundResource(R.drawable.btn_normal);
@@ -91,7 +100,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             TextView tvSlotName = slotRoot.findViewById(R.id.tvSlotName);
             TextView tvStats = slotRoot.findViewById(R.id.tv_slot_stats);
 
-            if (MyApp.getCloudManager().getActiveSlotId() == slotId) {
+            if (userRepository.getCloudManager().getActiveSlotId() == slotId) {
                 tvSlotName.setText("Current Adventure");
                 tvSlotName.setTextSize(tvSlotName.getTextSize() * 1.1f);
                 tvStats.setVisibility(View.GONE);
@@ -129,9 +138,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             public void onClick() {
                 String newName = Objects.requireNonNull(getEtInput().getText()).toString().trim();
                 if (!newName.isEmpty()) {
-                    MyApp.getCloudManager().getUserDoc().update("slots_metadata." + slotId + ".slotName", newName)
+                    userRepository.getCloudManager().getUserDoc().update("slots_metadata." + slotId + ".slotName", newName)
                             .addOnSuccessListener(aVoid -> {
-                                MyApp.getCloudManager().getSlotsMetadata().getSlot(slotId).slotName = newName;
+                                userRepository.getCloudManager().getSlotsMetadata().getSlot(slotId).slotName = newName;
                                 updateSlotsUI();
                             });
                 }
@@ -145,7 +154,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         CustomDialog changeSlot = new CustomDialog(requireActivity(), DialogKeys.CHANGE_SLOT) {
             @Override
             public void onClick() {
-                if (MyApp.getCloudManager().getActiveSlotId() == slotId) {
+                if (userRepository.getCloudManager().getActiveSlotId() == slotId) {
                     return;
                 }
                 
@@ -156,7 +165,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                         .apply();
                 
                 // עדכון בענן ורק לאחר מכן ריסטרט לאפליקציה
-                MyApp.getProfile().updateLastSelectedSlot(slotId).addOnCompleteListener(task -> {
+                userRepository.getProfile().updateLastSelectedSlot(slotId).addOnCompleteListener(task -> {
                     AlertDialogUtils.resetApp(requireActivity());
                     ProfileFragment.this.dismiss();
                 });
@@ -166,24 +175,24 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void handleDeleteSlot(int slotId) {
-        if (slotId == MyApp.getCloudManager().getActiveSlotId()) dialogDeleteSlotNegative.show();
+        if (slotId == userRepository.getCloudManager().getActiveSlotId()) dialogDeleteSlotNegative.show();
         else {
             CustomDialog deleteSlot = new CustomDialog(requireActivity(), DialogKeys.DELETE_SLOT_POSITIVE) {
                 @Override
                 public void onClick() {
-                    MyApp.getCloudManager().deleteInactiveSlot(slotId, new UserDataManager.OnDataLoadedListener() {
+                    userRepository.getCloudManager().deleteInactiveSlot(slotId, new UserDataManager.OnDataLoadedListener() {
                         final BaseActivity activity = (BaseActivity) getActivity();
                         @Override
                         public void onDataLoadSuccess() {
                             setupSlotView(slotId);
-                            SoundManager.getInstance(activity).playSfx(R.raw.sfx_success4);
+                            soundManager.playSfx(R.raw.sfx_success4);
                             if (activity != null)
                                 activity.showToast(activity.getString(R.string.delete_save_succeed), Toast.LENGTH_SHORT);
 
                         }
                         @Override
                         public void onDataLoadFailed() {
-                            SoundManager.getInstance(activity).playSfx(R.raw.sfx_error);
+                            soundManager.playSfx(R.raw.sfx_error);
                             if (activity != null)
                                 activity.showToast(activity.getString(R.string.delete_save_failed), Toast.LENGTH_SHORT);
 
@@ -199,7 +208,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         CustomDialog createSlot = new CustomDialog(requireActivity(), DialogKeys.CHANGE_SLOT) {
             @Override
             public void onClick() {
-                MyApp.getCloudManager().createNewSlot(slotId, new UserDataManager.OnDataLoadedListener() {
+                userRepository.getCloudManager().createNewSlot(slotId, new UserDataManager.OnDataLoadedListener() {
                     @Override
                     public void onDataLoadSuccess() {
                         requireActivity().getSharedPreferences("app_prefs", 0)
@@ -207,7 +216,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                                 .putInt("active_slot_id", slotId)
                                 .apply();
                                 
-                        MyApp.getProfile().updateLastSelectedSlot(slotId).addOnCompleteListener(task ->
+                        userRepository.getProfile().updateLastSelectedSlot(slotId).addOnCompleteListener(task ->
                                 AlertDialogUtils.resetApp(requireActivity()));
                     }
 
@@ -246,8 +255,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             public void onClick() {
                 String nickname = Objects.requireNonNull(getEtInput().getText()).toString().trim();
                 if (ValidationUtils.isNicknameValid(nickname)) {
-                    MyApp.getProfile().updateNickname(nickname);
-                    SoundManager.getInstance(requireContext()).playSfx(R.raw.sfx_success4);
+                    userRepository.getProfile().updateNickname(nickname);
+                    soundManager.playSfx(R.raw.sfx_success4);
                     btnNickname.setText(nickname);
                 }
             }

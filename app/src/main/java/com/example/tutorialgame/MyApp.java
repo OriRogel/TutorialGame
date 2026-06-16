@@ -13,18 +13,37 @@ import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
+
+import dagger.hilt.android.HiltAndroidApp;
+
+import com.example.tutorialgame.cloud.UserRepository;
+import dagger.hilt.EntryPoint;
+import dagger.hilt.EntryPoints;
+import dagger.hilt.InstallIn;
+import dagger.hilt.components.SingletonComponent;
 
 /**
  * Main Application class for TutorialGame.
  * Manages global application state, sound loading, and cloud data synchronization.
  */
+@HiltAndroidApp
 public class MyApp extends Application {
     private static MyApp instance;
-    private static CloudManager cloudManager;
+
+    @EntryPoint
+    @InstallIn(SingletonComponent.class)
+    public interface MyAppEntryPoint {
+        UserRepository userRepository();
+        SoundManager soundManager();
+        MusicManager musicManager();
+        ThreadLocalRandom threadLocalRandom();
+    }
+
+    private static UserRepository getUserRepository() {
+        return EntryPoints.get(instance, MyAppEntryPoint.class).userRepository();
+    }
 
     @Override
     public void onCreate() {
@@ -32,7 +51,8 @@ public class MyApp extends Application {
         instance = this;
         
         // Asynchronously load sound effects to prevent blocking the main thread during startup.
-        Executors.newSingleThreadExecutor().execute(() -> SoundManager.getInstance(this).preloadDefaultSfx());
+        Executors.newSingleThreadExecutor().execute(() -> 
+            EntryPoints.get(instance, MyAppEntryPoint.class).soundManager().preloadDefaultSfx());
     }
 
     /**
@@ -53,18 +73,14 @@ public class MyApp extends Application {
      * Initializes the CloudManager if a user is currently logged in.
      */
     public static void initializeCloudManager() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            cloudManager = new CloudManager(currentUser.getUid());
-        } else {
-            cloudManager = null;
-        }
+        getUserRepository().initializeFromAuth();
     }
 
     /**
      * Starts loading account data from the cloud.
      */
     public static void startLoadingAccountData(UserDataManager.OnDataLoadedListener listener) {
+        CloudManager cloudManager = getUserRepository().getCloudManager();
         if (cloudManager != null) {
             cloudManager.loadAccountData(listener);
         } else if (listener != null) {
@@ -73,7 +89,7 @@ public class MyApp extends Application {
     }
 
     public static void clearCloudManager() {
-        cloudManager = null;
+        getUserRepository().clear();
     }
 
     @Override
@@ -81,46 +97,38 @@ public class MyApp extends Application {
         super.onTrimMemory(level);
         // Release heavy resources if memory is low.
         if (level >= ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
-            SoundManager.getInstance(this).release();
-            MusicManager.getInstance(this).release();
+            EntryPoints.get(instance, MyAppEntryPoint.class).soundManager().release();
+            EntryPoints.get(instance, MyAppEntryPoint.class).musicManager().release();
         }
         ObjectPoolManager.clearAllPools();
     }
 
     public static CloudManager getCloudManager() {
-        return cloudManager;
+        return getUserRepository().getCloudManager();
     }
 
     // --- Global Account Data Getters with Null Safety ---
 
     public static ProfileDoc getProfile() {
-        return (cloudManager != null) ? cloudManager.getProfile() : null;
+        return getUserRepository().getProfile();
     }
 
     // --- Active Slot Shortcuts ---
 
-    private static UserDataManager getActiveSlot() {
-        return (cloudManager != null) ? cloudManager.getActiveSlot() : null;
-    }
-
     public static StatsDoc getPlayerStats() {
-        UserDataManager slot = getActiveSlot();
-        return (slot != null) ? slot.getPlayerStats() : null;
+        return getUserRepository().getPlayerStats();
     }
 
     public static ProgressDoc getProgress() {
-        UserDataManager slot = getActiveSlot();
-        return (slot != null) ? slot.getProgress() : null;
+        return getUserRepository().getProgress();
     }
 
     public static CosmeticDoc getCosmetic() {
-        UserDataManager slot = getActiveSlot();
-        return (slot != null) ? slot.getCosmeticDoc() : null;
+        return getUserRepository().getCosmetic();
     }
 
     public static WorldStateDoc getWorldStateDoc() {
-        UserDataManager slot = getActiveSlot();
-        return (slot != null) ? slot.getWorldStateDoc() : null;
+        return getUserRepository().getWorldStateDoc();
     }
 
     /**
@@ -128,6 +136,6 @@ public class MyApp extends Application {
      * Use this instead of creating new Random() instances.
      */
     public static ThreadLocalRandom getRandom() {
-        return ThreadLocalRandom.current();
+        return EntryPoints.get(instance, MyAppEntryPoint.class).threadLocalRandom();
     }
 }

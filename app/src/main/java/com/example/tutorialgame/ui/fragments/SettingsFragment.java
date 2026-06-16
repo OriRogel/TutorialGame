@@ -23,6 +23,9 @@ import com.example.tutorialgame.ui.dialogs.CustomDialog;
 import com.example.tutorialgame.ui.dialogs.DialogKeys;
 import com.google.firebase.auth.FirebaseAuth;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SettingsFragment extends BaseFragment implements View.OnTouchListener,
         SeekBar.OnSeekBarChangeListener, View.OnClickListener {
     private SeekBar sbMusic, sbSound;

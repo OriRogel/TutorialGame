@@ -24,6 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvLoginNow;
     private Button btnRegister;

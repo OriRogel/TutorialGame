@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class LanguageFragment extends BaseFragment implements View.OnClickListener {
     private ImageButton imgBtnClose;
     private Map<Button, String> langMap;

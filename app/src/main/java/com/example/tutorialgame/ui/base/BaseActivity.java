@@ -35,6 +35,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public abstract class BaseActivity extends AppCompatActivity {
     protected static SharedPreferences spSettings;
     private static String lang;
@@ -48,6 +53,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     // משתנה זמני השומר את ה-Activity הפעילה כדי לספק Context עם השפה הנכונה
     private static Context currentActivityContext;
+
+    @Inject protected MusicManager musicManager;
 
     /**
      * יוצר Context חדש המוגדר לשפה המבוקשת.

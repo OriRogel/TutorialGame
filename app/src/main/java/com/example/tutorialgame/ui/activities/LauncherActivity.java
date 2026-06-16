@@ -19,9 +19,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
-import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.ui.PlayerFaceset;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
 import com.example.tutorialgame.managers.BitmapManager;
@@ -33,7 +31,15 @@ import com.example.tutorialgame.ui.fragments.SettingsFragment;
 import java.text.MessageFormat;
 import java.util.Objects;
 
+import com.example.tutorialgame.cloud.UserRepository;
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class LauncherActivity extends BaseActivity implements View.OnClickListener {
+    @Inject UserRepository userRepository;
+
     private DrawerLayout drawerLayout;
     private View settingsContainer;
     private Button btnPlay;
@@ -61,7 +67,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
             ft.commit();
         }
 
-        MusicManager.getInstance(this).play(R.raw.music_launcher);
+        musicManager.play(R.raw.music_launcher);
     }
 
     private void initViews() {
@@ -99,9 +105,9 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setProfileBackground() {
-        if (MyApp.getCosmetic() == null || MyApp.getProgress() == null || MyApp.getProfile() == null) return;
+        if (userRepository.getCosmetic() == null || userRepository.getProgress() == null || userRepository.getProfile() == null) return;
 
-        Bitmap frameBitmap = CircleFrames.valueOf(MyApp.getCosmetic().getCurrentFrame()).getCircleFrame();
+        Bitmap frameBitmap = CircleFrames.valueOf(userRepository.getCosmetic().getCurrentFrame()).getCircleFrame();
         Bitmap faceBitmap = PlayerFaceset.IDLE.getFace();
         Bitmap bg = CircleFrames.BACKGROUND.getCircleFrame();
 
@@ -109,10 +115,10 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         ivFrame.setImageBitmap(frameBitmap);
         ivPic.setImageBitmap(faceBitmap);
 
-        tvNickname.setText(MyApp.getProfile().getNickname());
-        tvCoins.setText(String.valueOf(MyApp.getCosmetic().getCoinsLeft()));
-        tvLevel.setText(String.valueOf(MyApp.getProgress().getLevel()));
-        tvXp.setText(MessageFormat.format("{0}/{1}", MyApp.getProgress().getXp(), MyApp.getProgress().neededXpForLevelUp()));
+        tvNickname.setText(userRepository.getProfile().getNickname());
+        tvCoins.setText(String.valueOf(userRepository.getCosmetic().getCoinsLeft()));
+        tvLevel.setText(String.valueOf(userRepository.getProgress().getLevel()));
+        tvXp.setText(MessageFormat.format("{0}/{1}", userRepository.getProgress().getXp(), userRepository.getProgress().neededXpForLevelUp()));
 
         iv_coin.setImageBitmap(Objects.requireNonNull(BitmapManager.getSpritesheet(R.drawable.spr_coin, 10, 10, 4, 1, false))[0]);
     }

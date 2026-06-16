@@ -33,6 +33,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final int REQ_READ_PHONE_STATE = 1234;
     private FirebaseAuth mAuth;

@@ -13,16 +13,18 @@ import android.telephony.TelephonyManager;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 
-import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.GamePanel;
 import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.ui.base.BaseActivity;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * GameActivity היא ה"מארחת" של חוויית המשחק.
  * היא מנהלת את הקשר בין מחזור החיים של אנדרואיד לבין מנוע המשחק,
  * וכוללת מאזין לשינויים במצב הטלפון כדי להבטיח עצירה בטוחה בשיחה נכנסת.
  */
+@AndroidEntryPoint
 public class GameActivity extends BaseActivity {
     private GamePanel gamePanel;
     private BroadcastReceiver receiveCall;
@@ -32,7 +34,7 @@ public class GameActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         this.gamePanel = new GamePanel(getContext());
-        MusicManager.getInstance(this).setLooping(true);
+        musicManager.setLooping(true);
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 SCREEN_WIDTH,
