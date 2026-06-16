@@ -9,8 +9,8 @@ import android.view.MotionEvent;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
-import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
+import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
 import com.example.tutorialgame.gamestates.menu.Menu;
 import com.example.tutorialgame.gamestates.menu.MenuManager;
 

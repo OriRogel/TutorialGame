@@ -1,9 +1,10 @@
 package com.example.tutorialgame.engine.ui.circleframes;
 
+import com.example.tutorialgame.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.example.tutorialgame.R;
 
 /**
  * Data repository class for all circular frame series.

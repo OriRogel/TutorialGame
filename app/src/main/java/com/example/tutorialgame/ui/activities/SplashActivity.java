@@ -17,9 +17,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.core.splashscreen.SplashScreen;
+
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.CloudManager;
 import com.example.tutorialgame.cloud.UserDataManager;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.managers.DialogueManager;
 import com.example.tutorialgame.managers.MapManager;
@@ -29,8 +33,6 @@ import com.example.tutorialgame.ui.dialogs.AlertDialogUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.example.tutorialgame.cloud.CloudManager;
-import com.example.tutorialgame.cloud.UserRepository;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;

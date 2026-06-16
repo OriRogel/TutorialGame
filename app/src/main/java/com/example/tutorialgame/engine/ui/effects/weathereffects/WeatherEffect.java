@@ -7,8 +7,6 @@ import android.graphics.Paint;
 
 import com.example.tutorialgame.MyApp;
 
-import java.util.Random;
-
 /**
  * Scene class for all environmental weather effects.
  */

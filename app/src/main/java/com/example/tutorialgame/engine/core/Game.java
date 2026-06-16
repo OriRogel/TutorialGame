@@ -7,8 +7,8 @@ import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 
 import com.example.tutorialgame.cloud.UserRepository;
-import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.input.InputManager;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.renderer.GameRenderer;
 import com.example.tutorialgame.engine.ui.HUDManager;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.ImpactEffectType;

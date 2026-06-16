@@ -1,7 +1,5 @@
 package com.example.tutorialgame.components;
 
-import android.view.MotionEvent;
-
 import java.util.Collections;
 import java.util.List;
 

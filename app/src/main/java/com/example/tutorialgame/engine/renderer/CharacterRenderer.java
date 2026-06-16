@@ -13,10 +13,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.components.HealthComponent;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.engine.ui.NpcHealthBar;
-import com.example.tutorialgame.R;
 import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;

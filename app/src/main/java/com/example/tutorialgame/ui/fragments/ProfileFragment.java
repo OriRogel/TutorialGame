@@ -6,10 +6,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.tutorialgame.MyApp;
+
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.SaveSlotMetadata;
 import com.example.tutorialgame.cloud.UserDataManager;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.ProfileDoc;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
@@ -24,8 +25,6 @@ import com.example.tutorialgame.utils.ValidationUtils;
 import java.text.MessageFormat;
 import java.util.Objects;
 
-
-import com.example.tutorialgame.cloud.UserRepository;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;

@@ -4,11 +4,11 @@ import static com.example.tutorialgame.engine.core.GameConstants.Face_Dir.DOWN;
 
 import android.graphics.PointF;
 
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.components.drop.DropEntry;
 import com.example.tutorialgame.entities.Weapons;
 import com.example.tutorialgame.entities.characters.GameCharacters;
 import com.example.tutorialgame.environments.GameMap;
-import com.example.tutorialgame.R;
 import com.example.tutorialgame.gamestates.playing.playingstates.DialogState;
 import com.example.tutorialgame.managers.MapManager;
 

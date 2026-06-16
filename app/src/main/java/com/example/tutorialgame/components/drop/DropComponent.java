@@ -1,18 +1,20 @@
 package com.example.tutorialgame.components.drop;
 
 import static com.example.tutorialgame.engine.core.GameConstants.Sprite.SCALE_MULTIPLIER;
+
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.engine.ui.effects.XpEffect;
-import com.example.tutorialgame.entities.foregrounds.animated.Coin;
 import com.example.tutorialgame.entities.characters.Character;
+import com.example.tutorialgame.entities.foregrounds.animated.Coin;
 import com.example.tutorialgame.entities.foregrounds.collectible.CollectibleItem;
 import com.example.tutorialgame.entities.foregrounds.statics.Items;
 import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
-import com.example.tutorialgame.R;
+
 import java.util.List;
 
 /**

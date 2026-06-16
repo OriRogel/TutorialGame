@@ -1,8 +1,9 @@
 package com.example.tutorialgame.managers.worldactions;
 
-import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.cloud.document.WorldStateDoc;
 import com.example.tutorialgame.engine.audio.MusicManager;
-import com.example.tutorialgame.engine.core.GamePanel;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.environments.GameMap;
@@ -11,7 +12,6 @@ import com.example.tutorialgame.managers.DialogueManager;
 import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
-import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import java.util.List;
 
 /**
@@ -104,14 +104,18 @@ public class WorldActions {
     /** Triggers thoughts/interior dialogue for the player. */
     public static class SetDialogue implements WorldAction {
         private final String speakerType;
+        private final WorldStateDoc worldState;
 
-        public SetDialogue(String speakerType) { this.speakerType = speakerType; }
+        public SetDialogue(String speakerType, WorldStateDoc worldState) {
+            this.speakerType = speakerType;
+            this.worldState = worldState;
+        }
 
         @Override
         public void execute() {
             Player p = MapManager.getCurrentMap().getPlayer();
             if (p != null) {
-                List<String> lines = DialogueManager.resolveDialogue(speakerType);
+                List<String> lines = DialogueManager.resolveDialogue(speakerType, worldState);
                 p.setInteriorDialogue(lines);
             }
         }
@@ -158,18 +162,24 @@ public class WorldActions {
     /** Updates the player's weapon. If weaponId is provided, it sets it in the save state first. */
     public static class UpdateWeapon implements WorldAction {
         private final String weaponId;
+        private final UserRepository userRepository;
 
-        public UpdateWeapon() { this(null); }
-        public UpdateWeapon(String weaponId) { this.weaponId = weaponId; }
+        public UpdateWeapon(UserRepository repo) { this(null, repo); }
+        public UpdateWeapon(String weaponId, UserRepository repo) {
+            this.weaponId = weaponId;
+            this.userRepository = repo;
+        }
 
         @Override
         public void execute() {
+            if (userRepository == null) return;
+            
             if (weaponId != null && !weaponId.isEmpty()) {
-                MyApp.getWorldStateDoc().setCurrentWeapon(weaponId);
+                userRepository.getWorldStateDoc().setCurrentWeapon(weaponId);
             }
             
             Player p = MapManager.getCurrentMap().getPlayer();
-            if (p != null) p.setWeapon(MyApp.getWorldStateDoc().getCurrentWeapon());
+            if (p != null) p.setWeapon(userRepository.getWorldStateDoc().getCurrentWeapon());
         }
     }
 

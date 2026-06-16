@@ -3,13 +3,13 @@ package com.example.tutorialgame.entities.characters.enemies;
 import android.graphics.PointF;
 
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.components.drop.DropEntry;
+import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.entities.Weapons;
 import com.example.tutorialgame.entities.characters.GameCharacters;
 import com.example.tutorialgame.entities.foregrounds.statics.Items;
 import com.example.tutorialgame.environments.GameMap;
-import com.example.tutorialgame.engine.core.GameConstants;
-import com.example.tutorialgame.R;
 
 public class Skeleton extends Enemy {
     private long lastDirChange;

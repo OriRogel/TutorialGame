@@ -3,10 +3,12 @@ package com.example.tutorialgame.managers;
 import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_HEIGHT;
 import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_WIDTH;
 import static com.example.tutorialgame.engine.core.GameConstants.View.VIEW_MARGIN;
+
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.Log;
+
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.GameConstants;
@@ -20,17 +22,18 @@ import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.environments.Doorway;
 import com.example.tutorialgame.environments.GameMap;
 import com.example.tutorialgame.environments.Tiles;
+import com.example.tutorialgame.environments.maploder.MapLoadData;
 import com.example.tutorialgame.environments.maploder.ObjectData;
+import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.utils.TmxLoaderUtils;
-import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.example.tutorialgame.environments.maploder.MapLoadData;
 
 /**
  * Orchestrates map loading, transitions, and environmental effects.

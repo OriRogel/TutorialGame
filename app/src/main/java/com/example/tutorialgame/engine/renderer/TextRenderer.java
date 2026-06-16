@@ -2,17 +2,19 @@ package com.example.tutorialgame.engine.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-// --- ייבוא חדש ונכון ---
-import android.text.TextPaint;
-
 import android.text.Layout;
 import android.text.StaticLayout;
+import android.text.TextPaint;
+
 import androidx.core.content.res.ResourcesCompat;
+
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+// --- ייבוא חדש ונכון ---
 
 // --- 1. שנה את הירושה מ-Paint ל-TextPaint ---
 public class TextRenderer extends TextPaint {

@@ -12,15 +12,13 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
 
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.components.JumpComponent;
-import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.entities.Entity;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.entities.foregrounds.statics.Items;
 import com.example.tutorialgame.managers.BitmapManager;
-import com.example.tutorialgame.R;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
-import com.example.tutorialgame.ui.base.BaseActivity;
 
 public class CollectibleItem extends Entity {
     // --- Constants for Tuning ---

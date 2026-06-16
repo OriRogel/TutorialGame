@@ -3,8 +3,9 @@ package com.example.tutorialgame.entities.foregrounds.statics;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
-import com.example.tutorialgame.engine.interfaces.StaticObjectData;
+
 import com.example.tutorialgame.engine.interfaces.StaticEntity;
+import com.example.tutorialgame.engine.interfaces.StaticObjectData;
 import com.example.tutorialgame.entities.Entity;
 
 public class StaticObject extends Entity implements StaticEntity {

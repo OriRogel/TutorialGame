@@ -10,17 +10,20 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.NinePatchDrawable;
 import android.view.MotionEvent;
+
 import androidx.core.content.ContextCompat;
+
+import com.example.tutorialgame.R;
+import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
-import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
-import com.example.tutorialgame.engine.ui.effects.impcateffects.TapEffect;
-import com.example.tutorialgame.engine.ui.effects.impcateffects.ImpactEffectType;
-import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectButton;
-import com.example.tutorialgame.R;
+import com.example.tutorialgame.engine.ui.customviews.buttons.rects.RectImages;
+import com.example.tutorialgame.engine.ui.effects.impcateffects.ImpactEffectType;
+import com.example.tutorialgame.engine.ui.effects.impcateffects.TapEffect;
 import com.example.tutorialgame.ui.base.BaseActivity;
+
 import java.util.Objects;
 
 /**

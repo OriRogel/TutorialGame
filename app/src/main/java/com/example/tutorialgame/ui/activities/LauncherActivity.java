@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.ui.PlayerFaceset;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
 import com.example.tutorialgame.managers.BitmapManager;
@@ -31,7 +32,6 @@ import com.example.tutorialgame.ui.fragments.SettingsFragment;
 import java.text.MessageFormat;
 import java.util.Objects;
 
-import com.example.tutorialgame.cloud.UserRepository;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;

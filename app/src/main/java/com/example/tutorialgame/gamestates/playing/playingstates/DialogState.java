@@ -2,6 +2,7 @@ package com.example.tutorialgame.gamestates.playing.playingstates;
 
 import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_HEIGHT;
 import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_WIDTH;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,9 +12,9 @@ import android.view.MotionEvent;
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.components.DialogueComponent;
 import com.example.tutorialgame.engine.audio.MusicManager;
-import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.ui.DialoguePanel;
+import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.gamestates.playing.PlayingManager;
 import com.example.tutorialgame.managers.CameraManager;
@@ -119,7 +120,7 @@ public class DialogState extends GameState {
 
     public void setCurrentSpeaker(Character speaker, String dialogueId) {
         prepareSpeaker(speaker);
-        List<String> lines = DialogueManager.resolveDialogue(dialogueId);
+        List<String> lines = DialogueManager.resolveDialogue(dialogueId, userRepository.getWorldStateDoc());
         speaker.getDialogueComponent().updateLines(lines);
         this.currentDialogue = speaker.getDialogueComponent();
         dialoguePanel.startDialogue(speaker);

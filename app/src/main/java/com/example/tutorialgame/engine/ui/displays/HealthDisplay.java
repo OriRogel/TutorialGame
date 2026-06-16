@@ -1,6 +1,5 @@
 package com.example.tutorialgame.engine.ui.displays;
 
-import static android.graphics.Color.RED;
 import static android.graphics.Color.WHITE;
 
 import android.graphics.Bitmap;

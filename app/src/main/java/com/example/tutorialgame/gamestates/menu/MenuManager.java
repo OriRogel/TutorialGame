@@ -7,8 +7,8 @@ import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.gamestates.menu.menustates.LanguageMenu;
 import com.example.tutorialgame.gamestates.menu.menustates.MainMenu;
-import com.example.tutorialgame.gamestates.menu.menustates.OptionsMenu;
 import com.example.tutorialgame.gamestates.menu.menustates.MusicSoundsMenu;
+import com.example.tutorialgame.gamestates.menu.menustates.OptionsMenu;
 import com.example.tutorialgame.gamestates.menu.menustates.VideoSettingsMenu;
 
 /**

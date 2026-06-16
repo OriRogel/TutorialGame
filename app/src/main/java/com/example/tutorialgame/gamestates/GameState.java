@@ -3,14 +3,15 @@ package com.example.tutorialgame.gamestates;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.interfaces.GameStateInterface;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.environments.GameMap;
 import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.ui.activities.LauncherActivity;
 import com.example.tutorialgame.ui.base.BaseActivity;
-import com.example.tutorialgame.engine.interfaces.StateSwitcher;
-import com.example.tutorialgame.engine.core.Game;
 
 public abstract class GameState implements GameStateInterface {
     protected Game game;

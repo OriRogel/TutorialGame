@@ -2,6 +2,7 @@ package com.example.tutorialgame.engine.ui;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.tutorialgame.engine.core.GameConstants.Sprite.SCALE_MULTIPLIER;
+import static com.example.tutorialgame.engine.core.GameConstants.Sprite.TILE_SIZE;
 import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_HEIGHT;
 
 import android.content.Context;
@@ -13,8 +14,6 @@ import android.view.MotionEvent;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.ImpactEffectType;
 import com.example.tutorialgame.engine.ui.effects.impcateffects.TapEffect;
-
-import static com.example.tutorialgame.engine.core.GameConstants.Sprite.TILE_SIZE;
 
 /**
  * Manages UI overlays like FPS counter and tap effects.

@@ -1,8 +1,8 @@
 package com.example.tutorialgame.engine.core;
 
+import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.gamestates.State;
-import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 
 import java.util.EnumMap;
 import java.util.Map;

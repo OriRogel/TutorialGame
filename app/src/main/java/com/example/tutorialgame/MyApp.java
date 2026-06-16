@@ -3,25 +3,26 @@ package com.example.tutorialgame;
 import android.app.Application;
 import android.content.ComponentCallbacks2;
 import android.content.Context;
+
 import com.example.tutorialgame.cloud.CloudManager;
 import com.example.tutorialgame.cloud.UserDataManager;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.CosmeticDoc;
 import com.example.tutorialgame.cloud.document.ProfileDoc;
 import com.example.tutorialgame.cloud.document.ProgressDoc;
+import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.cloud.document.WorldStateDoc;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.audio.SoundManager;
-import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
-import dagger.hilt.android.HiltAndroidApp;
-
-import com.example.tutorialgame.cloud.UserRepository;
 import dagger.hilt.EntryPoint;
 import dagger.hilt.EntryPoints;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.HiltAndroidApp;
 import dagger.hilt.components.SingletonComponent;
 
 /**

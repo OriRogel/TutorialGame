@@ -4,10 +4,11 @@ import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_HEI
 import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_WIDTH;
 
 import android.graphics.Canvas;
-import com.example.tutorialgame.environments.Tiles;
-import com.example.tutorialgame.managers.CameraManager;
+
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.environments.GameMap;
+import com.example.tutorialgame.environments.Tiles;
+import com.example.tutorialgame.managers.CameraManager;
 
 public class TileRenderer {
 

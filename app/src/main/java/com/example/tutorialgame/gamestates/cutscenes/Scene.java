@@ -9,12 +9,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.view.MotionEvent;
+
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.gamestates.GameState;
-import com.example.tutorialgame.R;
 import com.example.tutorialgame.managers.WorldEventManager;
 
 /**

@@ -2,9 +2,10 @@ package com.example.tutorialgame.gamestates.cutscenes;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.ui.base.BaseActivity;
-import com.example.tutorialgame.R;
 
 public enum Scenes implements BitmapMethods {
     INTRO(R.drawable.cutscene_1, 5, "seen_cutscene_coldOpening", R.raw.cutscene_intro, false, null),

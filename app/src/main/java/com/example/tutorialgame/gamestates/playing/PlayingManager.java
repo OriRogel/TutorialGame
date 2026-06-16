@@ -2,11 +2,13 @@ package com.example.tutorialgame.gamestates.playing;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;
-import com.example.tutorialgame.entities.characters.Character;
+
 import com.example.tutorialgame.engine.core.Game;
+import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.gamestates.GameState;
 import com.example.tutorialgame.gamestates.playing.playingstates.DialogState;
 import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
+
 import java.util.List;
 
 public class PlayingManager extends GameState {

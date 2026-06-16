@@ -7,8 +7,8 @@ import androidx.annotation.StringRes;
 
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.cloud.document.StatsDoc;
+import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 public enum Upgrades implements BitmapMethods {

@@ -2,10 +2,12 @@ package com.example.tutorialgame.managers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import java.util.HashMap;
-import java.util.Map;
+
 import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.ui.base.BaseActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * מנהל מרכזי לטעינה, שינוי גודל (Scaling) ומטמון (Caching) של Bitmaps.

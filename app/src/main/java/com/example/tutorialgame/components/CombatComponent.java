@@ -12,8 +12,9 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import com.example.tutorialgame.R;
+
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.engine.ui.effects.WorldAnimationEffect;
