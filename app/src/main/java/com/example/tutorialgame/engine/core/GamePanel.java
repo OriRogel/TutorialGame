@@ -8,14 +8,16 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 
 
+import com.example.tutorialgame.cloud.UserRepository;
+
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private final Game game;
 
-    public GamePanel(Context context) {
+    public GamePanel(Context context, UserRepository userRepository) {
         super(context);
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
-        game = new Game(holder, context);
+        game = new Game(holder, context, userRepository);
     }
 
     @SuppressLint("ClickableViewAccessibility")

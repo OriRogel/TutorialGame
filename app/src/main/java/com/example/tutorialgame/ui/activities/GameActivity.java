@@ -17,6 +17,9 @@ import com.example.tutorialgame.engine.core.GamePanel;
 import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
+import com.example.tutorialgame.cloud.UserRepository;
+import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
@@ -26,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint;
  */
 @AndroidEntryPoint
 public class GameActivity extends BaseActivity {
+    @Inject UserRepository userRepository;
     private GamePanel gamePanel;
     private BroadcastReceiver receiveCall;
 
@@ -33,7 +37,7 @@ public class GameActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.gamePanel = new GamePanel(getContext());
+        this.gamePanel = new GamePanel(getContext(), userRepository);
         musicManager.setLooping(true);
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(

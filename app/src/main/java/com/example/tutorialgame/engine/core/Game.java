@@ -6,7 +6,7 @@ import android.view.SurfaceHolder;
 
 import androidx.annotation.NonNull;
 
-import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.input.InputManager;
 import com.example.tutorialgame.engine.renderer.GameRenderer;
@@ -27,6 +27,7 @@ import com.example.tutorialgame.gamestates.playing.PlayingManager;
 public class Game implements StateSwitcher {
     private final GameLoop gameLoop;
     private final Context context;
+    private final UserRepository userRepository;
 
     // Components
     private final StateMachine stateMachine;
@@ -38,12 +39,10 @@ public class Game implements StateSwitcher {
     // Managers (State Instances)
     private final MenuManager menuManager;
     private final PlayingManager playingManager;
-    private final DeathScreen deathScreen;
-    private final SceneManager sceneManager;
-    private final UpgradeState upgradeState;
 
-    public Game(@NonNull SurfaceHolder holder, @NonNull Context context) {
+    public Game(@NonNull SurfaceHolder holder, @NonNull Context context, UserRepository userRepository) {
         this.context = context;
+        this.userRepository = userRepository;
 
         // 1. Initialize State Machine
         this.stateMachine = new StateMachine();
@@ -51,9 +50,9 @@ public class Game implements StateSwitcher {
         // 2. Initialize State Managers
         this.menuManager = new MenuManager(this);
         this.playingManager = new PlayingManager(this);
-        this.deathScreen = new DeathScreen(this);
-        this.upgradeState = new UpgradeState(this);
-        this.sceneManager = new SceneManager(this);
+        DeathScreen deathScreen = new DeathScreen(this);
+        UpgradeState upgradeState = new UpgradeState(this);
+        SceneManager sceneManager = new SceneManager(this);
 
         // 3. Register States
         stateMachine.registerState(State.MENU, menuManager);
@@ -74,7 +73,7 @@ public class Game implements StateSwitcher {
     }
 
     private void initInitialState() {
-        State initialState = MyApp.getWorldStateDoc().getCheckPoint("seen_cutscene_coldOpening")
+        State initialState = userRepository.getWorldStateDoc().getCheckPoint("seen_cutscene_coldOpening")
                 ? State.PLAYING : State.CUTSCENE;
         stateMachine.setInitialState(initialState);
     }
