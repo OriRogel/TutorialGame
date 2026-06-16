@@ -27,7 +27,9 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.audio.MusicManager;
+import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.managers.DialogueManager;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 
@@ -55,6 +57,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static Context currentActivityContext;
 
     @Inject protected MusicManager musicManager;
+    @Inject protected SoundManager soundManager;
+    @Inject protected UserRepository userRepository;
 
     /**
      * יוצר Context חדש המוגדר לשפה המבוקשת.

@@ -20,12 +20,26 @@ public class UserRepository {
         initializeFromAuth();
     }
 
+    /**
+     * Initializes the CloudManager if a user is currently logged in.
+     */
     public void initializeFromAuth() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             cloudManager = new CloudManager(currentUser.getUid());
         } else {
             cloudManager = null;
+        }
+    }
+
+    /**
+     * Starts loading account data from the cloud.
+     */
+    public void startLoadingAccountData(UserDataManager.OnDataLoadedListener listener) {
+        if (cloudManager != null) {
+            cloudManager.loadAccountData(listener);
+        } else if (listener != null) {
+            listener.onDataLoadFailed();
         }
     }
 

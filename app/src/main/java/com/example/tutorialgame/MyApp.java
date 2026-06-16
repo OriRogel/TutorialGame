@@ -5,7 +5,6 @@ import android.content.ComponentCallbacks2;
 import android.content.Context;
 
 import com.example.tutorialgame.cloud.CloudManager;
-import com.example.tutorialgame.cloud.UserDataManager;
 import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.CosmeticDoc;
 import com.example.tutorialgame.cloud.document.ProfileDoc;
@@ -68,25 +67,6 @@ public class MyApp extends Application {
      */
     public static Context getAppContext() {
         return instance != null ? instance.getApplicationContext() : null;
-    }
-
-    /**
-     * Initializes the CloudManager if a user is currently logged in.
-     */
-    public static void initializeCloudManager() {
-        getUserRepository().initializeFromAuth();
-    }
-
-    /**
-     * Starts loading account data from the cloud.
-     */
-    public static void startLoadingAccountData(UserDataManager.OnDataLoadedListener listener) {
-        CloudManager cloudManager = getUserRepository().getCloudManager();
-        if (cloudManager != null) {
-            cloudManager.loadAccountData(listener);
-        } else if (listener != null) {
-            listener.onDataLoadFailed();
-        }
     }
 
     public static void clearCloudManager() {
