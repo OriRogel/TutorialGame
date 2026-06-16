@@ -1,24 +1,25 @@
 package com.example.tutorialgame.managers;
 
 import static com.example.tutorialgame.engine.core.GameConstants.Sprite.TILE_SIZE;
-import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.WorldStateDoc;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.entities.characters.GameCharacters;
 import com.example.tutorialgame.entities.characters.nonenemies.neutral.BlackKnight;
 import com.example.tutorialgame.entities.characters.nonenemies.neutral.Father;
 import com.example.tutorialgame.entities.characters.nonenemies.neutral.WhiteKnight;
 import com.example.tutorialgame.managers.worldactions.ActionFactory;
-import com.example.tutorialgame.managers.worldactions.WorldActions;
 import com.example.tutorialgame.managers.worldactions.WorldAction;
-import com.example.tutorialgame.R;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WorldEventManager {
     private static final Map<String, WorldAction> events = new HashMap<>();
     private static ActionFactory actionFactory;
+    private static UserRepository userRepository;
 
-    public static void init(com.example.tutorialgame.engine.interfaces.StateSwitcher switcher) {
+    public static void init(StateSwitcher switcher, UserRepository repo) {
+        userRepository = repo;
         actionFactory = new ActionFactory(switcher);
         setupEvents();
     }
@@ -85,7 +86,8 @@ public class WorldEventManager {
     }
 
     public static void refreshWorldState() {
-        WorldStateDoc doc = MyApp.getWorldStateDoc();
+        if (userRepository == null) return;
+        WorldStateDoc doc = userRepository.getWorldStateDoc();
 
         if (doc.getCheckPoint("seen_cutscene_skeletonArise")) {
             triggerEvent("RUNWAY");

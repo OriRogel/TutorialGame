@@ -125,6 +125,7 @@ public class Game implements StateSwitcher {
 
     // Accessors for Managers
     public Context getContext() { return context; }
+    public UserRepository getUserRepository() { return userRepository; }
     public PlayingManager getPlayingManager() { return playingManager; }
     public State getCurrentGameState() { return stateMachine.getCurrentState(); }
 

@@ -4,8 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.MotionEvent;
-
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.managers.CameraManager;
 import com.example.tutorialgame.entities.Entity;
@@ -48,9 +46,11 @@ public class OverWorld extends GameState {
         playingUI.resetJoystickButton();
 
         // מעדכנים כניסה יומית עבור הסלוט הספציפי
-        MyApp.getProgress().updateLogin();
+        if (userRepository.getProgress() != null) {
+            userRepository.getProgress().updateLogin();
+        }
 
-        WorldEventManager.init(switcher);
+        WorldEventManager.init(switcher, userRepository);
         WorldEventManager.refreshWorldState();
 
         // מנגנים מוזיקה

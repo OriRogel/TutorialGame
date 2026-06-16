@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.tutorialgame.cloud.UserRepository;
 
+@SuppressLint("ViewConstructor")
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private final Game game;
 

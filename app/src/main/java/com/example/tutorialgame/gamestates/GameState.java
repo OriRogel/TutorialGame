@@ -3,6 +3,7 @@ package com.example.tutorialgame.gamestates;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.interfaces.GameStateInterface;
 import com.example.tutorialgame.environments.GameMap;
 import com.example.tutorialgame.managers.MapManager;
@@ -15,11 +16,13 @@ public abstract class GameState implements GameStateInterface {
     protected Game game;
     protected StateSwitcher switcher;
     protected Context context;
+    protected UserRepository userRepository;
     private final Intent intent;
 
     public GameState(Game game) {
         this.game = game;
         this.switcher = game;
+        this.userRepository = game.getUserRepository();
         this.context = BaseActivity.getContext();
         this.intent = new Intent(context, LauncherActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
