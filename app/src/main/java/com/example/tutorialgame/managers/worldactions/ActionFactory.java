@@ -1,7 +1,10 @@
 package com.example.tutorialgame.managers.worldactions;
 
-import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import android.util.Log;
+
+import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
+
 import java.util.Map;
 
 /**
@@ -11,9 +14,11 @@ import java.util.Map;
 public class ActionFactory {
     private static final String TAG = "ActionFactory";
     private final WorldActions worldActions;
+    private final UserRepository userRepository;
 
-    public ActionFactory(StateSwitcher switcher) {
+    public ActionFactory(StateSwitcher switcher, UserRepository repo) {
         this.worldActions = new WorldActions(switcher);
+        this.userRepository = repo;
     }
 
     public WorldAction createAction(String type, Map<String, String> params) {
@@ -57,7 +62,8 @@ public class ActionFactory {
             case "SET_DIALOGUE":
                 if (!validateParams(upperType, params, "speakerType")) return null;
                 return new WorldActions.SetDialogue(
-                        params.get("speakerType")
+                        params.get("speakerType"),
+                        userRepository != null ? userRepository.getWorldStateDoc() : null
                 );
             case "SPAWN_MONSTERS":
                 if (!validateParams(upperType, params, "map", "spawnType", "minCount", "immediateCount")) return null;
@@ -76,7 +82,7 @@ public class ActionFactory {
             case "UPDATE_WEAPON":
             case "GIVE_WEAPON":
                 if (!validateParams(upperType, params, "weapon")) return null;
-                return new WorldActions.UpdateWeapon(params.get("weapon"));
+                return new WorldActions.UpdateWeapon(params.get("weapon"), userRepository);
             case "CHANGE_STATE":
                 if (!validateParams(upperType, params, "state")) return null;
                 return worldActions.new ChangeState(params.get("state"));

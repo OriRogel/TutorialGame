@@ -20,7 +20,7 @@ public class WorldEventManager {
 
     public static void init(StateSwitcher switcher, UserRepository repo) {
         userRepository = repo;
-        actionFactory = new ActionFactory(switcher);
+        actionFactory = new ActionFactory(switcher, repo);
         setupEvents();
     }
 

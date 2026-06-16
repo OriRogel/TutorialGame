@@ -4,22 +4,23 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.MotionEvent;
-import com.example.tutorialgame.gamestates.State;
-import com.example.tutorialgame.managers.CameraManager;
+
+import com.example.tutorialgame.engine.audio.MusicManager;
+import com.example.tutorialgame.engine.core.Game;
+import com.example.tutorialgame.engine.renderer.LightRenderer;
+import com.example.tutorialgame.engine.ui.PlayingUI;
+import com.example.tutorialgame.engine.ui.effects.MapTransitionEffect;
+import com.example.tutorialgame.engine.ui.effects.weathereffects.WeatherEffect;
 import com.example.tutorialgame.entities.Entity;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.environments.Doorway;
-import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.gamestates.GameState;
+import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.gamestates.playing.PlayingManager;
-import com.example.tutorialgame.engine.core.Game;
-import com.example.tutorialgame.engine.audio.MusicManager;
-import com.example.tutorialgame.engine.ui.PlayingUI;
-import com.example.tutorialgame.managers.WorldEventManager;
-import com.example.tutorialgame.engine.ui.effects.weathereffects.WeatherEffect;
-import com.example.tutorialgame.engine.renderer.LightRenderer;
-import com.example.tutorialgame.engine.ui.effects.MapTransitionEffect;
+import com.example.tutorialgame.managers.CameraManager;
+import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.managers.QuestManager;
+import com.example.tutorialgame.managers.WorldEventManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +76,7 @@ public class OverWorld extends GameState {
 
         mapManager.initWeatherForCurrentMap();
 
-        QuestManager.initQuests(switcher);
+        QuestManager.initQuests(switcher, userRepository);
 
         playingUI = new PlayingUI(this);
     }

@@ -81,7 +81,7 @@ public final class DialogueManager {
      * Main entry point: retrieves the appropriate dialogue lines for a character
      * based on the current game progress and language.
      */
-    public static List<String> resolveDialogue(String characterId) {
+    public static List<String> resolveDialogue(String characterId, WorldStateDoc worldStateDoc) {
         checkLanguageSync();
         String lang = loadedLanguage;
 
@@ -91,7 +91,7 @@ public final class DialogueManager {
 
         if (element == null || element.isJsonNull()) return Collections.emptyList();
 
-        return parseDialogueElement(element);
+        return parseDialogueElement(element, worldStateDoc);
     }
 
     private static JsonElement loadCharacterFile(String characterId, String lang) {
@@ -104,7 +104,7 @@ public final class DialogueManager {
         }
     }
 
-    private static List<String> parseDialogueElement(JsonElement element) {
+    private static List<String> parseDialogueElement(JsonElement element, WorldStateDoc doc) {
         // Case 1: Simple array of strings
         if (element.isJsonArray()) {
             return gson.fromJson(element, STRING_LIST_TYPE);
@@ -120,7 +120,7 @@ public final class DialogueManager {
                     JsonObject branch = branchElement.getAsJsonObject();
 
                     // Find the first branch where the condition is met
-                    if (isConditionMet(branch.get("condition"))) {
+                    if (isConditionMet(branch.get("condition"),doc)) {
                         return gson.fromJson(branch.get("lines"), STRING_LIST_TYPE);
                     }
                 }
@@ -129,12 +129,11 @@ public final class DialogueManager {
         return Collections.emptyList();
     }
 
-    private static boolean isConditionMet(JsonElement conditionElement) {
+    private static boolean isConditionMet(JsonElement conditionElement, WorldStateDoc worldState) {
         // If no condition is defined, the branch is always valid (e.g., fallback branch)
         if (conditionElement == null || conditionElement.isJsonNull()) return true;
 
         JsonObject condition = conditionElement.getAsJsonObject();
-        WorldStateDoc worldState = MyApp.getWorldStateDoc();
 
         if (condition.has("flag")) {
             String flagName = condition.get("flag").getAsString();

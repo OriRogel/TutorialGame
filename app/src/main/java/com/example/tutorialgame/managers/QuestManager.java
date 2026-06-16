@@ -2,11 +2,15 @@ package com.example.tutorialgame.managers;
 
 import static com.example.tutorialgame.engine.core.GameConstants.Sprite.SCALE_MULTIPLIER;
 import static com.example.tutorialgame.engine.core.GameConstants.Sprite.TILE_SIZE;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.environments.GameMap;
@@ -16,6 +20,7 @@ import com.example.tutorialgame.quest.Quest;
 import com.example.tutorialgame.quest.QuestParser;
 import com.example.tutorialgame.quest.QuestType;
 import com.example.tutorialgame.ui.base.BaseActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +54,9 @@ public final class QuestManager {
     private QuestManager() {}
 
 
-    public static void initQuests(com.example.tutorialgame.engine.interfaces.StateSwitcher switcher) {
+    public static void initQuests(StateSwitcher switcher, UserRepository userRepository) {
         mainStoryLine.clear();
-        mainStoryLine.addAll(com.example.tutorialgame.quest.QuestParser.parseQuests(BaseActivity.getContext(), "quests.xml", switcher));
+        mainStoryLine.addAll(QuestParser.parseQuests(BaseActivity.getContext(), "quests.xml", switcher, userRepository));
         update();
     }
 

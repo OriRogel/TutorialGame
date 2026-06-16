@@ -4,10 +4,11 @@ import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
 
+import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.managers.worldactions.ActionFactory;
 import com.example.tutorialgame.managers.worldactions.WorldAction;
 import com.example.tutorialgame.managers.worldactions.WorldEvent;
-import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -26,8 +27,8 @@ import java.util.Map;
 public class QuestParser {
     private static final String TAG = "QuestParser";
 
-    public static List<ComplexQuest> parseQuests(Context context, String fileName, StateSwitcher switcher) {
-        ActionFactory actionFactory = new ActionFactory(switcher);
+    public static List<ComplexQuest> parseQuests(Context context, String fileName, StateSwitcher switcher, UserRepository userRepository) {
+        ActionFactory actionFactory = new ActionFactory(switcher, userRepository);
         List<ComplexQuest> mainStoryLine = new ArrayList<>();
         try (InputStream is = context.getAssets().open(fileName)) {
             XmlPullParser parser = Xml.newPullParser();
