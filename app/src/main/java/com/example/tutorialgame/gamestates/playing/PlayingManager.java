@@ -11,9 +11,12 @@ import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
 
 import java.util.List;
 
+import com.example.tutorialgame.managers.QuestManager;
+
 public class PlayingManager extends GameState {
     private OverWorld overWorld;
     private DialogState dialogState;
+    private final QuestManager questManager;
     private PlayingState currentPlayingState = PlayingState.OVER_WORLD;
 
     @Override
@@ -42,7 +45,12 @@ public class PlayingManager extends GameState {
 
     public PlayingManager(Game game) {
         super(game);
+        this.questManager = new QuestManager(game, userRepository);
         initPlayingState();
+    }
+
+    public QuestManager getQuestManager() {
+        return questManager;
     }
 
     @Override

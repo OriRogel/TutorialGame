@@ -64,7 +64,7 @@ public class OverWorld extends GameState {
     public OverWorld(Game game, PlayingManager playingManager) {
         super(game);
         this.playingManager = playingManager;
-        mapManager = new MapManager(this);
+        mapManager = new MapManager(userRepository);
         lightRenderer = new LightRenderer();
         transitionEffect = new MapTransitionEffect();
 
@@ -76,8 +76,6 @@ public class OverWorld extends GameState {
 
         mapManager.initWeatherForCurrentMap();
 
-        QuestManager.initQuests(switcher, userRepository);
-
         playingUI = new PlayingUI(this);
     }
 
@@ -86,7 +84,11 @@ public class OverWorld extends GameState {
         transitionEffect.update(delta);
 
         if (transitionEffect.isFullyClosed() && pendingDoorway != null) {
-            mapManager.changeMap(pendingDoorway.getDoorwayConnectedTo());
+            mapManager.changeMap(pendingDoorway.getDoorwayConnectedTo(), player);
+            doorwayJustPassed = true;
+            buildEntityList();
+            playingManager.getQuestManager().onEnterZone(MapManager.getCurrentMap().getFileName());
+
             pendingDoorway = null;
             transitionEffect.startOpening();
         }
@@ -101,6 +103,7 @@ public class OverWorld extends GameState {
 
         player.setMovementInput(movePlayer, lastTouchDiff);
         player.update(delta, MapManager.getCurrentMap());
+        playingManager.getQuestManager().onEnterZone(null);
 
         if (player.hasPendingDialogue() && transitionEffect.getCurrentState() == MapTransitionEffect.State.IDLE) {
             playingManager.setCustomDialogState(player, player.consumeInteriorDialogue());
@@ -178,7 +181,7 @@ public class OverWorld extends GameState {
             if (onComplete != null) {
                 onComplete.run();
             }
-        });
+        }, userRepository);
     }
 
     private void checkForDoorway() {
@@ -222,6 +225,11 @@ public class OverWorld extends GameState {
     public Player getPlayer() {
         return player;
     }
+
+    public QuestManager getQuestManager() {
+        return playingManager.getQuestManager();
+    }
+
     public PlayingManager getPlayingManager() {
         return playingManager;
     }

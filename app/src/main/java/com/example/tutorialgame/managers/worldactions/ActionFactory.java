@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.interfaces.StateSwitcher;
+import com.example.tutorialgame.ui.base.BaseActivity;
 
 import java.util.Map;
 
@@ -75,10 +76,13 @@ public class ActionFactory {
                 );
             case "CHANGE_MUSIC":
                 if (!validateParams(upperType, params, "map", "music")) return null;
-                return new WorldActions.ChangeMusic(
-                        params.get("map"),
-                        getInt(params, "musicRes", 0) // Note: musicRes is injected by QuestParser
-                );
+                int resId = getInt(params, "musicRes", 0);
+                if (resId == 0) {
+                    String musicName = params.get("music");
+                    resId = BaseActivity.getContext().getResources().getIdentifier(
+                            musicName, "raw", BaseActivity.getContext().getPackageName());
+                }
+                return new WorldActions.ChangeMusic(params.get("map"), resId);
             case "UPDATE_WEAPON":
             case "GIVE_WEAPON":
                 if (!validateParams(upperType, params, "weapon")) return null;

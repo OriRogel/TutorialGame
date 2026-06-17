@@ -26,7 +26,6 @@ import com.example.tutorialgame.engine.ui.joystick.Joystick;
 import com.example.tutorialgame.entities.characters.Player;
 import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
-import com.example.tutorialgame.managers.QuestManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 public class PlayingUI implements GameButton.OnClickListener {
@@ -137,7 +136,7 @@ public class PlayingUI implements GameButton.OnClickListener {
         coinDisplay.update(delta);
         levelUpEffect.update(delta);
 
-        QuestManager.update();
+        overWorld.getQuestManager().update();
     }
 
     private void updateButtons() {
@@ -184,7 +183,7 @@ public class PlayingUI implements GameButton.OnClickListener {
         healthDisplay.draw(c);
         staminaDisplay.draw(c);
         levelUpEffect.draw(c);
-        QuestManager.draw(c);
+        overWorld.getQuestManager().draw(c);
     }
 
     private void drawFaceset(Canvas c) {

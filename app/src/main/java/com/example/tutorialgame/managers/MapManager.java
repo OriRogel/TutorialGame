@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.util.Log;
 
 import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.engine.renderer.TileRenderer;
@@ -24,7 +25,6 @@ import com.example.tutorialgame.environments.GameMap;
 import com.example.tutorialgame.environments.Tiles;
 import com.example.tutorialgame.environments.maploder.MapLoadData;
 import com.example.tutorialgame.environments.maploder.ObjectData;
-import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
 import com.example.tutorialgame.managers.objectpool.ObjectPoolManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.utils.TmxLoaderUtils;
@@ -48,16 +48,14 @@ public class MapManager {
     private static GameMap currentMap;
     private static final Map<String, GameMap> loadedMaps = new ConcurrentHashMap<>();
 
-    private final OverWorld overWorld;
     private final List<WeatherEffect> weatherEffects = Collections.synchronizedList(new ArrayList<>());
     
     private final RectF viewRect = new RectF();
     private final TileRenderer tileRenderer;
 
-    public MapManager(OverWorld overWorld) {
-        this.overWorld = overWorld;
+    public MapManager(UserRepository repo) {
         this.tileRenderer = new TileRenderer();
-        if (currentMap == null) initStartingWorld();
+        if (currentMap == null) initStartingWorld(repo);
         initWeatherForCurrentMap();
     }
 
@@ -173,7 +171,7 @@ public class MapManager {
         return null;
     }
 
-    public void changeMap(Doorway doorwayTarget) {
+    public void changeMap(Doorway doorwayTarget, Player player) {
         if (doorwayTarget == null) return;
         GameMap newMap = doorwayTarget.getGameMapLocatedIn();
         if (newMap == null) return;
@@ -187,18 +185,15 @@ public class MapManager {
         // עכשיו מנגנים - זה ינגן את השיר המעודכן ביותר שנקבע למפה
         MusicManager.getInstance(BaseActivity.getContext()).play(newMap.getMusicRes());
         
-        overWorld.getPlayer().teleportTo(
+        player.teleportTo(
             doorwayTarget.getPosOfDoorway().x - GameConstants.Sprite.HITBOX_SIZE / 2f,
             doorwayTarget.getPosOfDoorway().y - GameConstants.Sprite.HITBOX_SIZE / 2f
         );
 
-        if (!newMap.getDrawableList().contains(overWorld.getPlayer())) {
-            newMap.setPlayer(overWorld.getPlayer());
+        if (!newMap.getDrawableList().contains(player)) {
+            newMap.setPlayer(player);
         }
-        overWorld.setDoorwayJustPassed(true);
-        overWorld.buildEntityList();
         connectDoorwaysForMap(newMap);
-        QuestManager.onEnterZone(newMap.getFileName());
         initWeatherForCurrentMap();
     }
 
@@ -221,10 +216,10 @@ public class MapManager {
         }
     }
 
-    public void resetWorldForRestart(OnMapReadyListener listener) {
+    public void resetWorldForRestart(OnMapReadyListener listener, UserRepository repo) {
         reloadAllLoadedMaps();
         ObjectPoolManager.clearAllPools();
-        String startingMapName = MyApp.getWorldStateDoc().getLastMap();
+        String startingMapName = repo.getWorldStateDoc().getLastMap();
         currentMap = getMapByName(startingMapName);
         connectDoorwaysForMap(currentMap);
 
@@ -290,8 +285,9 @@ public class MapManager {
         }
     }
 
-    public static void initStartingWorld() {
-        String startingMapName = MyApp.getWorldStateDoc().getLastMap();
+    private void initStartingWorld(UserRepository repo) {
+        if (repo == null || repo.getWorldStateDoc() == null) return;
+        String startingMapName = repo.getWorldStateDoc().getLastMap();
         GameMap map = getMapByName(startingMapName);
         connectDoorwaysForMap(map);
         currentMap = map;

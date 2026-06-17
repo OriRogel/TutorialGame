@@ -18,7 +18,6 @@ import com.example.tutorialgame.entities.foregrounds.breakable.BreakableEntity;
 import com.example.tutorialgame.environments.GameMap;
 import com.example.tutorialgame.environments.SurfaceType;
 import com.example.tutorialgame.managers.CameraManager;
-import com.example.tutorialgame.managers.QuestManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.utils.Other;
 import java.util.Collections;
@@ -108,7 +107,6 @@ public class Player extends Character {
             }
         }
 
-        QuestManager.onEnterZone(null);
         if (isDead()) health.update(delta);
     }
 

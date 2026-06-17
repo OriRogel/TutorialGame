@@ -23,7 +23,6 @@ import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.ui.PlayerFaceset;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
 import com.example.tutorialgame.managers.BitmapManager;
-import com.example.tutorialgame.managers.MapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.example.tutorialgame.ui.fragments.ProfileFragment;
 import com.example.tutorialgame.ui.fragments.SettingsFragment;
@@ -132,10 +131,6 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v == btnPlay) {
-            // Ensure fresh map loading for the current slot
-            MapManager.clearCache();
-            MapManager.initStartingWorld();
-
             startActivity(new Intent(this, GameActivity.class));
             finish();
         }

@@ -244,7 +244,7 @@ public class DialoguePanel {
                 startNewLine(nextLine);
             } else {
                 String speakerId = currentSpeaker.getGameCharType().name();
-                QuestManager.onDialogueFinished(speakerId);
+                dialogState.getPlayingManager().getQuestManager().onDialogueFinished(speakerId);
                 DialogState.endDialogue(speakerId);
                 currentState = PanelState.EXITING;
             }

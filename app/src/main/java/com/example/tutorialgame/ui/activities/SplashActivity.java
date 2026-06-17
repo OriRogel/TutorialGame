@@ -173,11 +173,7 @@ public class SplashActivity extends BaseActivity {
                     userRepository.getCloudManager().selectSlot(savedSlotId, new UserDataManager.OnDataLoadedListener() {
                         @Override
                         public void onDataLoadSuccess() {
-                            // Preload map on a background thread to prevent UI stutter
-                            new Thread(() -> {
-                                MapManager.initStartingWorld();
-                                runOnUiThread(() -> finalizeLoading(SplashActivity.this::navigateToMain));
-                            }).start();
+                            finalizeLoading(SplashActivity.this::navigateToMain);
                         }
 
                         @Override
