@@ -142,6 +142,10 @@ public class SoundManager {
      * Loads a single SFX resource.
      */
     public void loadSfx(int resId) {
+        if (resId <= 0) {
+            Log.w(TAG, "Attempted to load sound with invalid resId: " + resId);
+            return;
+        }
         if (!resIdToSoundId.containsKey(resId)) {
             int soundId = soundPool.load(appContext, resId, 1);
             resIdToSoundId.put(resId, soundId);

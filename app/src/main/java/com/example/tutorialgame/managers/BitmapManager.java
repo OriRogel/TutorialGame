@@ -34,6 +34,7 @@ public class BitmapManager implements BitmapMethods {
     }
 
     private static Bitmap getRawAtlas(int resId) {
+        if (resId <= 0) return null;
         if (rawAtlasCache.containsKey(resId)) return rawAtlasCache.get(resId);
         Bitmap raw = BitmapFactory.decodeResource(BaseActivity.getContext().getResources(), resId, options);
         if (raw != null) rawAtlasCache.put(resId, raw);

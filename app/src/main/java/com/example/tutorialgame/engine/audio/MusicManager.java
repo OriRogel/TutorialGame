@@ -69,6 +69,12 @@ public class MusicManager {
      * @param resId ה-ID של קובץ המוזיקה.
      */
     public void play(int resId) {
+        // בדיקה שה-ID תקין לפני שממשיכים
+        if (resId <= 0) {
+            Log.w(TAG, "Attempted to play music with invalid resId: " + resId);
+            return;
+        }
+
         // אם השיר כבר מתנגן - אין מה לעשות
         if (resId == activeResId && activePlayer != null && activePlayer.isPlaying()) {
             return;
