@@ -21,11 +21,9 @@ import android.graphics.Shader;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.components.AnimationComponent;
-import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
@@ -184,7 +182,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     @Override
     public void onEnter() {
         super.onEnter();
-        pointsLeft = MyApp.getProgress().getUpgradePoints();
+        pointsLeft = userRepository.getProgress().getUpgradePoints();
         prevPointsLeft = pointsLeft;
         scrollX = 0;
         blurIndex = 0;
@@ -313,7 +311,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
         for (CustomUpgrade u : upgrades) {
             if (u == clicked && !u.isBalloonVisible()) {
                 u.setBalloonVisible(true);
-                SoundManager.getInstance(context).playSfx(R.raw.sfx_bloop);
+                soundManager.playSfx(R.raw.sfx_bloop);
             } else u.setBalloonVisible(false);
         }
     }
@@ -339,7 +337,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     }
 
     private void drawHearts(Canvas c) {
-        int currentMax = MyApp.getPlayerStats().getMaxHealth();
+        int currentMax = userRepository.getPlayerStats().getMaxHealth();
         int previewAdd = (healthUpgrade != null) ? healthUpgrade.getCountToApply() * healthUpgrade.getUpgradeValue() : 0;
         int total = currentMax + previewAdd, icons = (int) Math.ceil(total / 100f);
         for (int i = 0; i < icons; i++) {
@@ -354,7 +352,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     }
 
     private void drawStamina(Canvas c) {
-        int currentMax = MyApp.getPlayerStats().getMaxStamina();
+        int currentMax = userRepository.getPlayerStats().getMaxStamina();
         int previewAdd = (staminaUpgrade != null) ? staminaUpgrade.getCountToApply() * staminaUpgrade.getUpgradeValue() : 0;
         int total = currentMax + previewAdd, icons = (int) Math.ceil((double) total / STAMINA_MAX_PER_ICON);
         for (int i = 0; i < icons; i++) {
@@ -386,7 +384,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     }
 
     private void updateModel() {
-        float scale = 2 + (MyApp.getProgress().getUpgradesDone() / 20f);
+        float scale = 2 + (userRepository.getProgress().getUpgradesDone() / 20f);
         updateModelDirection(0);
         staminaX = 5 * SCALE_MULTIPLIER; heartX = staminaX + 1.3f * TILE_SIZE;
         float centerX = (heartX + 1.5f * TILE_SIZE + upgradeClipArea.left) / 2f;
@@ -403,13 +401,13 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
 
 
     private void applyChanges() {
-        StatsDoc stats = MyApp.getPlayerStats();
+        StatsDoc stats = userRepository.getPlayerStats();
         boolean changed = false;
 
         // הפחתת הנקודות בבסיס הנתונים רק פעם אחת לפי הערך הסופי
         int totalSpent = prevPointsLeft - pointsLeft;
         if (totalSpent > 0) {
-            MyApp.getProgress().decreaseUpgradePoints(totalSpent);
+            userRepository.getProgress().decreaseUpgradePoints(totalSpent);
         }
 
         for (CustomUpgrade u : upgrades) {
@@ -423,7 +421,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
 
         if (changed) {
             MapManager.getCurrentMap().getPlayer().refreshStats();
-            SoundManager.getInstance(context).playSfx(R.raw.sfx_success4);
+            soundManager.playSfx(R.raw.sfx_success4);
             prevPointsLeft = pointsLeft;
         }
     }

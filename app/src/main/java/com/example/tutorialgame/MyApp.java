@@ -95,7 +95,6 @@ public class MyApp extends Application {
     }
 
     // --- Active Slot Shortcuts ---
-
     public static StatsDoc getPlayerStats() {
         return getUserRepository().getPlayerStats();
     }
