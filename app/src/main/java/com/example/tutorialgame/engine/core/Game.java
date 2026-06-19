@@ -7,6 +7,7 @@ import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 
 import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.input.InputManager;
 import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.renderer.GameRenderer;
@@ -28,6 +29,7 @@ public class Game implements StateSwitcher {
     private final GameLoop gameLoop;
     private final Context context;
     private final UserRepository userRepository;
+    private final SoundManager soundManager;
 
     // Components
     private final StateMachine stateMachine;
@@ -40,9 +42,10 @@ public class Game implements StateSwitcher {
     private final MenuManager menuManager;
     private final PlayingManager playingManager;
 
-    public Game(@NonNull SurfaceHolder holder, @NonNull Context context, UserRepository userRepository) {
+    public Game(@NonNull SurfaceHolder holder, @NonNull Context context, UserRepository userRepository, SoundManager soundManager) {
         this.context = context;
         this.userRepository = userRepository;
+        this.soundManager = soundManager;
 
         // 1. Initialize State Machine
         this.stateMachine = new StateMachine();
@@ -126,6 +129,7 @@ public class Game implements StateSwitcher {
     // Accessors for Managers
     public Context getContext() { return context; }
     public UserRepository getUserRepository() { return userRepository; }
+    public SoundManager getSoundManager() { return soundManager; }
     public PlayingManager getPlayingManager() { return playingManager; }
     public State getCurrentGameState() { return stateMachine.getCurrentState(); }
 

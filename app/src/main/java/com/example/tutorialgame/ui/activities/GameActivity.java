@@ -31,7 +31,7 @@ public class GameActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.gamePanel = new GamePanel(getContext(), userRepository);
+        this.gamePanel = new GamePanel(getContext(), userRepository, soundManager);
         musicManager.setLooping(true);
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(

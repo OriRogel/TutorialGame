@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.core.Game;
 import com.example.tutorialgame.engine.interfaces.GameStateInterface;
 import com.example.tutorialgame.engine.interfaces.StateSwitcher;
@@ -18,12 +19,14 @@ public abstract class GameState implements GameStateInterface {
     protected StateSwitcher switcher;
     protected Context context;
     protected UserRepository userRepository;
+    protected SoundManager soundManager;
     private final Intent intent;
 
     public GameState(Game game) {
         this.game = game;
         this.switcher = game;
         this.userRepository = game.getUserRepository();
+        this.soundManager = game.getSoundManager();
         this.context = BaseActivity.getContext();
         this.intent = new Intent(context, LauncherActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

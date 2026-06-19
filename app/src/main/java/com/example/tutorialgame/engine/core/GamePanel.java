@@ -9,16 +9,17 @@ import androidx.annotation.NonNull;
 
 
 import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.engine.audio.SoundManager;
 
 @SuppressLint("ViewConstructor")
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private final Game game;
 
-    public GamePanel(Context context, UserRepository userRepository) {
+    public GamePanel(Context context, UserRepository userRepository, SoundManager soundManager) {
         super(context);
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
-        game = new Game(holder, context, userRepository);
+        game = new Game(holder, context, userRepository, soundManager);
     }
 
     @SuppressLint("ClickableViewAccessibility")
