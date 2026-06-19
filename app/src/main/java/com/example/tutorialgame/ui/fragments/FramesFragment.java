@@ -51,7 +51,7 @@ public class FramesFragment extends BaseFragment implements View.OnClickListener
 
     private void setupRecyclerView() {
         List<CircleFrameSeries> allSeries = FrameData.getAllSeries();
-        FrameSeriesAdapter mainAdapter = new FrameSeriesAdapter(allSeries, this::onDataChanged);
+        FrameSeriesAdapter mainAdapter = new FrameSeriesAdapter(allSeries, this::onDataChanged, userRepository);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mainAdapter);
     }

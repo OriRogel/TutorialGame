@@ -14,6 +14,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.cloud.document.CosmeticDoc;
+import com.example.tutorialgame.cloud.document.ProgressDoc;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 import com.skydoves.balloon.ArrowOrientation;
@@ -35,8 +38,10 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
     private final String selectedFrameName;
     private final FrameSeriesAdapter.FrameSelectionListener listener;
     private final OnDataChangedListener dataChangedListener;
+    private final CosmeticDoc cosmeticDoc;
+    private final ProgressDoc progressDoc;
 
-    public FramesAdapter(CircleFrameSeries series, int seriesPosition, String selectedFrameName, FrameSeriesAdapter.FrameSelectionListener listener, OnDataChangedListener dataChangedListener) {
+    public FramesAdapter(CircleFrameSeries series, int seriesPosition, String selectedFrameName, FrameSeriesAdapter.FrameSelectionListener listener, OnDataChangedListener dataChangedListener, UserRepository userRepository) {
         this.series = series;
         this.frames = series.getFrames();
         this.seriesName = series.getSeriesName();
@@ -44,6 +49,8 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
         this.selectedFrameName = selectedFrameName;
         this.listener = listener;
         this.dataChangedListener = dataChangedListener;
+        this.cosmeticDoc = userRepository.getCosmetic();
+        this.progressDoc = userRepository.getProgress();
     }
 
     public FrameUnlockCondition.Condition getConditionType() {
@@ -56,7 +63,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
     public void refreshLockedItemsStatus() {
         for (int i = 0; i < frames.size(); i++) {
             // אם הפריט נעול, מצבו הגרפי עשוי להשתנות (למשל צבע המנעול)
-            if (!MyApp.getCosmetic().isFrameAvailable(frames.get(i).name())) {
+            if (!cosmeticDoc.isFrameAvailable(frames.get(i).name())) {
                 notifyItemChanged(i);
             }
         }
@@ -98,7 +105,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
             lockIcon.setRotation(0f);
             lockIcon.setTranslationY(0f);
 
-            boolean isUnlocked = MyApp.getCosmetic().isFrameAvailable(frame.name());
+            boolean isUnlocked = cosmeticDoc.isFrameAvailable(frame.name());
             frameImage.setImageBitmap(frame.getCircleFrame());
             Context context = itemView.getContext();
 
@@ -109,7 +116,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
                 frameImage.setAlpha(1f);
                 itemView.setOnClickListener(v -> {
                     if (isSelected) return;
-                    MyApp.getCosmetic().setCurrentFrame(frame.name());
+                    cosmeticDoc.setCurrentFrame(frame.name());
                     SoundManager.getInstance(itemView.getContext()).playSfx(R.raw.sfx_bloop);
                     BaseActivity.ButtonPressVibe();
                     listener.onFrameSelectionChanged(seriesPosition, framePosition);
@@ -127,7 +134,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
             lockIcon.setVisibility(View.VISIBLE);
             lockIcon.setImageBitmap(CircleFrames.LOCK.getCircleFrame());
 
-            if (series.checkCondition(pos) && (pos == 0 || MyApp.getCosmetic().isFrameAvailable(frames.get(pos-1).name()))) {
+            if (series.checkCondition(pos) && (pos == 0 || cosmeticDoc.isFrameAvailable(frames.get(pos-1).name()))) {
                 frameImage.setAlpha(1f);
                 lockIcon.setAlpha(0.3f);
                 if (series.getCondition().getSelectedCondition() == FrameUnlockCondition.Condition.PURCHASE)
@@ -160,7 +167,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
 
             title.setText(getTitle(itemView.getContext(), pos));
             
-            if (pos > 0 && !MyApp.getCosmetic().isFrameAvailable(frames.get(pos-1).name())) {
+            if (pos > 0 && !cosmeticDoc.isFrameAvailable(frames.get(pos-1).name())) {
                 desc.setText(R.string.unlock_prev_message);
                 progress.setVisibility(View.GONE);
                 btnUnlock.setVisibility(View.GONE);
@@ -186,14 +193,14 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
             
             // 1. ביצוע הרכישה לוגית (חשוב לפני הדיווח)
             if (series.getCondition().getSelectedCondition() == FrameUnlockCondition.Condition.PURCHASE) {
-                if (MyApp.getCosmetic().purchase(series.getCondition().getPriceArr().get(pos))) {
+                if (cosmeticDoc.purchase(series.getCondition().getPriceArr().get(pos))) {
                     SoundManager.getInstance(itemView.getContext()).playSfx(R.raw.sfx_coin_drop);
                 } else {
                     //TODO: add dialog
                 }
             }
             
-            MyApp.getCosmetic().addAvailableFrame(frameName);
+            cosmeticDoc.addAvailableFrame(frameName);
             SoundManager.getInstance(itemView.getContext()).playSfx(R.raw.sfx_unlock);
 
             // 3. אנימציה מקומית
@@ -224,16 +231,16 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
     }
     private String getProgress(int pos) {
         switch (series.getCondition().getSelectedCondition()) {
-            case PURCHASE: return MyApp.getCosmetic().getCoinsLeft() + "/" + series.getCondition().getPriceArr().get(pos);
-            case LEVEL: return MyApp.getProgress().getLevel() + "/" + series.getCondition().getPriceArr().get(pos);
-            case ENEMIES_DEFEATED: return MyApp.getProgress().getEnemiesDefeated() + "/" + series.getCondition().getPriceArr().get(pos);
-            case DAYS: return MyApp.getProgress().getDaysLoggedIn() + "/" + series.getCondition().getPriceArr().get(pos);
+            case PURCHASE: return cosmeticDoc.getCoinsLeft() + "/" + series.getCondition().getPriceArr().get(pos);
+            case LEVEL: return progressDoc.getLevel() + "/" + series.getCondition().getPriceArr().get(pos);
+            case ENEMIES_DEFEATED: return progressDoc.getEnemiesDefeated() + "/" + series.getCondition().getPriceArr().get(pos);
+            case DAYS: return progressDoc.getDaysLoggedIn() + "/" + series.getCondition().getPriceArr().get(pos);
             default: return "";
         }
     }
     private String getTitle(Context ctx, int framePosition) {
         String status = !series.checkCondition(framePosition) ? ctx.getString(R.string.locked) : 
-                       (framePosition == 0 || MyApp.getCosmetic().isFrameAvailable(frames.get(framePosition-1).name())) ? 
+                       (framePosition == 0 || cosmeticDoc.isFrameAvailable(frames.get(framePosition-1).name())) ?
                        ctx.getString(R.string.available) : ctx.getString(R.string.locked);
 
         return seriesName + ": " + ctx.getString(R.string.grade) + " " + (framePosition + 1) + " - " + status;

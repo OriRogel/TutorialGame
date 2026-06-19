@@ -8,8 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
+import com.example.tutorialgame.cloud.document.CosmeticDoc;
+
 import java.util.List;
 
 public class FrameSeriesAdapter extends RecyclerView.Adapter<FrameSeriesAdapter.SeriesViewHolder> implements FramesAdapter.OnDataChangedListener {
@@ -24,15 +26,17 @@ public class FrameSeriesAdapter extends RecyclerView.Adapter<FrameSeriesAdapter.
     private int selectedSeriesPosition = -1;
     private int selectedFramePosition = -1;
     private final Runnable globalRefreshTask;
+    private final UserRepository userRepository;
 
-    public FrameSeriesAdapter(List<CircleFrameSeries> seriesList, Runnable globalRefreshTask) {
+    public FrameSeriesAdapter(List<CircleFrameSeries> seriesList, Runnable globalRefreshTask, UserRepository userRepository) {
         this.seriesList = seriesList;
         this.globalRefreshTask = globalRefreshTask;
+        this.userRepository = userRepository;
         findInitialSelection();
     }
 
     private void findInitialSelection() {
-        String currentFrameName = MyApp.getCosmetic().getCurrentFrame();
+        String currentFrameName = userRepository.getCosmetic().getCurrentFrame();
         if (currentFrameName == null) return;
 
         for (int i = 0; i < seriesList.size(); i++) {
@@ -110,7 +114,7 @@ public class FrameSeriesAdapter extends RecyclerView.Adapter<FrameSeriesAdapter.
                     ? series.getFrames().get(selectedFramePosition).name()
                     : null;
 
-            FramesAdapter framesAdapter = new FramesAdapter(series, currentSeriesPosition, selectedFrameName, listener, dataChangedListener);
+            FramesAdapter framesAdapter = new FramesAdapter(series, currentSeriesPosition, selectedFrameName, listener, dataChangedListener, userRepository);
             childAdapters.put(currentSeriesPosition, framesAdapter);
             
             framesRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));

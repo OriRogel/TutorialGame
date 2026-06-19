@@ -9,8 +9,6 @@ import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.managers.BitmapManager;
 
-import java.util.List;
-
 /**
  * A HUD component that visualizes the player's current XP and Level.
  * Uses a clipped progress bar to represent the experience gap.
