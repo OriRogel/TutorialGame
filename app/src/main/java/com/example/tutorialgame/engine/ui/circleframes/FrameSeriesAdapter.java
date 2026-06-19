@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.UserRepository;
-import com.example.tutorialgame.cloud.document.CosmeticDoc;
 
 import java.util.List;
 
