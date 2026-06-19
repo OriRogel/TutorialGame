@@ -4,11 +4,12 @@ import static com.example.tutorialgame.engine.core.GameConstants.Sprite.SCALE_MU
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.managers.BitmapManager;
+
+import java.util.List;
 
 /**
  * A HUD component that visualizes the player's current XP and Level.
@@ -33,7 +34,7 @@ public class XpDisplay implements BitmapMethods {
     private double currentXP = -1;
     private final int progWidth, progHeight, progressOffset;
 
-    public XpDisplay(float x, float y) {
+    public XpDisplay(float x, float y, int initialLevel) {
         this.x = x;
         this.y = y;
 
@@ -43,7 +44,7 @@ public class XpDisplay implements BitmapMethods {
         lv = new TextRenderer(xpImg.getWidth() / 2f, R.color.magnolia_white);
         lv.setShadowColor(R.color.black);
 
-        float offsetX = x + (xpImg.getWidth() - lv.measureText(String.valueOf(MyApp.getProgress().getLevel())) + 0.5f * SCALE_MULTIPLIER) / 2f;
+        float offsetX = x + (xpImg.getWidth() - lv.measureText(String.valueOf(initialLevel)) + 0.5f * SCALE_MULTIPLIER) / 2f;
         float offsetY = y + lv.getTextSize() * 1.3f;
 
         progWidth = progress.getWidth();
@@ -53,23 +54,20 @@ public class XpDisplay implements BitmapMethods {
 
         lv.setPosition(offsetX, offsetY);
         lv.setShadowOffset(0, 0.5f * SCALE_MULTIPLIER);
-
-        updateProgress();
     }
 
-    public void draw(Canvas c) {
+    public void draw(Canvas c, int level) {
         drawContainer(c);
-        drawXpImg(c);
+        drawXpImg(c, level);
     }
 
-    private void drawXpImg(Canvas c) {
+    private void drawXpImg(Canvas c, int level) {
         c.drawBitmap(xpImg, x, y, null);
-        String levelStr = String.valueOf(MyApp.getProgress().getLevel());
+        String levelStr = String.valueOf(level);
         lv.drawWithShadow(levelStr, c);
     }
 
     private void drawContainer(Canvas c) {
-        updateProgress();
         c.drawBitmap(containerBg, containerOffset, y, null);
         c.drawBitmap(progress, srcRect, dstRect, null);
         c.drawBitmap(containerFrame, containerOffset, y, null);
@@ -78,13 +76,11 @@ public class XpDisplay implements BitmapMethods {
     /**
      * Updates the clipping rectangles based on current XP progress.
      */
-    private void updateProgress() {
-        double xp = MyApp.getProgress().getXp();
+    public void updateProgress(int xp, int needed) {
         if (xp == currentXP) return;
         
         currentXP = xp;
-        float needed = MyApp.getProgress().neededXpForLevelUp();
-        float pct = (float) (currentXP / needed);
+        float pct = (float) xp / needed;
         
         int cutW = Math.round(progWidth * Math.min(1f, pct));
 

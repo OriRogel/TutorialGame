@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.core.Game;
@@ -119,7 +118,7 @@ public class Scene extends GameState {
 
     private void finishScene() {
         // Mark as completed in cloud storage
-        MyApp.getWorldStateDoc().setCheckPoint(checkPointKey);
+        userRepository.getWorldStateDoc().setCheckPoint(checkPointKey);
         onExit();
     }
 
@@ -152,7 +151,7 @@ public class Scene extends GameState {
     }
 
     public boolean checkCheckPoint() {
-        return MyApp.getWorldStateDoc().getCheckPoint(checkPointKey);
+        return userRepository.getWorldStateDoc().getCheckPoint(checkPointKey);
     }
 
     public boolean isDialogueAfter() {

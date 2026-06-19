@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.document.ProgressDoc;
 import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.components.AnimationComponent;
 import com.example.tutorialgame.engine.core.Game;
@@ -97,6 +98,8 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     private final Rect upgradeClipArea = new Rect();
 
     private XpDisplay xpDisplay;
+    private ProgressDoc progress;
+    private StatsDoc stats;
     private final Paint fadePaint = new Paint(), previewPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private final Bitmap staminaProgress, staminaEmpty;
@@ -159,7 +162,11 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
         pointsBoxBmp = BitmapManager.getBitmap(R.drawable.dialogbox, 1, false);
         pointsRenderer = new TextRenderer(7 * SCALE_MULTIPLIER, R.color.black);
         pointsRenderer.setPosition(2 * SCALE_MULTIPLIER, 11.5f * SCALE_MULTIPLIER);
-        xpDisplay = new XpDisplay(pointsRenderer.getX(), pointsRenderer.getY() + TILE_SIZE);
+        
+        progress = userRepository.getProgress();
+        stats = userRepository.getPlayerStats();
+        
+        xpDisplay = new XpDisplay(pointsRenderer.getX(), pointsRenderer.getY() + TILE_SIZE, progress != null ? progress.getLevel() : 1);
 
         btnApplyChanges = new CircleButton(new PointF(SCREEN_WIDTH * 0.6f, lineY + 2 * TILE_SIZE), CircleImages.APPLY, false);
         btnReturn = new RectButton(btnApplyChanges.getHitbox().left - SCREEN_WIDTH * 0.25f,
@@ -182,7 +189,10 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     @Override
     public void onEnter() {
         super.onEnter();
-        pointsLeft = userRepository.getProgress().getUpgradePoints();
+        this.progress = userRepository.getProgress();
+        this.stats = userRepository.getPlayerStats();
+        
+        pointsLeft = progress != null ? progress.getUpgradePoints() : 0;
         prevPointsLeft = pointsLeft;
         scrollX = 0;
         blurIndex = 0;
@@ -217,6 +227,9 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
             upgrades[i].update(pointsLeft, delta);
         }
 
+        if (progress != null) {
+            xpDisplay.updateProgress(progress.getXp(), progress.neededXpForLevelUp());
+        }
         btnApplyChanges.setEnabled(prevPointsLeft > pointsLeft);
     }
 
@@ -263,7 +276,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
 
         c.drawBitmap(pointsBoxBmp, -pointsBoxBmp.getWidth() * 0.2f, -5 * SCALE_MULTIPLIER, null);
         pointsRenderer.drawText(context.getString(R.string.points_left) + pointsLeft, c);
-        xpDisplay.draw(c);
+        xpDisplay.draw(c, progress != null ? progress.getLevel() : 1);
     }
 
     @Override
@@ -337,7 +350,8 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     }
 
     private void drawHearts(Canvas c) {
-        int currentMax = userRepository.getPlayerStats().getMaxHealth();
+        if (stats == null) return;
+        int currentMax = stats.getMaxHealth();
         int previewAdd = (healthUpgrade != null) ? healthUpgrade.getCountToApply() * healthUpgrade.getUpgradeValue() : 0;
         int total = currentMax + previewAdd, icons = (int) Math.ceil(total / 100f);
         for (int i = 0; i < icons; i++) {
@@ -352,7 +366,8 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     }
 
     private void drawStamina(Canvas c) {
-        int currentMax = userRepository.getPlayerStats().getMaxStamina();
+        if (stats == null) return;
+        int currentMax = stats.getMaxStamina();
         int previewAdd = (staminaUpgrade != null) ? staminaUpgrade.getCountToApply() * staminaUpgrade.getUpgradeValue() : 0;
         int total = currentMax + previewAdd, icons = (int) Math.ceil((double) total / STAMINA_MAX_PER_ICON);
         for (int i = 0; i < icons; i++) {
@@ -384,7 +399,8 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
     }
 
     private void updateModel() {
-        float scale = 2 + (userRepository.getProgress().getUpgradesDone() / 20f);
+        if (progress == null) return;
+        float scale = 2 + (progress.getUpgradesDone() / 20f);
         updateModelDirection(0);
         staminaX = 5 * SCALE_MULTIPLIER; heartX = staminaX + 1.3f * TILE_SIZE;
         float centerX = (heartX + 1.5f * TILE_SIZE + upgradeClipArea.left) / 2f;
@@ -401,13 +417,13 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
 
 
     private void applyChanges() {
-        StatsDoc stats = userRepository.getPlayerStats();
+        if (stats == null || progress == null) return;
         boolean changed = false;
 
         // הפחתת הנקודות בבסיס הנתונים רק פעם אחת לפי הערך הסופי
         int totalSpent = prevPointsLeft - pointsLeft;
         if (totalSpent > 0) {
-            userRepository.getProgress().decreaseUpgradePoints(totalSpent);
+            progress.decreaseUpgradePoints(totalSpent);
         }
 
         for (CustomUpgrade u : upgrades) {

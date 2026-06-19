@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.components.drop.DropEntry;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.audio.SoundManager;
@@ -40,11 +41,12 @@ public class Player extends Character {
 
     // Juice: אובייקט יחיד וקבוע לעננת האבק של השחקן (לחיסכון בזיכרון)
     private final WorldAnimationEffect landingDustEffect = new WorldAnimationEffect();
+    private final StatsDoc statsDoc;
 
-    public Player() {
+    public Player(StatsDoc statsDoc) {
         super(new PointF(MyApp.getWorldStateDoc().getLastPosition().x*TILE_SIZE, MyApp.getWorldStateDoc().getLastPosition().y*TILE_SIZE), GameCharacters.PLAYER, PLAYER);
 
-        this.attackSpeed = MyApp.getPlayerStats().getAttackSpeed();
+        this.attackSpeed = statsDoc.getAttackSpeed();
 
         // הגדרת המאזין לנחיתה
         this.jumpComponent.setOnLandListener(() -> {
@@ -52,6 +54,8 @@ public class Player extends Character {
             landingDustEffect.init(ImpactEffectType.DUST_CLOUD_LANDING, hitBox.centerX(), hitBox.bottom);
             CameraManager.startShake(0.09f, 0.07f);
         });
+
+        this.statsDoc = statsDoc;
     }
 
     public void reset() {
@@ -76,10 +80,10 @@ public class Player extends Character {
                 health.heal(newMax - oldMax);
             }
         }
-        if (stamina.getMaxStamina() != MyApp.getPlayerStats().getMaxStamina()) {
-            stamina.setMaxStamina(MyApp.getPlayerStats().getMaxStamina());
+        if (stamina.getMaxStamina() != statsDoc.getMaxStamina()) {
+            stamina.setMaxStamina(statsDoc.getMaxStamina());
         }
-        this.attackSpeed = MyApp.getPlayerStats().getAttackSpeed();
+        this.attackSpeed = statsDoc.getAttackSpeed();
     }
 
     @Override
@@ -207,13 +211,13 @@ public class Player extends Character {
     }
 
     @Override
-    public int getAttackDamage() { return MyApp.getPlayerStats().getStrength(); }
+    public int getAttackDamage() { return statsDoc.getStrength(); }
 
     @Override
-    protected int getHealth() { return MyApp.getPlayerStats().getMaxHealth(); }
+    protected int getHealth() { return statsDoc.getMaxHealth(); }
 
     @Override
-    protected int getStamina() { return MyApp.getPlayerStats().getMaxStamina(); }
+    protected int getStamina() { return statsDoc.getMaxStamina(); }
 
     @Override
     protected int getStaminaCoolDown() { return 5000; }
