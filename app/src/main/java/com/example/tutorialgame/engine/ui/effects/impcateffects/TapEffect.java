@@ -1,13 +1,10 @@
 package com.example.tutorialgame.engine.ui.effects.impcateffects;
 
 import static com.example.tutorialgame.engine.core.GameConstants.Sprite.SCALE_MULTIPLIER;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
-
-public class TapEffect implements BitmapMethods {
+public class TapEffect {
     private static final long TOTAL_DURATION_MS = 250;
     private ImpactEffectType tapType;
     private long startTime = -1;

@@ -5,18 +5,19 @@ import static com.example.tutorialgame.engine.core.GameConstants.Sprite.TILE_SIZ
 import static com.example.tutorialgame.engine.core.GameConstants.View.SCREEN_WIDTH;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.audio.SoundManager;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
+import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
-public class LevelUpEffect implements BitmapMethods {
+import java.util.Objects;
+
+public class LevelUpEffect {
     private int currentLevel = MyApp.getProgress().getLevel();
     private final Bitmap circle;
     private final float x, y;
@@ -26,9 +27,8 @@ public class LevelUpEffect implements BitmapMethods {
     private boolean played, start;
 
     public LevelUpEffect() {
-        options.inScaled = false;
-        circle = getMultiplyBitmapClean(BitmapFactory.decodeResource(BaseActivity.getContext().getResources(), R.drawable.xp_img, options), 1.6);
-        x = (SCREEN_WIDTH - circle.getWidth())/2f;
+        circle = BitmapManager.getBitmap(R.drawable.xp_img, 1.6, false);
+        x = (SCREEN_WIDTH - Objects.requireNonNull(circle).getWidth())/2f;
         y = 4*TILE_SIZE;
         offset = -y/3;
 
@@ -43,8 +43,8 @@ public class LevelUpEffect implements BitmapMethods {
     private void setPositions() {
         currentLevel = MyApp.getProgress().getLevel();
         lastUpdate = System.currentTimeMillis();
-        float setX = x + (circle.getWidth() - levelPaint.measureText(String.valueOf(currentLevel)))/2f - 1.5f*SCALE_MULTIPLIER;
-        levelPaint.setPosition(setX, y+levelPaint.getTextSize()*1.34f);
+        float setX = x + (circle.getWidth() - levelPaint.measureText(String.valueOf(currentLevel)))/2f - SCALE_MULTIPLIER;
+        levelPaint.setPosition(setX, y+levelPaint.getTextSize()*1.29f);
         start = true;
         offset = -y/2f;
         levelPaint.setAlpha(0);
@@ -88,7 +88,7 @@ public class LevelUpEffect implements BitmapMethods {
         c.translate(0, offset);
 
         c.drawBitmap(circle, x, y, levelPaint);
-        levelPaint.drawText(String.valueOf(currentLevel), c);
+        levelPaint.drawWithShadow(String.valueOf(currentLevel), c);
 
         c.restore();
     }

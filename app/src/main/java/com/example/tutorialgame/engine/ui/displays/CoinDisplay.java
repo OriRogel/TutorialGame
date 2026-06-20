@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
@@ -23,7 +22,7 @@ import java.util.Objects;
  * A HUD component that displays the current coin count with a slide-down animation.
  * Provides destination coordinates for collected coin entities.
  */
-public class CoinDisplay implements BitmapMethods {
+public class CoinDisplay {
     private final Bitmap coinImg;
     private final NinePatchDrawable background;
     private final TextRenderer textPaint;

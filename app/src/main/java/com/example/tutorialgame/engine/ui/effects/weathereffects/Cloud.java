@@ -1,32 +1,24 @@
 package com.example.tutorialgame.engine.ui.effects.weathereffects;
 
-import static com.example.tutorialgame.engine.core.GameConstants.Sprite.SCALE_MULTIPLIER;
-
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-
 import com.example.tutorialgame.R;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
-import com.example.tutorialgame.ui.base.BaseActivity;
+import com.example.tutorialgame.managers.BitmapManager;
 
 /**
  * Represents a floating cloud effect.
  * Inherits from WeatherEffect and uses static resource loading for performance.
  */
-public class Cloud extends WeatherEffect implements BitmapMethods {
+public class Cloud extends WeatherEffect {
     private static final Bitmap staticCloudBmp;
     private static final PorterDuffColorFilter cloudFilter;
     private long birthTime, lifeDuration;
 
     static {
-        options.inScaled = false;
-        Bitmap raw = BitmapFactory.decodeResource(BaseActivity.getContext().getResources(), R.drawable.particle_clouds, options);
-        staticCloudBmp = Bitmap.createScaledBitmap(raw, raw.getWidth() * SCALE_MULTIPLIER, raw.getHeight() * SCALE_MULTIPLIER, false);
-        
+        staticCloudBmp = BitmapManager.getBitmap(R.drawable.particle_clouds);
         int tintColor = Color.argb(255, 70, 70, 70);
         cloudFilter = new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_ATOP);
     }

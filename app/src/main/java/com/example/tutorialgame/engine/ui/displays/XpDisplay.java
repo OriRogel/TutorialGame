@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import com.example.tutorialgame.R;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.managers.BitmapManager;
 
@@ -13,7 +12,7 @@ import com.example.tutorialgame.managers.BitmapManager;
  * A HUD component that visualizes the player's current XP and Level.
  * Uses a clipped progress bar to represent the experience gap.
  */
-public class XpDisplay implements BitmapMethods {
+public class XpDisplay {
     private static final double SCALE_RATIO = 0.53125;
     
     // Static assets to ensure minimal memory footprint

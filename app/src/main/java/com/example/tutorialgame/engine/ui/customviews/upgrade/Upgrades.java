@@ -1,17 +1,14 @@
 package com.example.tutorialgame.engine.ui.customviews.upgrade;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import androidx.annotation.StringRes;
-
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.cloud.document.StatsDoc;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
+import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
-public enum Upgrades implements BitmapMethods {
+public enum Upgrades {
     HEALTH(R.drawable.upgrade_health, StatsDoc.F_MAX_HEALTH, 25, StatsDoc.INIT_HEALTH, R.string.health, R.string.health_desc),
     STRENGTH(R.drawable.upgrade_strength, StatsDoc.F_STRENGTH, 5, StatsDoc.INIT_STRENGTH, R.string.strength, R.string.strength_desc),
     STAMINA(R.drawable.upgrade_stamina, StatsDoc.F_MAX_STAMINA, 10, StatsDoc.INIT_STAMINA, R.string.stamina, R.string.stamina_desc),
@@ -25,9 +22,7 @@ public enum Upgrades implements BitmapMethods {
 
 
     Upgrades(int resID, String statField, int upgradeValue, double defaultValue, @StringRes int stringId, @StringRes int descriptionId) {
-        options.inScaled = false;
-        Bitmap rawImg = getScaledBitmap(BitmapFactory.decodeResource(BaseActivity.getContext().getResources(), resID, options));
-        upgradeImg = getMultiplyBitmapClean(rawImg, 31.6f / rawImg.getWidth());
+        upgradeImg = BitmapManager.getBitmap(resID, 31.6/24, false);
         this.statField = statField;
         this.upgradeValue = upgradeValue;
         this.defaultValue = defaultValue;

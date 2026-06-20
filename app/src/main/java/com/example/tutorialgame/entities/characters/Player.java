@@ -5,9 +5,10 @@ import static com.example.tutorialgame.engine.core.GameConstants.Sprite.TILE_SIZ
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.StatsDoc;
+import com.example.tutorialgame.cloud.document.WorldStateDoc;
 import com.example.tutorialgame.components.drop.DropEntry;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.audio.SoundManager;
@@ -42,25 +43,30 @@ public class Player extends Character {
     // Juice: אובייקט יחיד וקבוע לעננת האבק של השחקן (לחיסכון בזיכרון)
     private final WorldAnimationEffect landingDustEffect = new WorldAnimationEffect();
     private final StatsDoc statsDoc;
+    private final WorldStateDoc stateDoc;
 
-    public Player(StatsDoc statsDoc) {
-        super(new PointF(MyApp.getWorldStateDoc().getLastPosition().x*TILE_SIZE, MyApp.getWorldStateDoc().getLastPosition().y*TILE_SIZE), GameCharacters.PLAYER, PLAYER);
+    public Player(UserRepository userRepository) {
+        super(new PointF(userRepository.getWorldStateDoc().getLastPosition().x*TILE_SIZE, userRepository.getWorldStateDoc().getLastPosition().y*TILE_SIZE), GameCharacters.PLAYER, PLAYER);
+        this.statsDoc = userRepository.getPlayerStats();
+        this.stateDoc = userRepository.getWorldStateDoc();
 
         this.attackSpeed = statsDoc.getAttackSpeed();
 
-        // הגדרת המאזין לנחיתה
+        // 1. סנכרון הנתונים האמיתיים (מכיוון שהבנאי של Character השתמש בערכי ברירת מחדל)
+        refreshStats();
+        setWeapon(stateDoc.getCurrentWeapon());
+
+        // 2. הגדרת המאזין לנחיתה
         this.jumpComponent.setOnLandListener(() -> {
             SoundManager.getInstance(BaseActivity.getContext()).playRndPitchSfx(R.raw.sfx_landing);
             landingDustEffect.init(ImpactEffectType.DUST_CLOUD_LANDING, hitBox.centerX(), hitBox.bottom);
             CameraManager.startShake(0.09f, 0.07f);
         });
-
-        this.statsDoc = statsDoc;
     }
 
     public void reset() {
         movementComponent.cancelKnockback();
-        teleportTo(MyApp.getWorldStateDoc().getLastPosition().x*TILE_SIZE, MyApp.getWorldStateDoc().getLastPosition().y*TILE_SIZE);
+        teleportTo(stateDoc.getLastPosition().x*TILE_SIZE, stateDoc.getLastPosition().y*TILE_SIZE);
         health.reset();
         stamina.reset();
 
@@ -207,17 +213,23 @@ public class Player extends Character {
 
     @Override
     public Weapons getWeapon() {
-        return MyApp.getWorldStateDoc().getCurrentWeapon();
+        return (stateDoc != null) ? stateDoc.getCurrentWeapon() : Weapons.NULL;
     }
 
     @Override
-    public int getAttackDamage() { return statsDoc.getStrength(); }
+    public int getAttackDamage() {
+        return (statsDoc != null) ? statsDoc.getStrength() : 10;
+    }
 
     @Override
-    protected int getHealth() { return statsDoc.getMaxHealth(); }
+    protected int getHealth() {
+        return (statsDoc != null) ? statsDoc.getMaxHealth() : 100;
+    }
 
     @Override
-    protected int getStamina() { return statsDoc.getMaxStamina(); }
+    protected int getStamina() {
+        return (statsDoc != null) ? statsDoc.getMaxStamina() : 50;
+    }
 
     @Override
     protected int getStaminaCoolDown() { return 5000; }
