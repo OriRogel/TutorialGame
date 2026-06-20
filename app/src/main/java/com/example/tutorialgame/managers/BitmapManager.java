@@ -2,8 +2,9 @@ package com.example.tutorialgame.managers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
+import com.example.tutorialgame.engine.core.GameConstants;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 import java.util.HashMap;
@@ -13,10 +14,10 @@ import java.util.Map;
  * מנהל מרכזי לטעינה, שינוי גודל (Scaling) ומטמון (Caching) של Bitmaps.
  * תומך בטעינת אובייקטים בודדים, מערכי אנימציה וחיתוך אזורים מתוך אטלס (Atlas).
  */
-public class BitmapManager implements BitmapMethods {
+public class BitmapManager {
     private static final String TAG = "BitmapManager";
 
-    private static final BitmapMethods helper = new BitmapMethods() {};
+    private static final BitmapFactory.Options options = new BitmapFactory.Options();
     
     private static final Map<String, Bitmap> bitmapCache = new HashMap<>();
     private static final Map<String, Bitmap[]> sheetCache = new HashMap<>();
@@ -41,6 +42,19 @@ public class BitmapManager implements BitmapMethods {
         return raw;
     }
 
+    private static Bitmap getMultiplyBitmap(Bitmap bitmap, double multiply, boolean smooth) {
+        Matrix matrix = new Matrix();
+        matrix.setScale((float) multiply * GameConstants.Sprite.SCALE_MULTIPLIER, (float) multiply * GameConstants.Sprite.SCALE_MULTIPLIER);
+        return Bitmap.createBitmap(
+                bitmap,
+                0, 0,
+                bitmap.getWidth(),
+                bitmap.getHeight(),
+                matrix,
+                smooth
+        );
+    }
+
     public static Bitmap getBitmap(int resId) {
         return getBitmap(resId, 1.0, false);
     }
@@ -56,7 +70,7 @@ public class BitmapManager implements BitmapMethods {
         Bitmap raw = getRawAtlas(resId);
         if (raw == null) return null;
 
-        Bitmap processed = smooth ? helper.getMultiplyBitmapSmoth(raw, multiply) : helper.getMultiplyBitmapClean(raw, multiply);
+        Bitmap processed = getMultiplyBitmap(raw, multiply, smooth);
         bitmapCache.put(key, processed);
         return processed;
     }
@@ -72,7 +86,7 @@ public class BitmapManager implements BitmapMethods {
         if (atlas == null) return null;
 
         Bitmap rawRegion = Bitmap.createBitmap(atlas, x, y, w, h);
-        Bitmap processed = smooth ? helper.getMultiplyBitmapSmoth(rawRegion, multiply) : helper.getMultiplyBitmapClean(rawRegion, multiply);
+        Bitmap processed = getMultiplyBitmap(rawRegion, multiply, smooth);
         
         bitmapCache.put(key, processed);
         return processed;
@@ -100,7 +114,7 @@ public class BitmapManager implements BitmapMethods {
             int x = horizontal ? i * frameW : 0;
             int y = horizontal ? 0 : i * frameH;
             Bitmap rawFrame = Bitmap.createBitmap(sheet, x, y, frameW, frameH);
-            frames[i] = smooth ? helper.getMultiplyBitmapSmoth(rawFrame, multiply) : helper.getMultiplyBitmapClean(rawFrame, multiply);
+            frames[i] = getMultiplyBitmap(rawFrame, multiply, smooth);
         }
 
         sheetCache.put(key, frames);
@@ -121,11 +135,33 @@ public class BitmapManager implements BitmapMethods {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 Bitmap rawFrame = Bitmap.createBitmap(sheet, col * frameW, row * frameH, frameW, frameH);
-                frames[row][col] = smooth ? helper.getMultiplyBitmapSmoth(rawFrame, multiply) : helper.getMultiplyBitmapClean(rawFrame, multiply);
+                frames[row][col] = getMultiplyBitmap(rawFrame, multiply, smooth);
             }
         }
 
         sheet2DCache.put(key, frames);
+        return frames;
+    }
+
+    /**
+     * טוען גיליון אנימציה דו-מימדי (מטריצה) ומחזיר אותו כמערך חד-מימדי (שטוח).
+     */
+    public static Bitmap[] getSpritesheetFlattened(int resId, int frameW, int frameH, int rows, int cols, double multiply, boolean smooth) {
+        String key = getCacheKey(resId, multiply, smooth) + "_f_" + rows + "x" + cols;
+        if (sheetCache.containsKey(key)) return sheetCache.get(key);
+
+        Bitmap sheet = getRawAtlas(resId);
+        if (sheet == null) return null;
+
+        Bitmap[] frames = new Bitmap[rows * cols];
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Bitmap rawFrame = Bitmap.createBitmap(sheet, col * frameW, row * frameH, frameW, frameH);
+                frames[row * cols + col] = getMultiplyBitmap(rawFrame, multiply, smooth);
+            }
+        }
+
+        sheetCache.put(key, frames);
         return frames;
     }
 
