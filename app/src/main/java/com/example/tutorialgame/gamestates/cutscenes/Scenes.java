@@ -1,13 +1,11 @@
 package com.example.tutorialgame.gamestates.cutscenes;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import com.example.tutorialgame.R;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
-import com.example.tutorialgame.ui.base.BaseActivity;
+import com.example.tutorialgame.managers.BitmapManager;
 
-public enum Scenes implements BitmapMethods {
+public enum Scenes {
     INTRO(R.drawable.cutscene_1, 5, "seen_cutscene_coldOpening", R.raw.cutscene_intro, false, null),
     GETTING_SWORD(R.drawable.cutscene_2, 3, "seen_cutscene_gettingSword", R.raw.cutscene_getting_sword, true, null),
     SKELETON_ARISE(R.drawable.cutscene_3, 6, "seen_cutscene_skeletonArise", R.raw.cutscene_skeleton_arise, false, "RUNWAY");
@@ -19,17 +17,8 @@ public enum Scenes implements BitmapMethods {
     private final String onExitEvent;
 
     Scenes(int resId, int frames, String checkPoint, int musicRes, boolean dialogueAfter, String onExitEvent) {
-        // ביטול Scaling אוטומטי של אנדרואיד כדי לשמור על הרזולוציה המקורית של ה-Atlas
-        options.inScaled = false;
-        Bitmap atlas = BitmapFactory.decodeResource(BaseActivity.getContext().getResources(), resId, options);
-
-        frameArr = new Bitmap[frames];
-        for (int i = 0; i < frames; i++) {
-            frameArr[i] = Bitmap.createBitmap(atlas, 0, i * 180, 320, 180);
-        }
-
-        // שחרור ה-Atlas מהזיכרון לאחר החיתוך
-        atlas.recycle();
+        // שימוש במנהל הביטמפים - חיתוך אנכי (horizontal = false)
+        this.frameArr = BitmapManager.getSpritesheet(resId, 320, 180, frames, 1.0, false, false);
 
         this.checkPoint = checkPoint;
         this.musicRes = musicRes;

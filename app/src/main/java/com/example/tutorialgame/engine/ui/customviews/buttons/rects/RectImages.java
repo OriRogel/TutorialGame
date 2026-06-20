@@ -3,10 +3,9 @@ package com.example.tutorialgame.engine.ui.customviews.buttons.rects;
 import android.graphics.Color;
 import androidx.annotation.StringRes;
 import com.example.tutorialgame.R;
-import com.example.tutorialgame.engine.interfaces.BitmapMethods;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
-public enum RectImages implements BitmapMethods {
+public enum RectImages {
     REPLAY(Color.RED, R.string.replay),
     EXIT_DEATH(Color.RED, R.string.back_launcher),
     EXIT_MENU(Color.WHITE, R.string.save_quit),
