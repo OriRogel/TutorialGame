@@ -2,8 +2,8 @@ package com.example.tutorialgame.engine.ui.customviews.upgrade;
 
 import android.graphics.Bitmap;
 import androidx.annotation.StringRes;
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.managers.BitmapManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
@@ -42,18 +42,18 @@ public enum Upgrades {
         return upgradeValue;
     }
 
-    public int getCurrentStatValue() {
+    public int getCurrentStatValue(UserRepository userRepository) {
         switch (statField) {
             case StatsDoc.F_MAX_HEALTH:
-                return MyApp.getPlayerStats().getMaxHealth();
+                return userRepository.getPlayerStats().getMaxHealth();
             case StatsDoc.F_ATTACK_SPEED:
-                return MyApp.getPlayerStats().getAttackSpeed();
+                return userRepository.getPlayerStats().getAttackSpeed();
             case StatsDoc.F_STRENGTH:
-                return MyApp.getPlayerStats().getStrength();
+                return userRepository.getPlayerStats().getStrength();
             case StatsDoc.F_MAX_STAMINA:
-                return MyApp.getPlayerStats().getMaxStamina();
+                return userRepository.getPlayerStats().getMaxStamina();
             case StatsDoc.F_CRIT_HIT_CHANCE:
-                return MyApp.getPlayerStats().getCritHitChance();
+                return userRepository.getPlayerStats().getCritHitChance();
             default:
                 return 0;
         }

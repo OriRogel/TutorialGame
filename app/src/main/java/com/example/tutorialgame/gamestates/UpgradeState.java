@@ -146,7 +146,7 @@ public class UpgradeState extends GameState implements CustomUpgrade.OnUpgradeLi
         for (int i = 0; i < availableTypes.length; i++) {
             float x = startX + (i / 3) * spacingX; 
             float y = (lineY - TILE_SIZE) - (i % 3) * spacingY;
-            upgrades[i] = new CustomUpgrade(availableTypes[i], new PointF(x, y));
+            upgrades[i] = new CustomUpgrade(availableTypes[i], new PointF(x, y), userRepository);
             upgrades[i].setOnUpgradeListener(this);
 
             if (availableTypes[i] == Upgrades.HEALTH) healthUpgrade = upgrades[i];

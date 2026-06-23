@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import androidx.core.content.res.ResourcesCompat;
 import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
@@ -30,6 +31,7 @@ public class CustomUpgrade implements GameButton.OnClickListener {
     public interface OnUpgradeListener {
         boolean onUpgradeChanged(CustomUpgrade upgrade, int costChange);
     }
+    private final UserRepository userRepository;
 
     private OnUpgradeListener listener;
     private final Upgrades upgradeImg;
@@ -79,9 +81,10 @@ public class CustomUpgrade implements GameButton.OnClickListener {
         balloonPriceRenderer = new TextRenderer(4.5f * SCALE_MULTIPLIER, Color.YELLOW);
     }
 
-    public CustomUpgrade(Upgrades upgradeImg, PointF upgradeCenter) {
+    public CustomUpgrade(Upgrades upgradeImg, PointF upgradeCenter, UserRepository userRepository) {
+        this.userRepository = userRepository;
         this.upgradeImg = upgradeImg;
-        this.circleFrame = CircleFrames.valueOf(MyApp.getCosmetic().getCurrentFrame());
+        this.circleFrame = CircleFrames.valueOf(userRepository.getCosmetic().getCurrentFrame());
         this.upgradeCenter = upgradeCenter;
         this.bounds = new RectF();
 
@@ -150,7 +153,7 @@ public class CustomUpgrade implements GameButton.OnClickListener {
     }
 
     private int calCurrentLevel() {
-        int level = (int) ((upgradeImg.getCurrentStatValue() - upgradeImg.getDefaultValue()) / upgradeImg.getUpgradeValue());
+        int level = (int) ((upgradeImg.getCurrentStatValue(userRepository) - upgradeImg.getDefaultValue()) / upgradeImg.getUpgradeValue());
         if (StatsDoc.F_ATTACK_SPEED.equals(getStatField())) level = -level;
         return level + 1;
     }
