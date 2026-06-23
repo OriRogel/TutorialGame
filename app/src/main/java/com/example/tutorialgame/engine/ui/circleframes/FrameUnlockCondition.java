@@ -1,6 +1,7 @@
 package com.example.tutorialgame.engine.ui.circleframes;
 
-import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.cloud.UserRepository;
+
 import java.util.List;
 
 public class FrameUnlockCondition {
@@ -23,12 +24,12 @@ public class FrameUnlockCondition {
         return priceArr;
     }
 
-    public int getCurrentAmount() {
+    public int getCurrentAmount(UserRepository userRepository) {
         switch (selectedCondition) {
-            case DAYS: return MyApp.getProgress().getDaysLoggedIn();
-            case LEVEL: return MyApp.getProgress().getLevel();
-            case ENEMIES_DEFEATED: return MyApp.getProgress().getEnemiesDefeated();
-            case PURCHASE: return MyApp.getCosmetic().getCoinsLeft();
+            case DAYS: return userRepository.getProgress().getDaysLoggedIn();
+            case LEVEL: return userRepository.getProgress().getLevel();
+            case ENEMIES_DEFEATED: return userRepository.getProgress().getEnemiesDefeated();
+            case PURCHASE: return userRepository.getCosmetic().getCoinsLeft();
             default: return -99999999;
         }
     }

@@ -37,6 +37,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
     private final String selectedFrameName;
     private final FrameSeriesAdapter.FrameSelectionListener listener;
     private final OnDataChangedListener dataChangedListener;
+    private final UserRepository userRepository;
     private final CosmeticDoc cosmeticDoc;
     private final ProgressDoc progressDoc;
 
@@ -48,6 +49,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
         this.selectedFrameName = selectedFrameName;
         this.listener = listener;
         this.dataChangedListener = dataChangedListener;
+        this.userRepository = userRepository;
         this.cosmeticDoc = userRepository.getCosmetic();
         this.progressDoc = userRepository.getProgress();
     }
@@ -133,7 +135,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
             lockIcon.setVisibility(View.VISIBLE);
             lockIcon.setImageBitmap(CircleFrames.LOCK.getCircleFrame());
 
-            if (series.checkCondition(pos) && (pos == 0 || cosmeticDoc.isFrameAvailable(frames.get(pos-1).name()))) {
+            if (series.checkCondition(pos, userRepository) && (pos == 0 || cosmeticDoc.isFrameAvailable(frames.get(pos-1).name()))) {
                 frameImage.setAlpha(1f);
                 lockIcon.setAlpha(0.3f);
                 if (series.getCondition().getSelectedCondition() == FrameUnlockCondition.Condition.PURCHASE)
@@ -177,7 +179,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
                 progress.setText(getProgress(pos));
 
                 btnUnlock.setOnClickListener(v -> {
-                    if (series.checkCondition(pos)) {
+                    if (series.checkCondition(pos, userRepository)) {
                         handleUnlock(pos);
                         balloon.dismiss();
                     }
@@ -238,7 +240,7 @@ public class FramesAdapter extends RecyclerView.Adapter<FramesAdapter.FrameViewH
         }
     }
     private String getTitle(Context ctx, int framePosition) {
-        String status = !series.checkCondition(framePosition) ? ctx.getString(R.string.locked) : 
+        String status = !series.checkCondition(framePosition, userRepository) ? ctx.getString(R.string.locked) :
                        (framePosition == 0 || cosmeticDoc.isFrameAvailable(frames.get(framePosition-1).name())) ?
                        ctx.getString(R.string.available) : ctx.getString(R.string.locked);
 
