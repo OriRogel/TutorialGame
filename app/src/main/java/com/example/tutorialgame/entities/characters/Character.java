@@ -271,6 +271,7 @@ public abstract class Character extends Entity {
     public abstract DropEntry getDropEntry();
     public abstract float getTimeToApexSec();
     public abstract float getDesiredTiles();
+    public int getCritChance() { return 0; }
 
     // ========== Getters & Setters ==========
     public void setJumping(boolean shouldJump) {

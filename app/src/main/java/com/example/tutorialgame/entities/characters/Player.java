@@ -246,6 +246,11 @@ public class Player extends Character {
     @Override
     public float getDesiredTiles() { return 1.5f; }
 
+    @Override
+    public int getCritChance() {
+        return (statsDoc != null) ? statsDoc.getCritHitChance() : 0;
+    }
+
     private boolean isDistancedFromNPC() {
         if (currentSpeaker == null) return true;
         return !Other.IsCharacterSeesTarget(this, currentSpeaker);

@@ -13,7 +13,8 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import com.example.tutorialgame.MyApp;
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.audio.SoundManager;
 import com.example.tutorialgame.engine.core.GameConstants;
@@ -136,9 +137,9 @@ public class CombatComponent {
         int totalDamage = owner.getAttackDamage() + weapon.getBaseDamage();
         boolean isCritical = false;
 
-        if (owner.getFaction() == GameConstants.Faction.PLAYER) {
-            int chance = MyApp.getPlayerStats().getCritHitChance();
-            int roll = MyApp.getRandom().nextInt(100);
+        int chance = owner.getCritChance();
+        if (chance > 0) {
+            int roll = ThreadLocalRandom.current().nextInt(100);
             if (roll < chance) {
                 totalDamage *= 2;
                 isCritical = true;

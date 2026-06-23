@@ -9,7 +9,6 @@ import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.CosmeticDoc;
 import com.example.tutorialgame.cloud.document.ProfileDoc;
 import com.example.tutorialgame.cloud.document.ProgressDoc;
-import com.example.tutorialgame.cloud.document.StatsDoc;
 import com.example.tutorialgame.cloud.document.WorldStateDoc;
 import com.example.tutorialgame.engine.audio.MusicManager;
 import com.example.tutorialgame.engine.audio.SoundManager;
@@ -92,11 +91,6 @@ public class MyApp extends Application {
 
     public static ProfileDoc getProfile() {
         return getUserRepository().getProfile();
-    }
-
-    // --- Active Slot Shortcuts ---
-    public static StatsDoc getPlayerStats() {
-        return getUserRepository().getPlayerStats();
     }
 
     public static ProgressDoc getProgress() {
