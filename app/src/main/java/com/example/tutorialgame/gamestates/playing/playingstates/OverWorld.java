@@ -19,14 +19,13 @@ import com.example.tutorialgame.gamestates.State;
 import com.example.tutorialgame.gamestates.playing.PlayingManager;
 import com.example.tutorialgame.managers.CameraManager;
 import com.example.tutorialgame.managers.MapManager;
-import com.example.tutorialgame.managers.QuestManager;
 import com.example.tutorialgame.managers.WorldEventManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OverWorld extends GameState {
+public class OverWorld extends GameState implements PlayingUI.PlayingUIListener {
     private boolean movePlayer;
     private PointF lastTouchDiff;
     final private MapManager mapManager;
@@ -76,7 +75,8 @@ public class OverWorld extends GameState {
 
         mapManager.initWeatherForCurrentMap();
 
-        playingUI = new PlayingUI(this);
+        String frameName = userRepository.getCosmetic().getCurrentFrame();
+        playingUI = new PlayingUI(player, frameName, this);
     }
 
     @Override
@@ -95,15 +95,24 @@ public class OverWorld extends GameState {
 
         if (transitionEffect.getCurrentState() == MapTransitionEffect.State.CLOSING) return;
 
+        // Control player based on UI input
+        PointF moveVec = playingUI.getJoystickMovement();
+        if (player.isDead()) {
+            playingUI.resetJoystickButton();
+            setPlayerMoveFalse();
+        } else if (moveVec != null) {
+            setPlayerMoveTrue(moveVec);
+        } else {
+            setPlayerMoveFalse();
+        }
+
         playingUI.update(delta);
         mapManager.updateWorldEntities(player, delta);
-
-        // חסימת תנועה בזמן מוות
-        if (player.isDead()) setPlayerMoveFalse();
 
         player.setMovementInput(movePlayer, lastTouchDiff);
         player.update(delta, MapManager.getCurrentMap());
         playingManager.getQuestManager().onEnterZone(null);
+        playingManager.getQuestManager().update();
 
         if (player.hasPendingDialogue() && transitionEffect.getCurrentState() == MapTransitionEffect.State.IDLE) {
             playingManager.setCustomDialogState(player, player.consumeInteriorDialogue());
@@ -144,7 +153,10 @@ public class OverWorld extends GameState {
         if (MapManager.getCurrentMap() == null) return;
 
         renderWithoutUi(c);
+
+        if (game.getCurrentGameState() != State.PLAYING) return;
         playingUI.draw(c);
+        playingManager.getQuestManager().draw(c);
         transitionEffect.draw(c);
     }
 
@@ -196,10 +208,6 @@ public class OverWorld extends GameState {
         } else doorwayJustPassed = false;
     }
 
-    public void setDoorwayJustPassed(boolean doorwayJustPassed) {
-        this.doorwayJustPassed = doorwayJustPassed;
-    }
-
     private void drawSortedEntities(Canvas c) {
         for (int i = 0; i < visibleEntities.size(); i++) {
             visibleEntities.get(i).draw(c);
@@ -226,11 +234,33 @@ public class OverWorld extends GameState {
         return player;
     }
 
-    public QuestManager getQuestManager() {
-        return playingManager.getQuestManager();
+    @Override
+    public void onMenuClicked() {
+        switcher.changeState(State.MENU);
     }
 
-    public PlayingManager getPlayingManager() {
-        return playingManager;
+    @Override
+    public void onAttackClicked() {
+        if (!player.isAttacking() && player.getWeapon() != null) {
+            player.setAttacking(true);
+        }
+    }
+
+    @Override
+    public void onJumpClicked() {
+        player.setJumping(true);
+    }
+
+    @Override
+    public void onSpeakClicked() {
+        if (player.getCurrentSpeaker() != null) {
+            playingManager.setDialogState(player.getCurrentSpeaker());
+            player.resetAnimation();
+        }
+    }
+
+    @Override
+    public void onFaceClicked() {
+        switcher.changeState(State.UPGRADE_STATE);
     }
 }

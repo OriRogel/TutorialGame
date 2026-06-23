@@ -12,8 +12,6 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.MotionEvent;
-import com.example.tutorialgame.MyApp;
-import com.example.tutorialgame.engine.interfaces.StateSwitcher;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
 import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleButton;
@@ -24,20 +22,28 @@ import com.example.tutorialgame.engine.ui.displays.StaminaDisplay;
 import com.example.tutorialgame.engine.ui.effects.LevelUpEffect;
 import com.example.tutorialgame.engine.ui.joystick.Joystick;
 import com.example.tutorialgame.entities.characters.Player;
-import com.example.tutorialgame.gamestates.State;
-import com.example.tutorialgame.gamestates.playing.playingstates.OverWorld;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 public class PlayingUI implements GameButton.OnClickListener {
+    /**
+     * Interface to handle UI actions without direct dependency on OverWorld.
+     */
+    public interface PlayingUIListener {
+        void onMenuClicked();
+        void onAttackClicked();
+        void onJumpClicked();
+        void onSpeakClicked();
+        void onFaceClicked();
+    }
+
     private static boolean SHOW_UI;
     private final Joystick joystick;
     private final CircleButton btnJump, btnAttack, btnSpeak, btnMenu;
     private final Player player;
+    private final PlayingUIListener listener;
 
-    private final OverWorld overWorld;
-    private final StateSwitcher switcher;
     private final RectF facesetHitbox;
-    private final Bitmap currentFrame = CircleFrames.valueOf(MyApp.getCosmetic().getCurrentFrame()).getCircleFrame();
+    private final Bitmap currentFrame;
 
     // faceset tracking
     private int facesetPointerId = -1;
@@ -64,18 +70,19 @@ public class PlayingUI implements GameButton.OnClickListener {
         SHOW_UI = sp.getBoolean("ui", true);
     }
 
-    public PlayingUI(OverWorld overWorld) {
-        this.overWorld = overWorld;
-        this.switcher = overWorld.getGame();
-        this.player = overWorld.getPlayer();
+    public PlayingUI(Player player, String currentFrameName, PlayingUIListener listener) {
+        this.player = player;
+        this.listener = listener;
 
-        // אתחול הג'ויסטיק החדש במקום הנקודות הידניות
+        // אתחול הג'ויסטיק
         this.joystick = new Joystick(SCREEN_WIDTH / 6.4f, SCREEN_HEIGHT / 1.35f, 25 * SCALE_MULTIPLIER);
 
         btnMenu = new CircleButton(new PointF(SCREEN_WIDTH - TILE_SIZE, TILE_SIZE), CircleImages.PAUSE, true);
         btnJump = new CircleButton(new PointF((SCREEN_WIDTH - SCREEN_WIDTH / 5f) + TILE_SIZE * 2, SCREEN_HEIGHT / 1.35f - TILE_SIZE * 1.5f), CircleImages.JUMP, true);
         btnAttack = new CircleButton(new PointF(SCREEN_WIDTH - SCREEN_WIDTH / 5f, SCREEN_HEIGHT / 1.2f), CircleImages.ATTACK, true);
         btnSpeak = new CircleButton(new PointF((SCREEN_WIDTH - SCREEN_WIDTH / 5f) + TILE_SIZE * 2.5f, SCREEN_HEIGHT / 1.25f), CircleImages.SPEAK, true);
+
+        currentFrame = CircleFrames.valueOf(currentFrameName).getCircleFrame();
 
         int healthIconX = 45 * SCALE_MULTIPLIER;
         int healthIconY = SCALE_MULTIPLIER;
@@ -101,16 +108,6 @@ public class PlayingUI implements GameButton.OnClickListener {
     }
 
     public void update(double delta) {
-        // אם השחקן מת, נועלים שליטה ומאפסים ג'ויסטיק
-        if (player.isDead()) {
-            if (joystick.isPushed()) joystick.reset();
-            overWorld.setPlayerMoveFalse();
-        } else {
-            // עדכון תנועת השחקן לפי מצב הג'ויסטיק
-            if (joystick.isPushed()) overWorld.setPlayerMoveTrue(joystick.getMovementVector());
-            else overWorld.setPlayerMoveFalse();
-        }
-
         updateButtons();
 
         // אנימציית סיבוב הפריימים
@@ -135,8 +132,6 @@ public class PlayingUI implements GameButton.OnClickListener {
         staminaDisplay.update();
         coinDisplay.update(delta);
         levelUpEffect.update(delta);
-
-        overWorld.getQuestManager().update();
     }
 
     private void updateButtons() {
@@ -168,7 +163,6 @@ public class PlayingUI implements GameButton.OnClickListener {
 
     public void draw(Canvas c) {
         if(!SHOW_UI) return;
-        if (overWorld.getGame().getCurrentGameState() != State.PLAYING) return;
         // ציור הג'ויסטיק החדש
         joystick.draw(c);
 
@@ -183,7 +177,6 @@ public class PlayingUI implements GameButton.OnClickListener {
         healthDisplay.draw(c);
         staminaDisplay.draw(c);
         levelUpEffect.draw(c);
-        overWorld.getQuestManager().draw(c);
     }
 
     private void drawFaceset(Canvas c) {
@@ -263,7 +256,7 @@ public class PlayingUI implements GameButton.OnClickListener {
         } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP) {
             if (facesetPressed && pointerId == facesetPointerId) {
                 if (facesetHitbox.contains(event.getX(actionIndex), event.getY(actionIndex)) && startFace) {
-                    switcher.changeState(State.UPGRADE_STATE);
+                    listener.onFaceClicked();
                     facesetBaseRotation = facesetBaseRotation + 90f;
                 } else {
                     startRotateTo(facesetBaseRotation);
@@ -277,18 +270,21 @@ public class PlayingUI implements GameButton.OnClickListener {
 
     public void resetJoystickButton() {
         joystick.reset();
-        overWorld.setPlayerMoveFalse();
     }
 
     @Override
     public void onClick(GameButton button) {
-        if (button == btnMenu) switcher.changeState(State.MENU);
-        if (button == btnAttack && !player.isAttacking()) player.setAttacking(true);
-        if (button == btnSpeak) {
-            overWorld.getPlayingManager().setDialogState(player.getCurrentSpeaker());
-            player.resetAnimation();
-        }
-        if (button == btnJump) player.setJumping(true);
+        if (button == btnMenu) listener.onMenuClicked();
+        if (button == btnAttack) listener.onAttackClicked();
+        if (button == btnSpeak) listener.onSpeakClicked();
+        if (button == btnJump) listener.onJumpClicked();
+    }
+
+    /**
+     * @return Current joystick movement vector or null if not pushed.
+     */
+    public PointF getJoystickMovement() {
+        return joystick.isPushed() ? joystick.getMovementVector() : null;
     }
 
     public static void setShowUI(boolean flag) {
