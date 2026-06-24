@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.util.Log;
 
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.entities.characters.enemies.EyeMonster;
 import com.example.tutorialgame.entities.characters.enemies.Skeleton;
@@ -97,7 +96,7 @@ public enum GameCharacters {
     public void setViewDistance(float viewDistance) { this.viewDistance = viewDistance; }
 
     public String getName() {
-        if (nameId == -1) return MyApp.getProfile().getNickname();
+        if (nameId == -1) return "Player";
         return BaseActivity.getContext().getString(nameId);
     }
 }

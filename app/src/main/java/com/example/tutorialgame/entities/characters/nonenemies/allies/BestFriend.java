@@ -27,7 +27,7 @@ public class BestFriend extends Ally {
             teleportTo(spawnPos.x - 1.3f * TILE_SIZE, spawnPos.y + SCALE_MULTIPLIER * 2);
         } else if (MyApp.getWorldStateDoc().getCheckPoint("event_player_receivedWeapon")) {
             // הוא אמור להיות בחנות
-            MapManager.getMapByName("village.tmx").removeCharacter(getGameCharType().getName());
+            MapManager.getMapByName("village.tmx").removeCharacter(getGameCharType().name());
             MapManager.getMapByName("weapon_store.tmx").addCharacter(this);
             teleportTo(TILE_SIZE , TILE_SIZE);
             Objects.requireNonNull(MapManager.getMapByName("weapon_store.tmx")).getDoorwayByName("weapon_store_to_village").setDoorwayActive(false);

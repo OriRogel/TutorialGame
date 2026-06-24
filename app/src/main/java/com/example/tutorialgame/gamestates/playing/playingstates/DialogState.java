@@ -150,9 +150,9 @@ public class DialogState extends GameState {
         }
     }
 
-    public static void endDialogue(String speakerName) {
+    public static void endDialogue(Character speaker) {
         isEnding = true;
-        MyApp.getProgress().registerEncounter(speakerName);
+        MyApp.getProgress().registerEncounter(speaker.getGameCharType().name(), speaker.getName());
     }
 
     public String getNextDialogueLine() {

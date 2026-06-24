@@ -40,13 +40,14 @@ public class Player extends Character {
     private List<String> interiorDialogue = null;
     private boolean pendingDialogue;
 
-    // Juice: אובייקט יחיד וקבוע לעננת האבק של השחקן (לחיסכון בזיכרון)
     private final WorldAnimationEffect landingDustEffect = new WorldAnimationEffect();
     private final StatsDoc statsDoc;
     private final WorldStateDoc stateDoc;
+    private final UserRepository userRepository;
 
     public Player(UserRepository userRepository) {
         super(new PointF(userRepository.getWorldStateDoc().getLastPosition().x*TILE_SIZE, userRepository.getWorldStateDoc().getLastPosition().y*TILE_SIZE), GameCharacters.PLAYER, PLAYER);
+        this.userRepository = userRepository;
         this.statsDoc = userRepository.getPlayerStats();
         this.stateDoc = userRepository.getWorldStateDoc();
 
@@ -311,6 +312,11 @@ public class Player extends Character {
         if (onDeathCompleteCallback != null) {
             onDeathCompleteCallback.run();
         }
+    }
+
+    @Override
+    public String getName() {
+        return (userRepository.getProfile() != null) ? userRepository.getProfile().getNickname() : super.getName();
     }
 
     @Override

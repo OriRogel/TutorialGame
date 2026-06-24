@@ -7,7 +7,6 @@ import android.content.Context;
 import com.example.tutorialgame.cloud.CloudManager;
 import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.cloud.document.CosmeticDoc;
-import com.example.tutorialgame.cloud.document.ProfileDoc;
 import com.example.tutorialgame.cloud.document.ProgressDoc;
 import com.example.tutorialgame.cloud.document.WorldStateDoc;
 import com.example.tutorialgame.engine.audio.MusicManager;
@@ -88,10 +87,6 @@ public class MyApp extends Application {
     }
 
     // --- Global Account Data Getters with Null Safety ---
-
-    public static ProfileDoc getProfile() {
-        return getUserRepository().getProfile();
-    }
 
     public static ProgressDoc getProgress() {
         return getUserRepository().getProgress();

@@ -299,7 +299,7 @@ public abstract class Character extends Entity {
     }
 
     public void moveToMap(String targetMapName, float x, float y) {
-        MapManager.getCurrentMap().removeCharacter(this.getGameCharType().getName());
+        MapManager.getCurrentMap().removeCharacter(this.getGameCharType().name());
         this.teleportTo(x, y);
         MapManager.getMapByName(targetMapName).addCharacter(this);
     }
@@ -362,4 +362,5 @@ public abstract class Character extends Entity {
 
     public void resetAnimation() { animation.resetAnimation(); }
     public void onDialogue() {}
+    public String getName() { return gameCharType.getName(); }
 }

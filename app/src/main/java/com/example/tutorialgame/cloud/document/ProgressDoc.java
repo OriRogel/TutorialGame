@@ -136,7 +136,7 @@ public class ProgressDoc extends BaseDocument {
         }
     }
 
-    public void registerEncounter(String charId) {
+    public void registerEncounter(String charId, String displayName) {
         if (metCharacters != null && !metCharacters.contains(charId)) {
             metCharacters.add(charId);
             docRef.update(KEY_MET_CHARS, FieldValue.arrayUnion(charId));
@@ -145,7 +145,7 @@ public class ProgressDoc extends BaseDocument {
             BaseActivity activity = (BaseActivity) BaseActivity.getContext();
             if (activity != null) {
                 activity.showToast(MessageFormat.format("{0} {1} {2} 5 xp", 
-                        activity.getString(R.string.new_char_met), charId, activity.getString(R.string.you_gained)), 
+                        activity.getString(R.string.new_char_met), displayName, activity.getString(R.string.you_gained)),
                         Toast.LENGTH_LONG);
             }
         }

@@ -33,7 +33,7 @@ public class WhiteKnight extends Neutral {
         if (!angry) return;
 
         putCharInBadBoyList(MapManager.getCurrentMap().getPlayer());
-        DialogState.endDialogue(gameCharType.getName());
+        DialogState.endDialogue(this);
     }
     public void setAngry(boolean angry) {
         this.angry = angry;

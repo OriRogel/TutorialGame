@@ -21,7 +21,6 @@ import com.example.tutorialgame.entities.characters.Character;
 import com.example.tutorialgame.entities.characters.GameCharacters;
 import com.example.tutorialgame.gamestates.playing.playingstates.DialogState;
 import com.example.tutorialgame.managers.BitmapManager;
-import com.example.tutorialgame.managers.QuestManager;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 import java.util.ArrayList;
@@ -245,7 +244,7 @@ public class DialoguePanel {
             } else {
                 String speakerId = currentSpeaker.getGameCharType().name();
                 dialogState.getPlayingManager().getQuestManager().onDialogueFinished(speakerId);
-                DialogState.endDialogue(speakerId);
+                DialogState.endDialogue(currentSpeaker);
                 currentState = PanelState.EXITING;
             }
         }
@@ -264,7 +263,7 @@ public class DialoguePanel {
     private void setSpeakerData(Character speaker) {
         GameCharacters data = speaker.getGameCharType();
         this.faceSet = data.getFaceSet();
-        this.speakerName = data.getName();
+        this.speakerName = speaker.getName();
         this.voiceRes = data.getVoiceRes();
     }
 

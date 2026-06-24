@@ -339,10 +339,10 @@ public class GameMap {
         }
     }
 
-    public void removeCharacter(String name) {
+    public void removeCharacter(String typeName) {
         synchronized (characterArrayList) {
             for (int i = characterArrayList.size() - 1; i >= 0; i--) {
-                if (characterArrayList.get(i).getGameCharType().getName().equals(name)) {
+                if (characterArrayList.get(i).getGameCharType().name().equals(typeName)) {
                     Character removed = characterArrayList.remove(i);
                     synchronized (drawableList) {
                         drawableList.remove(removed);
