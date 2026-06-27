@@ -10,7 +10,6 @@ import android.graphics.drawable.NinePatchDrawable;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.R;
 import com.example.tutorialgame.engine.renderer.TextRenderer;
 import com.example.tutorialgame.managers.BitmapManager;
@@ -33,7 +32,7 @@ public class CoinDisplay {
     // Global destinations for coin animations to target
     public static float xDestination, yDestination;
 
-    public CoinDisplay() {
+    public CoinDisplay(int initialCoins) {
         // Use BitmapManager for consistent resource handling
         this.coinImg = BitmapManager.getBitmapRegion(R.drawable.spr_coin, 0, 0, 10, 10, 1.0, false);
 
@@ -43,7 +42,7 @@ public class CoinDisplay {
         background = (NinePatchDrawable) ContextCompat.getDrawable(BaseActivity.getContext(), R.drawable.choicebox);
         
         // Initial state: hidden above the screen
-        coinsCount = MyApp.getCosmetic().getCoinsLeft();
+        coinsCount = initialCoins;
         setPositions();
         offset = -Objects.requireNonNull(background).getBounds().height();
     }
@@ -60,12 +59,11 @@ public class CoinDisplay {
         lastUpdate = System.currentTimeMillis();
 
         // Target for coin "fly" animation
-        xDestination = background.getBounds().left + 5 * SCALE_MULTIPLIER;
+        xDestination = background.getBounds().left + 5*SCALE_MULTIPLIER;
     }
 
-    public void update(double delta) {
+    public void update(double delta, int currentCoins) {
         // Check for data changes to trigger the animation
-        int currentCoins = MyApp.getCosmetic().getCoinsLeft();
         if (coinsCount != currentCoins) {
             coinsCount = currentCoins;
             setPositions();

@@ -75,8 +75,7 @@ public class OverWorld extends GameState implements PlayingUI.PlayingUIListener 
 
         mapManager.initWeatherForCurrentMap();
 
-        String frameName = userRepository.getCosmetic().getCurrentFrame();
-        playingUI = new PlayingUI(player, frameName, this);
+        playingUI = new PlayingUI(player, userRepository, this);
     }
 
     @Override

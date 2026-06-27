@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.MotionEvent;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.engine.ui.circleframes.CircleFrames;
 import com.example.tutorialgame.engine.ui.customviews.buttons.GameButton;
 import com.example.tutorialgame.engine.ui.customviews.buttons.circles.CircleButton;
@@ -41,6 +42,7 @@ public class PlayingUI implements GameButton.OnClickListener {
     private final CircleButton btnJump, btnAttack, btnSpeak, btnMenu;
     private final Player player;
     private final PlayingUIListener listener;
+    private final UserRepository userRepository;
 
     private final RectF facesetHitbox;
     private final Bitmap currentFrame;
@@ -70,8 +72,9 @@ public class PlayingUI implements GameButton.OnClickListener {
         SHOW_UI = sp.getBoolean("ui", true);
     }
 
-    public PlayingUI(Player player, String currentFrameName, PlayingUIListener listener) {
+    public PlayingUI(Player player, UserRepository userRepository, PlayingUIListener listener) {
         this.player = player;
+        this.userRepository = userRepository;
         this.listener = listener;
 
         // אתחול הג'ויסטיק
@@ -82,7 +85,7 @@ public class PlayingUI implements GameButton.OnClickListener {
         btnAttack = new CircleButton(new PointF(SCREEN_WIDTH - SCREEN_WIDTH / 5f, SCREEN_HEIGHT / 1.2f), CircleImages.ATTACK, true);
         btnSpeak = new CircleButton(new PointF((SCREEN_WIDTH - SCREEN_WIDTH / 5f) + TILE_SIZE * 2.5f, SCREEN_HEIGHT / 1.25f), CircleImages.SPEAK, true);
 
-        currentFrame = CircleFrames.valueOf(currentFrameName).getCircleFrame();
+        currentFrame = CircleFrames.valueOf(userRepository.getCosmetic().getCurrentFrame()).getCircleFrame();
 
         int healthIconX = 45 * SCALE_MULTIPLIER;
         int healthIconY = SCALE_MULTIPLIER;
@@ -92,7 +95,7 @@ public class PlayingUI implements GameButton.OnClickListener {
         float facesetY = -5 + (currentFrame.getHeight() - faceExample.getHeight()) / 2f;
         facesetHitbox = new RectF(facesetX, facesetY, facesetX + faceExample.getWidth(), facesetY + faceExample.getHeight());
 
-        coinDisplay = new CoinDisplay();
+        coinDisplay = new CoinDisplay(userRepository.getCosmetic().getCoinsLeft());
         healthDisplay = new HealthDisplay(player, healthIconX, healthIconY);
         staminaDisplay = new StaminaDisplay(player, healthIconX, healthIconY + 1.1f * TILE_SIZE);
         levelUpEffect = new LevelUpEffect();
@@ -130,7 +133,7 @@ public class PlayingUI implements GameButton.OnClickListener {
         }
 
         staminaDisplay.update();
-        coinDisplay.update(delta);
+        coinDisplay.update(delta, userRepository.getCosmetic().getCoinsLeft());
         levelUpEffect.update(delta);
     }
 
