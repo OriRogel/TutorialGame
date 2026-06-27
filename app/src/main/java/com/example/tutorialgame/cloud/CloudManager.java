@@ -1,8 +1,11 @@
 package com.example.tutorialgame.cloud;
 
+import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.cloud.document.ProfileDoc;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 /**
  * מנהל העל של נתוני הענן.
@@ -77,6 +80,19 @@ public class CloudManager {
                 if (listener != null) listener.onDataLoadFailed();
             }
         });
+    }
+
+    public void saveGame(String flagName) {
+        activeSlot.getWorldStateDoc().saveWorldState();
+        activeSlot.getWorldStateDoc().setCheckPoint(flagName);
+        if (activeSlotId != -1) {
+            slotsMetadata.updateSlotMetadata(
+                    activeSlotId,
+//                        getVisualCheckpointKey(), // המפתח לתמונה
+                    Objects.requireNonNull(MyApp.getProgress()).getLevel(),
+                    activeSlot.getCosmeticDoc().getAvailableFrames().size()
+            );
+        }
     }
 
     public ProfileDoc getProfile() { return profileDoc; }

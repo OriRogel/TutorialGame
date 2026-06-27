@@ -119,7 +119,7 @@ public class Scene extends GameState {
     private void finishScene() {
         // Mark as completed in cloud storage
         if (checkPointKey != null && !checkPointKey.isEmpty()) {
-            userRepository.getWorldStateDoc().setCheckPoint(checkPointKey);
+            userRepository.getCloudManager().saveGame(checkPointKey);
         }
         onExit();
     }

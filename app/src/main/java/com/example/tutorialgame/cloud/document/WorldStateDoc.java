@@ -6,7 +6,6 @@ import android.graphics.PointF;
 
 import androidx.annotation.NonNull;
 
-import com.example.tutorialgame.MyApp;
 import com.example.tutorialgame.cloud.BaseDocument;
 import com.example.tutorialgame.entities.Weapons;
 import com.example.tutorialgame.entities.characters.Player;
@@ -16,7 +15,6 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class WorldStateDoc extends BaseDocument {
     private String lastMap, currentWeapon;
@@ -92,7 +90,7 @@ public class WorldStateDoc extends BaseDocument {
         return "START";
     }
 
-    private void saveWorldState() {
+    public void saveWorldState() {
         lastMap = MapManager.getCurrentMap().getFileName();
         Player player = MapManager.getCurrentMap().getPlayer();
         lastPosition = new PointF(player.getHitBox().left/TILE_SIZE, player.getHitBox().top/TILE_SIZE);
@@ -103,24 +101,13 @@ public class WorldStateDoc extends BaseDocument {
         pos.put("y", lastPosition.y);
         docRef.update("worldState.lastPosition", pos);
 
-        // עדכון המטא-דאטה של הסלוט הפעיל
-        if (MyApp.getCloudManager() != null) {
-            int activeId = MyApp.getCloudManager().getActiveSlotId();
-            if (activeId != -1) {
-                MyApp.getCloudManager().getSlotsMetadata().updateSlotMetadata(
-                        activeId,
-//                        getVisualCheckpointKey(), // המפתח לתמונה
-                        Objects.requireNonNull(MyApp.getProgress()).getLevel(),
-                        MyApp.getCosmetic().getAvailableFrames().size()
-                );
-            }
-        }
     }
 
     public void setCheckPoint(String flagName) {
+        if (flagName == null) return;
+
         storyFlags.put(flagName, true);
         docRef.update("worldState.storyFlags." + flagName, true);
-        saveWorldState();
     }
 
     public String getLastMap() { return lastMap; }

@@ -53,7 +53,7 @@ public class Quest {
         if (isCompleted()) return;
 
         // Mark as completed in cloud
-        userRepository.getWorldStateDoc().setCheckPoint(internalId);
+        userRepository.getCloudManager().saveGame(internalId);
         
         // Update player progress and rewards
         userRepository.getProgress().increaseQuestsCompleted();
