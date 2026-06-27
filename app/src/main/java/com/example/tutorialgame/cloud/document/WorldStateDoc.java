@@ -92,7 +92,7 @@ public class WorldStateDoc extends BaseDocument {
         return "START";
     }
 
-    public void saveWorldState() {
+    private void saveWorldState() {
         lastMap = MapManager.getCurrentMap().getFileName();
         Player player = MapManager.getCurrentMap().getPlayer();
         lastPosition = new PointF(player.getHitBox().left/TILE_SIZE, player.getHitBox().top/TILE_SIZE);

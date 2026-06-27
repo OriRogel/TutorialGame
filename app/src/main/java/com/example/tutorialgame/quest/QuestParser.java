@@ -48,7 +48,7 @@ public class QuestParser {
                             currentSubQuests = new ArrayList<>();
                             currentComplexQuest = new ComplexQuest(titleRes, currentSubQuests);
                         } else if ("step".equals(name)) {
-                            Quest step = parseStep(context, parser, actionFactory);
+                            Quest step = parseStep(context, parser, actionFactory, userRepository);
                             if (currentSubQuests != null) currentSubQuests.add(step);
                         }
                         break;
@@ -66,7 +66,7 @@ public class QuestParser {
         return mainStoryLine;
     }
 
-    private static Quest parseStep(Context context, XmlPullParser parser, ActionFactory actionFactory) throws IOException, XmlPullParserException {
+    private static Quest parseStep(Context context, XmlPullParser parser, ActionFactory actionFactory, UserRepository userRepository) throws IOException, XmlPullParserException {
         String id = parser.getAttributeValue(null, "id");
         int taskRes = getResId(context, parser.getAttributeValue(null, "task_res"), "string");
         int coins = getIntAttribute(parser, "coins", 0);
@@ -90,7 +90,7 @@ public class QuestParser {
             eventType = parser.next();
         }
 
-        return new Quest(taskRes, id, questType, coins, xp, onComplete::trigger);
+        return new Quest(userRepository, taskRes, id, questType, coins, xp, onComplete::trigger);
     }
 
     private static void parseActions(XmlPullParser parser, WorldEvent event, ActionFactory actionFactory) throws IOException, XmlPullParserException {

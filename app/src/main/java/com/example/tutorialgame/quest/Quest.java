@@ -2,7 +2,7 @@ package com.example.tutorialgame.quest;
 
 import androidx.annotation.StringRes;
 
-import com.example.tutorialgame.MyApp;
+import com.example.tutorialgame.cloud.UserRepository;
 import com.example.tutorialgame.ui.base.BaseActivity;
 
 /**
@@ -10,6 +10,7 @@ import com.example.tutorialgame.ui.base.BaseActivity;
  * Manages quest status, rewards, and completion logic.
  */
 public class Quest {
+    private final UserRepository userRepository;
     private final @StringRes int taskRes;
     private final String internalId; // Unique internal identifier for the quest (used as a flag in DB)
     private final QuestType questType; // The type and target of the quest
@@ -18,6 +19,7 @@ public class Quest {
 
     /**
      * Constructs a new Quest instance.
+     * @param userRepository The repository for updating player data.
      * @param taskRes String resource for the quest description.
      * @param internalId Unique ID used for tracking completion in the cloud.
      * @param questType The logical type of the quest (e.g., DIALOGUE).
@@ -25,7 +27,8 @@ public class Quest {
      * @param xp Amount of experience points rewarded upon completion.
      * @param onCompleteAction A callback to execute when the quest is finished.
      */
-    public Quest(@StringRes int taskRes, String internalId, QuestType questType, int coins, int xp, Runnable onCompleteAction) {
+    public Quest(UserRepository userRepository, @StringRes int taskRes, String internalId, QuestType questType, int coins, int xp, Runnable onCompleteAction) {
+        this.userRepository = userRepository;
         this.taskRes = taskRes;
         this.internalId = internalId;
         this.questType = questType;
@@ -39,7 +42,7 @@ public class Quest {
      * @return true if completed, false otherwise.
      */
     public boolean isCompleted() {
-        return MyApp.getWorldStateDoc().getCheckPoint(internalId);
+        return userRepository.getWorldStateDoc().getCheckPoint(internalId);
     }
 
     /**
@@ -50,12 +53,12 @@ public class Quest {
         if (isCompleted()) return;
 
         // Mark as completed in cloud
-        MyApp.getWorldStateDoc().setCheckPoint(internalId);
+        userRepository.getWorldStateDoc().setCheckPoint(internalId);
         
         // Update player progress and rewards
-        MyApp.getProgress().increaseQuestsCompleted();
-        MyApp.getCosmetic().increaseCoins(coins);
-        MyApp.getProgress().updateXp(xp);
+        userRepository.getProgress().increaseQuestsCompleted();
+        userRepository.getCosmetic().increaseCoins(coins);
+        userRepository.getProgress().updateXp(xp);
 
         // Execute post-completion logic
         if (onCompleteAction != null) {
